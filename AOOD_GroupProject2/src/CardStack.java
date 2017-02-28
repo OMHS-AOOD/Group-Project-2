@@ -11,4 +11,7 @@ public class CardStack {
 	public Card removeCard(){
 		return stack.remove(stack.size()-1);
 	}
+	public ArrayList<Card> getStack(){
+		return stack;
+	}
 }

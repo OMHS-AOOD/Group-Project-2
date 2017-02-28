@@ -13,7 +13,7 @@ public class MilleBornesGame {
 			player.addCardToHand(deck.removeCard());
 			cpu.addCardToHand(deck.removeCard());
 		}
-		System.out.println();
+		System.out.println(player.handToString());
 		
 	}
 	

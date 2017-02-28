@@ -13,4 +13,11 @@ public class Player {
 	public void addCardToHand(Card c){
 		hand.addCard(c);
 	}
+	public String handToString(){
+		String out = "Player " + name + "\n";
+		for(Card c: hand.getStack()){
+			out += "\n" + c.getName();
+		}
+		return out;
+	}
 }	
