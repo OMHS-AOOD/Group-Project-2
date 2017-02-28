@@ -7,3 +7,5 @@
 /RemedyCard.class
 /DistanceCard.class
 /CardStack.class
+/DiscardPile.class
+/Deck.class
