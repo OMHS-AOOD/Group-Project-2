@@ -71,4 +71,9 @@ public class Deck extends CardStack {
 			stack.add(allCards.remove(index));
 		}
 	}
+	
+	public Card drawTopCard(){
+		return super.removeCard();
+	}
+	
 }
