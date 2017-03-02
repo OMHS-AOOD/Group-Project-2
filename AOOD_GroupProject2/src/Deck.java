@@ -9,19 +9,19 @@ public class Deck extends CardStack {
 		allCards.add(new SafetyCard("Right of Way"));
 
 		for (int i = 0; i < 5; i++) {
-			allCards.add(new HazardCard("Stop"));
+			allCards.add(new HazardCard("Stop",'s'));
 		}
 		for (int i = 0; i < 2; i++) {
-			allCards.add(new HazardCard("Speed Limit"));
-			allCards.add(new HazardCard("Speed Limit"));
+			allCards.add(new HazardCard("Speed Limit",'l'));
+			allCards.add(new HazardCard("Speed Limit",'l'));
 
-			allCards.add(new RemedyCard("Go/Roll"));
-			allCards.add(new RemedyCard("Go/Roll"));
-			allCards.add(new RemedyCard("Go/Roll"));
-			allCards.add(new RemedyCard("Go/Roll"));
-			allCards.add(new RemedyCard("Go/Roll"));
-			allCards.add(new RemedyCard("Go/Roll"));
-			allCards.add(new RemedyCard("Go/Roll"));
+			allCards.add(new RemedyCard("Go/Roll",'s'));
+			allCards.add(new RemedyCard("Go/Roll",'s'));
+			allCards.add(new RemedyCard("Go/Roll",'s'));
+			allCards.add(new RemedyCard("Go/Roll",'s'));
+			allCards.add(new RemedyCard("Go/Roll",'s'));
+			allCards.add(new RemedyCard("Go/Roll",'s'));
+			allCards.add(new RemedyCard("Go/Roll",'s'));
 
 			allCards.add(new DistanceCard("25 Miles"));
 			allCards.add(new DistanceCard("25 Miles"));
@@ -47,20 +47,20 @@ public class Deck extends CardStack {
 		}
 
 		for (int i = 0; i < 3; i++) {
-			allCards.add(new RemedyCard("Road Service"));
+			allCards.add(new RemedyCard("Road Service",'*'));
 			
-			allCards.add(new HazardCard("Accident"));
-			allCards.add(new HazardCard("Out of Gas"));
-			allCards.add(new HazardCard("Flat Tire"));
+			allCards.add(new HazardCard("Accident",'a'));
+			allCards.add(new HazardCard("Out of Gas",'o'));
+			allCards.add(new HazardCard("Flat Tire",'f'));
 
-			allCards.add(new RemedyCard("Repairs"));
-			allCards.add(new RemedyCard("Repairs"));
-			allCards.add(new RemedyCard("Gasoline"));
-			allCards.add(new RemedyCard("Gasoline"));
-			allCards.add(new RemedyCard("Spare Tire"));
-			allCards.add(new RemedyCard("Spare Tire"));
-			allCards.add(new RemedyCard("End of Limit"));
-			allCards.add(new RemedyCard("End of Limit"));
+			allCards.add(new RemedyCard("Repairs",'a'));
+			allCards.add(new RemedyCard("Repairs",'a'));
+			allCards.add(new RemedyCard("Gasoline",'o'));
+			allCards.add(new RemedyCard("Gasoline",'o'));
+			allCards.add(new RemedyCard("Spare Tire",'f'));
+			allCards.add(new RemedyCard("Spare Tire",'f'));
+			allCards.add(new RemedyCard("End of Limit",'l'));
+			allCards.add(new RemedyCard("End of Limit",'l'));
 
 			allCards.add(new DistanceCard("100 Miles"));
 			allCards.add(new DistanceCard("100 Miles"));
