@@ -15,7 +15,7 @@ public class MilleBornesGame {
 			player.addCardToHand(deck.removeCard());
 			cpu.addCardToHand(deck.removeCard());
 		}
-		gb.add(new DraggableCard(player.getCard(0)), 0, 0, 85, 110);
+		//gb.add(new DraggableCard(player.getCard(0)), 0, 0, 85, 110);
 		
 	}
 	

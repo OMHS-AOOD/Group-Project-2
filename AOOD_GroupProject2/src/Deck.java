@@ -47,6 +47,8 @@ public class Deck extends CardStack {
 		}
 
 		for (int i = 0; i < 3; i++) {
+			allCards.add(new RemedyCard("Road Service"));
+			
 			allCards.add(new HazardCard("Accident"));
 			allCards.add(new HazardCard("Out of Gas"));
 			allCards.add(new HazardCard("Flat Tire"));
@@ -76,4 +78,11 @@ public class Deck extends CardStack {
 		return super.removeCard();
 	}
 	
+	
+	public void reformDeck(CardStack discard){
+		while(discard.getStack().size() > 0){
+			int index = (int)(Math.random()*discard.getStack().size());
+			stack.add(discard.getStack().remove(index));
+		}
+	}
 }
