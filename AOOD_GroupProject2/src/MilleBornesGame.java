@@ -4,7 +4,7 @@ import javax.swing.JOptionPane;
 public class MilleBornesGame {
 	private Deck deck;
 	private CardStack discard;
-	private Player player;
+	private HumanPlayer player;
 	private ComputerPlayer cpu;
 	private GameBoard gb;
 	public MilleBornesGame(){
@@ -12,10 +12,10 @@ public class MilleBornesGame {
 		discard = new CardStack();
 		String name = JOptionPane.showInputDialog("Enter a username");
 		if(name == null){
-			player = new Player("Player");
+			player = new HumanPlayer("Player");
 		}
 		else{
-			player = new Player(name);
+			player = new HumanPlayer(name);
 		}
 		cpu = new ComputerPlayer();
 		gb = new GameBoard();

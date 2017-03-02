@@ -1,10 +1,10 @@
 import java.util.ArrayList;
 
-public class Player {
+public class HumanPlayer {
 	protected String name;
 	protected CardStack battle, speed, distance, safety;
 	protected ArrayList<Card> hand;
-	public Player(String n){
+	public HumanPlayer(String n){
 		name = n;
 		battle = new CardStack();
 		speed = new CardStack();
