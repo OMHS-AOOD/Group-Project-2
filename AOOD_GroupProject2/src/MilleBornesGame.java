@@ -25,7 +25,7 @@ public class MilleBornesGame {
 		}
 		System.out.println(player.handToString() + "\n");
 		System.out.println(cpu.handToString());
-		//gb.add(new DraggableCard(player.getCard(0)), 0, 0, 85, 110);
+		gb.add(new DraggableCard(player.getCard(0)), 0, 0, 85, 110);
 		
 	}
 	
