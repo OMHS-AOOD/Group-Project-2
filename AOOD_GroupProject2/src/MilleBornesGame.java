@@ -1,3 +1,5 @@
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class MilleBornesGame {
 	private Deck deck;
@@ -8,7 +10,13 @@ public class MilleBornesGame {
 	public MilleBornesGame(){
 		deck = new Deck();
 		discard = new CardStack();
-		player = new Player("Jonah");
+		String name = JOptionPane.showInputDialog("Enter a username");
+		if(name == null){
+			player = new Player("Player");
+		}
+		else{
+			player = new Player(name);
+		}
 		cpu = new ComputerPlayer();
 		gb = new GameBoard();
 		for(int i = 0; i < 6; i++){
