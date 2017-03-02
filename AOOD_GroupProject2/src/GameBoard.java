@@ -8,14 +8,17 @@ public class GameBoard extends JFrame{
 	private JLabel test;
 	public GameBoard(){
 		super("Mille Bornes");
-		board = new JPanel();
+		
 		this.setSize(1200, 675);
 		this.setVisible(true);
 		this.setLocation(200, 112);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		board = new JPanel();
 		this.add(board);
-		test = new JLabel("FUCK");
 		board.setLayout(null);
+		
+		test = new JLabel("FUCK");
 		board.add(test);
 	}
 
