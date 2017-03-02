@@ -18,6 +18,7 @@ public class GameBoard extends JFrame{
 		board.setLayout(null);
 		board.add(test);
 	}
+
 	public void add(JComponent j, int x, int y, int w, int h){
 		board.add(j);
 		j.setBounds(x, y, w ,h);
