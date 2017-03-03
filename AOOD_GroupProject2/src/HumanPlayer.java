@@ -28,4 +28,7 @@ public class HumanPlayer {
 	public Card playCard(int i){
 		return hand.remove(i);
 	}
+	public String getName(){
+		return name;
+	}
 }	

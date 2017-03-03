@@ -1,9 +1,15 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 
 public class GameBoard extends JFrame{
 	private JPanel board;
@@ -34,4 +40,15 @@ public class GameBoard extends JFrame{
 	public ArrayList<DraggableCard> getUsersHand(){
 		return cardsOnBoard;
 	}
+	private class BoardMouseAdapter extends MouseAdapter {
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			int mouseX = e.getX();
+			int mouseY = e.getY();
+
+		}
+
+	}
+
 }
