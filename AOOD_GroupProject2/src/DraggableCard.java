@@ -20,9 +20,19 @@ public class DraggableCard extends JPanel{
 	}
 	public void updateImage(){
 		currentImage = thisCard.getImage();
+		image.setIcon(currentImage);
 	}
 	public ImageIcon getImage(){
 		return currentImage;
+	}
+	
+	public Card getCard(){
+		return thisCard;
+	}
+	
+	public void flipCard(){
+		thisCard.flip();
+		updateImage();
 	}
 	
 }

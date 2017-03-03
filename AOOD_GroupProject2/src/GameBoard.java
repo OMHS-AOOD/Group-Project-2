@@ -30,4 +30,8 @@ public class GameBoard extends JFrame{
 		board.add(j);
 		j.setBounds(x, y, w ,h);
 	}
+	
+	public ArrayList<DraggableCard> getUsersHand(){
+		return cardsOnBoard;
+	}
 }

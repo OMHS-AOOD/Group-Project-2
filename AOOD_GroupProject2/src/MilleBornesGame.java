@@ -30,7 +30,10 @@ public class MilleBornesGame {
 	
 		for(int i = 0; i < 6; i++){
 			DraggableCard dc = new DraggableCard(player.getCard(i));
+			DraggableCard dc2 = new DraggableCard(cpu.getCard(i));
 			gb.add(dc, (i * 120) + 10 , 475, 100, 153);
+			gb.add(dc2, (i * 120) + 10 , 10, 100, 153);
+			dc2.flipCard();
 		}
 		
 		

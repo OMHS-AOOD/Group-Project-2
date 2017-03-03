@@ -13,9 +13,9 @@ public class Card{
 		flipped = false;
 		URL location = MilleBornesGame.class.getProtectionDomain().getCodeSource().getLocation();
 		File f = new File(location.getPath().substring(0, location.getPath().length() - 4) + "src/" +name +".png");
-		File f2 = new File(location.getPath().substring(0, location.getPath().length() - 4) + "src/Back.png");
+		File f2 = new File(location.getPath().substring(0, location.getPath().length() - 4) + "src/Back.jpg");
 		front = new ImageIcon(f.getAbsolutePath());
-		back = new ImageIcon(f.getAbsolutePath());
+		back = new ImageIcon(f2.getAbsolutePath());
 
 	}
 	public String getName(){
