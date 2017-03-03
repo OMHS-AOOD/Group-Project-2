@@ -22,6 +22,7 @@ public class GameBoard extends JFrame{
 		this.setVisible(true);
 		this.setLocation(200, 112);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.addMouseListener(new BoardMouseAdapter());
 		board = new JPanel();
 		this.add(board);
 		board.setLayout(null);
@@ -46,7 +47,7 @@ public class GameBoard extends JFrame{
 		public void mousePressed(MouseEvent e) {
 			int mouseX = e.getX();
 			int mouseY = e.getY();
-
+			
 		}
 
 	}
