@@ -15,13 +15,13 @@ public class Deck extends CardStack {
 			allCards.add(new HazardCard("Speed Limit",'l'));
 			allCards.add(new HazardCard("Speed Limit",'l'));
 
-			allCards.add(new RemedyCard("Go/Roll",'s'));
-			allCards.add(new RemedyCard("Go/Roll",'s'));
-			allCards.add(new RemedyCard("Go/Roll",'s'));
-			allCards.add(new RemedyCard("Go/Roll",'s'));
-			allCards.add(new RemedyCard("Go/Roll",'s'));
-			allCards.add(new RemedyCard("Go/Roll",'s'));
-			allCards.add(new RemedyCard("Go/Roll",'s'));
+			allCards.add(new RemedyCard("Roll",'s'));
+			allCards.add(new RemedyCard("Roll",'s'));
+			allCards.add(new RemedyCard("Roll",'s'));
+			allCards.add(new RemedyCard("Roll",'s'));
+			allCards.add(new RemedyCard("Roll",'s'));
+			allCards.add(new RemedyCard("Roll",'s'));
+			allCards.add(new RemedyCard("Roll",'s'));
 
 			allCards.add(new DistanceCard("25 Miles"));
 			allCards.add(new DistanceCard("25 Miles"));

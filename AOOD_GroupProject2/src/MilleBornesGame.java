@@ -1,4 +1,5 @@
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 public class MilleBornesGame {
@@ -25,7 +26,15 @@ public class MilleBornesGame {
 		}
 		System.out.println(player.handToString() + "\n");
 		System.out.println(cpu.handToString());
-		gb.add(new DraggableCard(player.getCard(0)), 0, 0, 85, 110);
+		
+	
+		for(int i = 0; i < 6; i++){
+			DraggableCard dc = new DraggableCard(player.getCard(i));
+			gb.add(dc, (i * 120) + 10 , 475, 100, 153);
+		}
+		
+		
+		
 		
 	}
 	

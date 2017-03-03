@@ -1,8 +1,9 @@
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
-public class DraggableCard extends JComponent{
+public class DraggableCard extends JPanel{
 	private Card thisCard;
 	private ImageIcon currentImage;
 	private JLabel image;
@@ -19,7 +20,9 @@ public class DraggableCard extends JComponent{
 	}
 	public void updateImage(){
 		currentImage = thisCard.getImage();
-
+	}
+	public ImageIcon getImage(){
+		return currentImage;
 	}
 	
 }
