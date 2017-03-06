@@ -15,3 +15,5 @@
 /Roll.png
 /Spare Tire.png
 /GameBoard$BoardMouseAdapter.class
+/GameBoard$BoardMouseDragger.class
+/GameBoard$CardDragger.class
