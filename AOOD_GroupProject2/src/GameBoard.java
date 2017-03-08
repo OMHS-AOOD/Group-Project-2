@@ -18,6 +18,7 @@ public class GameBoard extends JFrame{
 	private DraggableCard currentCardClicked;
 	private ArrayList<DraggableCard> cardsOnBoard;
 	private int currentCardInt;
+	private boolean validSpace;
 	public GameBoard(){
 		super("Mille Bornes");
 		currentCardInt = -1;
@@ -31,13 +32,22 @@ public class GameBoard extends JFrame{
 		board.setLayout(null);
 		
 		cardsOnBoard = new ArrayList<DraggableCard>();
+		validSpace = false;
 	}
 
 	public void add(JComponent j, int x, int y, int w, int h){
 		if(j instanceof DraggableCard && ((DraggableCard) j).getOwner().equals("Player")){
 			cardsOnBoard.add((DraggableCard) j);
-			cardsOnBoard.get(cardsOnBoard.size()-1).addMouseListener(new CardClick(cardsOnBoard.size()-1));
 			cardsOnBoard.get(cardsOnBoard.size()-1).addMouseMotionListener(new CardDrag());
+			for(int i = 0; i < cardsOnBoard.size(); i++){
+				DraggableCard dc = cardsOnBoard.get(i);
+				if(dc.getMouseListeners().length != 0){
+					dc.removeMouseListener(dc.getMouseListeners()[0]);
+				}
+				dc.addMouseListener(new CardClick(i));
+				dc.setBounds((i * 120) + 10 , 475, 100, 153);
+			}
+
 		}
 		board.add(j);
 		j.setBounds(x, y, w ,h);
@@ -57,6 +67,17 @@ public class GameBoard extends JFrame{
 		public void mousePressed(MouseEvent e){
 			currentCardInt = cardInt;
 		}
+		
+		@Override
+		public void mouseReleased(MouseEvent e){
+
+			if(!validSpace){
+				currentCardClicked.setBounds((currentCardInt * 120) + 10 , 475, 100, 153);
+			}
+			currentCardInt = -1;
+			currentCardClicked = null;
+		}
+		
 	}
 	
 	private class CardDrag extends MouseMotionAdapter{
@@ -67,7 +88,6 @@ public class GameBoard extends JFrame{
 				currentCardClicked = cardsOnBoard.get(currentCardInt);
 				mouseX = currentCardClicked.getX() + e.getX();
 				mouseY = currentCardClicked.getY() + e.getY();
-
 				currentCardClicked.setBounds(mouseX - currentCardClicked.getWidth()/2, mouseY - currentCardClicked.getHeight()/2, currentCardClicked.getWidth(), currentCardClicked.getHeight());
 			}
 			

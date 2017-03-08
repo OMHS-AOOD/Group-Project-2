@@ -8,6 +8,7 @@ public class DraggableCard extends JPanel{
 	private ImageIcon currentImage;
 	private JLabel image;
 	private String owner;
+	private boolean draggable;
 	public DraggableCard(Card c, String o){
 		thisCard = c;
 		owner = o;
@@ -18,6 +19,7 @@ public class DraggableCard extends JPanel{
 		currentImage = c.getImage();
 		image.setIcon(currentImage);
 		 
+		draggable = true;
 		
 	}
 	public void updateImage(){
@@ -39,5 +41,10 @@ public class DraggableCard extends JPanel{
 	public String getOwner(){
 		return owner;
 	}
-	
+	public boolean isDraggable(){
+		return draggable;
+	}
+	public void setDraggable(boolean b){
+		draggable = b;
+	}
 }
