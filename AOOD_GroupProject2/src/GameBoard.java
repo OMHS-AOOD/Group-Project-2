@@ -70,9 +70,30 @@ public class GameBoard extends JFrame{
 		
 		@Override
 		public void mouseReleased(MouseEvent e){
-
+   
 			if(!validSpace){
-				currentCardClicked.setBounds((currentCardInt * 120) + 10 , 475, 100, 153);
+				while(currentCardClicked.getX() != (currentCardInt * 120) + 10 && currentCardClicked.getY() != 775){
+					
+					int distX = currentCardClicked.getX() - ((currentCardInt * 120) + 10);
+					int distY = currentCardClicked.getY() - 475;
+					System.out.println(currentCardClicked.getX() + "-" + currentCardClicked.getY());
+					System.out.println(distX + " " + distY);
+					System.out.println((int)(currentCardClicked.getX() - distX*.99) + " " + (int)(currentCardClicked.getY() - distY*.99));
+					currentCardClicked.setBounds((int)(currentCardClicked.getX() - distX*.99) , (int)(currentCardClicked.getY() - distY*.99), 100, 153);
+					try {
+						Thread.sleep(500);
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+					}
+					if(Math.abs(distX) ==1){
+						currentCardClicked.setBounds((currentCardInt * 120) + 10 , currentCardClicked.getY(), 100, 153);
+					}
+					if(Math.abs(distY) ==1){
+						currentCardClicked.setBounds(currentCardClicked.getX(), 475, 100, 153);
+
+					}
+
+				}
 			}
 			currentCardInt = -1;
 			currentCardClicked = null;
