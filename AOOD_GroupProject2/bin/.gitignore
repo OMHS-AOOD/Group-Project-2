@@ -17,3 +17,6 @@
 /GameBoard$BoardMouseAdapter.class
 /GameBoard$BoardMouseDragger.class
 /GameBoard$CardDragger.class
+/GameBoard$CardClick.class
+/GameBoard$CardDrag.class
+/GameBoard$BoardMouseData.class
