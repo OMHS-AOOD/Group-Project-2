@@ -51,7 +51,7 @@ public class GameBoard extends JFrame{
 
 		}
 		if(j instanceof CardStack && ((CardStack) j).getOwner().equals("Player")){
-			
+			//TODO
 		}
 		board.add(j);
 		j.setBounds(x, y, w ,h);
