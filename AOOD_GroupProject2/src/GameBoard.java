@@ -17,6 +17,7 @@ public class GameBoard extends JFrame{
 	private JPanel board;
 	private DraggableCard currentCardClicked;
 	private ArrayList<DraggableCard> cardsOnBoard;
+	private ArrayList<CardStack> playerPiles, cpuPiles;
 	private int currentCardInt;
 	private boolean validSpace;
 	public GameBoard(){
@@ -49,6 +50,9 @@ public class GameBoard extends JFrame{
 			}
 
 		}
+		if(j instanceof CardStack && ((CardStack) j).getOwner().equals("Player")){
+			
+		}
 		board.add(j);
 		j.setBounds(x, y, w ,h);
 	}
@@ -70,30 +74,53 @@ public class GameBoard extends JFrame{
 		
 		@Override
 		public void mouseReleased(MouseEvent e){
-   
+			int targetX = (currentCardInt * 120) + 10;
+			int targetY = 475;
+			int width = currentCardClicked.getWidth();
+			int height = currentCardClicked.getHeight();
+			double multiplier = .1;
+			/*
 			if(!validSpace){
-				while(currentCardClicked.getX() != (currentCardInt * 120) + 10 && currentCardClicked.getY() != 775){
+				while(currentCardClicked.getX() != targetX || currentCardClicked.getY() != targetY){
+					int distX = currentCardClicked.getX() - (targetX);
+					int distY = currentCardClicked.getY() - (targetY);
+
+					if(distX < 10 && distX > 0){
+						distX = 10;
+					}
+					else if(distX > -10 && distX < 0){
+						distX = -10;
+					}
+					if(distY < 10 && distY > 0){
+						distY = 10;
+					}
+					else if(distY > -10 && distY < 0){
+						distY = -10;
+					}
+					int newPosX = (int)(currentCardClicked.getX() - distX*multiplier);
+					int newPosY = (int)(currentCardClicked.getY() - distY*multiplier);
+					System.out.println(newPosX + " " + newPosY);
+					currentCardClicked.setBounds(newPosX, newPosY, width, height);
 					
-					int distX = currentCardClicked.getX() - ((currentCardInt * 120) + 10);
-					int distY = currentCardClicked.getY() - 475;
-					System.out.println(currentCardClicked.getX() + "-" + currentCardClicked.getY());
-					System.out.println(distX + " " + distY);
-					System.out.println((int)(currentCardClicked.getX() - distX*.99) + " " + (int)(currentCardClicked.getY() - distY*.99));
-					currentCardClicked.setBounds((int)(currentCardClicked.getX() - distX*.99) , (int)(currentCardClicked.getY() - distY*.99), 100, 153);
+					if(Math.abs(distX) ==1){
+						currentCardClicked.setBounds(targetX , currentCardClicked.getY(), 100, 153);
+					}
+					if(Math.abs(distY) ==1){
+						currentCardClicked.setBounds(currentCardClicked.getX(), targetY, 100, 153);
+					}
+
 					try {
-						Thread.sleep(500);
+						Thread.sleep(10);
 					} catch (InterruptedException e1) {
 						e1.printStackTrace();
 					}
-					if(Math.abs(distX) ==1){
-						currentCardClicked.setBounds((currentCardInt * 120) + 10 , currentCardClicked.getY(), 100, 153);
-					}
-					if(Math.abs(distY) ==1){
-						currentCardClicked.setBounds(currentCardClicked.getX(), 475, 100, 153);
-
-					}
-
+					
 				}
+			}
+			*/
+			if(!validSpace){
+				currentCardClicked.setBounds(targetX, targetY, width, height);
+
 			}
 			currentCardInt = -1;
 			currentCardClicked = null;

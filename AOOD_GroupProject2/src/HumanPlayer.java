@@ -6,10 +6,10 @@ public class HumanPlayer {
 	protected ArrayList<Card> hand;
 	public HumanPlayer(String n){
 		name = n;
-		battle = new CardStack();
-		speed = new CardStack();
-		distance = new CardStack();
-		safety = new CardStack();
+		battle = new CardStack("Battle", "Player");
+		speed = new CardStack("Speed", "Player");
+		distance = new CardStack("Distance", "Player");
+		safety = new CardStack("Safety", "Player");
 		hand = new ArrayList<Card>();
 	}
 	public void addCardToHand(Card c){
@@ -30,5 +30,8 @@ public class HumanPlayer {
 	}
 	public String getName(){
 		return name;
+	}
+	public CardStack getBattle(){
+		return battle;
 	}
 }	

@@ -10,7 +10,7 @@ public class MilleBornesGame {
 	private GameBoard gb;
 	public MilleBornesGame(){
 		deck = new Deck();
-		discard = new CardStack();
+		discard = new CardStack("Discard", "None");
 		String name = JOptionPane.showInputDialog("Enter a username");
 		if(name == null){
 			player = new HumanPlayer("Player");

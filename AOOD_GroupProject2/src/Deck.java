@@ -2,6 +2,7 @@ import java.util.ArrayList;
 
 public class Deck extends CardStack {
 	public Deck() {
+		super("Deck", "None");
 		takesCard = false;
 		ArrayList<Card> allCards = new ArrayList<Card>();
 		allCards.add(new SafetyCard("Driving Ace"));
