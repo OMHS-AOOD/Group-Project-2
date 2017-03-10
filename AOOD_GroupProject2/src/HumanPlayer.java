@@ -11,6 +11,8 @@ public class HumanPlayer {
 		distance = new CardStack("Distance", "Player");
 		safety = new CardStack("Safety", "Player");
 		hand = new ArrayList<Card>();
+		
+
 	}
 	public void addCardToHand(Card c){
 		hand.add(c);

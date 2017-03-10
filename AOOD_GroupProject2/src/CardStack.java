@@ -27,6 +27,7 @@ public class CardStack extends JPanel{
 		return takesCard;
 	}
 	public void drawPile(){
+		this.getGraphics().fill3DRect(10, 10, 100, 100, true);
 		this.getGraphics().drawRect(10, 10, this.getWidth()-20, this.getHeight()-20);
 		this.getGraphics().drawString(name, 10, 0);
 	}

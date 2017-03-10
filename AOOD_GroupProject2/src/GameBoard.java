@@ -33,6 +33,7 @@ public class GameBoard extends JFrame{
 		board.setLayout(null);
 		
 		cardsOnBoard = new ArrayList<DraggableCard>();
+		playerPiles = new ArrayList<CardStack>();
 		validSpace = false;
 	}
 
@@ -40,18 +41,10 @@ public class GameBoard extends JFrame{
 		if(j instanceof DraggableCard && ((DraggableCard) j).getOwner().equals("Player")){
 			cardsOnBoard.add((DraggableCard) j);
 			cardsOnBoard.get(cardsOnBoard.size()-1).addMouseMotionListener(new CardDrag());
-			for(int i = 0; i < cardsOnBoard.size(); i++){
-				DraggableCard dc = cardsOnBoard.get(i);
-				if(dc.getMouseListeners().length != 0){
-					dc.removeMouseListener(dc.getMouseListeners()[0]);
-				}
-				dc.addMouseListener(new CardClick(i));
-				dc.setBounds((i * 120) + 10 , 475, 100, 153);
-			}
-
+			reorganizeCardGraphics();
 		}
 		if(j instanceof CardStack && ((CardStack) j).getOwner().equals("Player")){
-			//TODO
+			playerPiles.add((CardStack) j);
 		}
 		board.add(j);
 		j.setBounds(x, y, w ,h);
@@ -61,6 +54,16 @@ public class GameBoard extends JFrame{
 		return cardsOnBoard;
 	}
 	
+	public void reorganizeCardGraphics(){
+		for(int i = 0; i < cardsOnBoard.size(); i++){
+			DraggableCard dc = cardsOnBoard.get(i);
+			if(dc.getMouseListeners().length != 0){
+				dc.removeMouseListener(dc.getMouseListeners()[0]);
+			}
+			dc.addMouseListener(new CardClick(i));
+			dc.setBounds((i * 120) + 10 , 475, 100, 153);
+		}
+	}
 
 	private class CardClick extends MouseAdapter{
 		private int cardInt;

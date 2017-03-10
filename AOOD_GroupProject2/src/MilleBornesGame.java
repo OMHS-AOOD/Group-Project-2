@@ -36,8 +36,8 @@ public class MilleBornesGame {
 			dc2.flipCard();
 		}
 		
-		
-		
+		gb.add(player.getBattle(), 200, 200, 120, 173);
+		player.getBattle().drawPile();
 		
 	}
 	
