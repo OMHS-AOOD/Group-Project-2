@@ -46,6 +46,9 @@ public class GameBoard extends JFrame{
 		if(j instanceof CardStack && ((CardStack) j).getOwner().equals("Player")){
 			playerPiles.add((CardStack) j);
 		}
+		if(j instanceof CardStack && ((CardStack) j).getOwner().equals("CPU")){
+			cpuPiles.add((CardStack) j);
+		}
 		board.add(j);
 		j.setBounds(x, y, w ,h);
 	}
@@ -125,6 +128,9 @@ public class GameBoard extends JFrame{
 				currentCardClicked.setBounds(targetX, targetY, width, height);
 
 			}
+			else{
+				decideStack();
+			}
 			currentCardInt = -1;
 			currentCardClicked = null;
 		}
@@ -145,7 +151,44 @@ public class GameBoard extends JFrame{
 		}
 	}
 	
-
+	public void decideStack(){
+		int xPos = currentCardClicked.getX();
+		int yPos = currentCardClicked.getY();
+		int width = currentCardClicked.getWidth();
+		int height = currentCardClicked.getHeight();
+		int maxTouch = 0;
+		int maxTouchIndex = 0;
+		int index = 0;
+		for(CardStack c: playerPiles){
+			int xPosStack = c.getX();
+			int yPosStack = c.getY();
+			int widthStack = c.getWidth();
+			int heightStack = c.getHeight();
+			
+			int xTouch = 0;
+			int yTouch = 0;
+			if(xPos >= xPosStack){
+				xTouch = (xPosStack + widthStack) - xPos;
+			}
+			else{
+				xTouch = (xPos + width) - xPosStack;
+			}
+			
+			if(xPos >= xPosStack){
+				yTouch =
+			}
+			else{
+				yTouch = 
+			}
+			
+			int overlap = xTouch * yTouch;
+			if(overlap > maxTouch){
+				m
+			}
+			
+			index++;
+		}
+	}
 	
 	
 

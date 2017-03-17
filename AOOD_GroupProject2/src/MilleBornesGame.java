@@ -27,7 +27,12 @@ public class MilleBornesGame {
 		System.out.println(player.handToString() + "\n");
 		System.out.println(cpu.handToString());
 		
-
+		gb.add(player.getDistance(), 10, 270, 120, 173);
+		gb.add(player.getSpeed(), 150, 270, 120, 173);
+		gb.add(player.getSafety(), 290, 270, 120, 173);
+		gb.add(player.getBattle(), 430, 270, 120, 173);
+		
+		
 		for(int i = 0; i < 6; i++){
 			DraggableCard dc = new DraggableCard(player.getCard(i), "Player");
 			DraggableCard dc2 = new DraggableCard(cpu.getCard(i), "CPU");
@@ -36,8 +41,9 @@ public class MilleBornesGame {
 			dc2.flipCard();
 		}
 		
-		gb.add(player.getBattle(), 200, 200, 120, 173);
-		player.getBattle().drawPile();
+		
+
+		
 		
 	}
 	

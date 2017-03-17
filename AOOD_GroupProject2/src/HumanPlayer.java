@@ -36,4 +36,14 @@ public class HumanPlayer {
 	public CardStack getBattle(){
 		return battle;
 	}
+	public CardStack getSpeed(){
+		return speed;
+	}
+	public CardStack getDistance(){
+		return distance;
+	}
+	public CardStack getSafety(){
+		return safety;
+	}
+	
 }	

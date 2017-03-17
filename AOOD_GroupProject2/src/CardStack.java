@@ -1,3 +1,4 @@
+import java.awt.Graphics;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -26,15 +27,15 @@ public class CardStack extends JPanel{
 	public boolean canDropCardOn(){
 		return takesCard;
 	}
-	public void drawPile(){
-		this.getGraphics().fill3DRect(10, 10, 100, 100, true);
-		this.getGraphics().drawRect(10, 10, this.getWidth()-20, this.getHeight()-20);
-		this.getGraphics().drawString(name, 10, 0);
-	}
 	public String getOwner() {
 		return owner;
 	}
 	public String getName(){
 		return name;
+	}
+	@Override
+	public void paintComponent(Graphics g){
+		g.drawRect(10, 10, this.getWidth()-20, this.getHeight()-20);
+		g.drawString(name +"(" + owner + ")", 10, 10);
 	}
 }
