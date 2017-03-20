@@ -1,6 +1,17 @@
+import java.awt.Color;
 
 public class ComputerPlayer extends HumanPlayer {
 	public ComputerPlayer(){
-		super("Computer");
+		super("CPU");
+		battle.setDrop(false);
+		safety.setDrop(false);
+		distance.setDrop(false);
+		battle.setColor(Color.RED);
+		safety.setColor(Color.RED);
+		distance.setColor(Color.RED);;
+	}
+	
+	public int getNeededDistance(){
+		return pointsToWin - this.getCurrentPoints();
 	}
 }

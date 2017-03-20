@@ -1,6 +1,11 @@
 
 public class DistanceCard extends Card {
-	public DistanceCard(String n){
+	private int value;
+	public DistanceCard(String n, int val){
 		super(n);
+		value = val;
+	}
+	public int getValue(){
+		return value;
 	}
 }

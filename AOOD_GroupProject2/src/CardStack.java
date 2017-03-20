@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
@@ -9,12 +10,14 @@ public class CardStack extends JPanel{
 	protected ArrayList<DraggableCard> visibleStack;
 	protected String name;
 	protected String owner;
-	public CardStack(String n, String o){
+	protected Color myColor;
+	public CardStack(String n, String o, Color c){
 		stack = new ArrayList<Card>();
 		visibleStack = new ArrayList<DraggableCard>();
 		takesCard = true;
 		name = n;
 		owner = o;
+		myColor = c;
 		this.setLayout(null);
 	}
 	public void addCard(Card c){
@@ -41,7 +44,19 @@ public class CardStack extends JPanel{
 	}
 	@Override
 	public void paintComponent(Graphics g){
+		g.setColor(myColor);
 		g.drawRect(10, 10, this.getWidth()-20, this.getHeight()-20);
 		g.drawString(name +"(" + owner + ")", 10, 10);
 	}
+	public void setOwner(String o){
+		owner = o;
+	}
+	public void setDrop(boolean b) {
+		takesCard = b;
+		
+	}
+	public void setColor(Color c) {
+		myColor = c;
+	}
+	
 }

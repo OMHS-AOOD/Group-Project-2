@@ -1,8 +1,9 @@
+import java.awt.Color;
 import java.util.ArrayList;
 
 public class Deck extends CardStack {
 	public Deck() {
-		super("Deck", "None");
+		super("Deck", "None", Color.BLACK);
 		takesCard = false;
 		ArrayList<Card> allCards = new ArrayList<Card>();
 		allCards.add(new SafetyCard("Driving Ace"));
@@ -25,26 +26,26 @@ public class Deck extends CardStack {
 			allCards.add(new RemedyCard("Roll",'s'));
 			allCards.add(new RemedyCard("Roll",'s'));
 
-			allCards.add(new DistanceCard("25 Miles"));
-			allCards.add(new DistanceCard("25 Miles"));
-			allCards.add(new DistanceCard("25 Miles"));
-			allCards.add(new DistanceCard("25 Miles"));
-			allCards.add(new DistanceCard("25 Miles"));
+			allCards.add(new DistanceCard("25 Miles", 25));
+			allCards.add(new DistanceCard("25 Miles", 25));
+			allCards.add(new DistanceCard("25 Miles", 25));
+			allCards.add(new DistanceCard("25 Miles", 25));
+			allCards.add(new DistanceCard("25 Miles", 25));
 
-			allCards.add(new DistanceCard("50 Miles"));
-			allCards.add(new DistanceCard("50 Miles"));
-			allCards.add(new DistanceCard("50 Miles"));
-			allCards.add(new DistanceCard("50 Miles"));
-			allCards.add(new DistanceCard("50 Miles"));
+			allCards.add(new DistanceCard("50 Miles", 50));
+			allCards.add(new DistanceCard("50 Miles", 50));
+			allCards.add(new DistanceCard("50 Miles", 50));
+			allCards.add(new DistanceCard("50 Miles", 50));
+			allCards.add(new DistanceCard("50 Miles", 50));
 
-			allCards.add(new DistanceCard("75 Miles"));
-			allCards.add(new DistanceCard("75 Miles"));
-			allCards.add(new DistanceCard("75 Miles"));
-			allCards.add(new DistanceCard("75 Miles"));
-			allCards.add(new DistanceCard("75 Miles"));
+			allCards.add(new DistanceCard("75 Miles", 75));
+			allCards.add(new DistanceCard("75 Miles", 75));
+			allCards.add(new DistanceCard("75 Miles", 75));
+			allCards.add(new DistanceCard("75 Miles", 75));
+			allCards.add(new DistanceCard("75 Miles", 75));
 
-			allCards.add(new DistanceCard("200 Miles"));
-			allCards.add(new DistanceCard("200 Miles"));
+			allCards.add(new DistanceCard("200 Miles", 200));
+			allCards.add(new DistanceCard("200 Miles", 200));
 
 		}
 
@@ -64,10 +65,10 @@ public class Deck extends CardStack {
 			allCards.add(new RemedyCard("End of Limit",'l'));
 			allCards.add(new RemedyCard("End of Limit",'l'));
 
-			allCards.add(new DistanceCard("100 Miles"));
-			allCards.add(new DistanceCard("100 Miles"));
-			allCards.add(new DistanceCard("100 Miles"));
-			allCards.add(new DistanceCard("100 Miles"));
+			allCards.add(new DistanceCard("100 Miles", 100));
+			allCards.add(new DistanceCard("100 Miles", 100));
+			allCards.add(new DistanceCard("100 Miles", 100));
+			allCards.add(new DistanceCard("100 Miles", 100));
 
 		}
 		while(allCards.size() > 0){
