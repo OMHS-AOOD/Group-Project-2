@@ -58,5 +58,8 @@ public class CardStack extends JPanel{
 	public void setColor(Color c) {
 		myColor = c;
 	}
+	public int getCurrentSize() {
+		return stack.size();
+	}
 	
 }

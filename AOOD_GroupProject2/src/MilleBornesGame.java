@@ -53,6 +53,15 @@ public class MilleBornesGame {
 		
 	}
 	
+	public void drawCardForPlayer(HumanPlayer p){
+		Card c = deck.removeCard();
+		p.addCardToHand(c);
+		DraggableCard dc = new DraggableCard(c, p.getName(), (5 * 120) + 10, 475);
+		gb.add(dc, dc.getWantedX(), dc.getWantedY(), 100, 153);
+		gb.pack();
+		gb.resetSize();
+	}
+	
 	
 	
 

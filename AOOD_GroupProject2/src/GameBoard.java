@@ -15,7 +15,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
 
-public class GameBoard extends JFrame{
+public class GameBoard extends JFrame {
 	private JPanel board;
 	private DraggableCard currentCardClicked;
 	private ArrayList<DraggableCard> cardsOnBoard, cpuCardsOnBoard;
@@ -24,7 +24,8 @@ public class GameBoard extends JFrame{
 	private MilleBornesGame mbg;
 	private HumanPlayer player;
 	private ComputerPlayer cpu;
-	public GameBoard(MilleBornesGame m, HumanPlayer p, ComputerPlayer c){
+
+	public GameBoard(MilleBornesGame m, HumanPlayer p, ComputerPlayer c) {
 		super("Mille Bornes");
 		mbg = m;
 		currentCardInt = -1;
@@ -45,28 +46,28 @@ public class GameBoard extends JFrame{
 
 	}
 
-	public void add(JComponent j, int x, int y, int w, int h){
-		if(j instanceof DraggableCard && ((DraggableCard) j).getOwner().equals(player.getName())){
+	public void add(JComponent j, int x, int y, int w, int h) {
+		if (j instanceof DraggableCard && ((DraggableCard) j).getOwner().equals(player.getName())) {
 			cardsOnBoard.add((DraggableCard) j);
-			cardsOnBoard.get(cardsOnBoard.size()-1).addMouseMotionListener(new CardDrag());
+			cardsOnBoard.get(cardsOnBoard.size() - 1).addMouseMotionListener(new CardDrag());
 			reorganizeCardGraphics();
 		}
-		if(j instanceof DraggableCard && ((DraggableCard) j).getOwner().equals(cpu.getName())){
+		if (j instanceof DraggableCard && ((DraggableCard) j).getOwner().equals(cpu.getName())) {
 			cpuCardsOnBoard.add((DraggableCard) j);
-			cpuCardsOnBoard.get(cardsOnBoard.size()-1).addMouseMotionListener(new CardDrag());
+			cpuCardsOnBoard.get(cardsOnBoard.size() - 1).addMouseMotionListener(new CardDrag());
 			reorganizeCpuCardGraphics();
 		}
-		if(j instanceof CardStack && ((CardStack) j).getOwner().equals(player.getName())){
+		if (j instanceof CardStack && ((CardStack) j).getOwner().equals(player.getName())) {
 			playerPiles.add((CardStack) j);
 		}
-		if(j instanceof CardStack && ((CardStack) j).getOwner().equals(cpu.getName())){
+		if (j instanceof CardStack && ((CardStack) j).getOwner().equals(cpu.getName())) {
 			cpuPiles.add((CardStack) j);
 		}
 		board.add(j);
-		j.setBounds(x, y, w ,h);
+		j.setBounds(x, y, w, h);
 	}
-	
-	public void returnToOriginalPos(){
+
+	public void returnToOriginalPos() {
 		int targetX = currentCardClicked.getWantedX();
 		int targetY = currentCardClicked.getWantedY();
 		int width = currentCardClicked.getWidth();
@@ -74,48 +75,57 @@ public class GameBoard extends JFrame{
 		currentCardClicked.setBounds(targetX, targetY, width, height);
 
 	}
-	public ArrayList<DraggableCard> getUsersHand(){
+
+	public ArrayList<DraggableCard> getUsersHand() {
 		return cardsOnBoard;
 	}
-	
-	public void reorganizeCardGraphics(){
-		for(int i = 0; i < cardsOnBoard.size(); i++){
+
+	public void reorganizeCardGraphics() {
+		for (int i = 0; i < cardsOnBoard.size(); i++) {
 			DraggableCard dc = cardsOnBoard.get(i);
-			if(dc.getMouseListeners().length != 0){
+			if (dc.getMouseListeners().length != 0) {
 				dc.removeMouseListener(dc.getMouseListeners()[0]);
 			}
 			dc.addMouseListener(new CardClick(i));
-			dc.setBounds((i * 120) + 10 , 475, 100, 153);
-		}
-	}
-	public void reorganizeCpuCardGraphics(){
-		for(int i = 0; i < cpuCardsOnBoard.size(); i++){
-			DraggableCard dc = cpuCardsOnBoard.get(i);
-			dc.setBounds((i * 120) + 10 , 10, 100, 153);
+			dc.updateWanted((i * 120), 475);
+			dc.setBounds(dc.getWantedX(), dc.getWantedY(), 100, 153);
+
+
 		}
 	}
 
-	private class CardClick extends MouseAdapter{
+	public void reorganizeCpuCardGraphics() {
+		for (int i = 0; i < cpuCardsOnBoard.size(); i++) {
+			DraggableCard dc = cpuCardsOnBoard.get(i);
+			dc.setBounds((i * 120) + 10, 10, 100, 153);
+		}
+	}
+	public void resetSize(){
+		this.setSize(1200, 675);
+	}
+	
+	private class CardClick extends MouseAdapter {
 		private int cardInt;
-		public CardClick(int cI){
+
+		public CardClick(int cI) {
 			cardInt = cI;
 		}
+
 		@Override
-		public void mousePressed(MouseEvent e){
+		public void mousePressed(MouseEvent e) {
 			currentCardInt = cardInt;
 		}
-		
-		
-		
+
 		@Override
-		public void mouseReleased(MouseEvent e){
+		public void mouseReleased(MouseEvent e) {
 			decideStack();
 			currentCardInt = -1;
 			currentCardClicked = null;
 		}
-		
+
 	}
-	public void decideStack(){
+
+	public void decideStack() {
 		int xPos = currentCardClicked.getX();
 		int yPos = currentCardClicked.getY();
 		int width = currentCardClicked.getWidth();
@@ -123,17 +133,18 @@ public class GameBoard extends JFrame{
 		double maxTouch = 0;
 		int maxTouchIndex = 0;
 		int index = 0;
-		for(CardStack c: playerPiles){
-			Rectangle computedIntersection = SwingUtilities.computeIntersection(xPos, yPos, width, height, c.getBounds());
+		for (CardStack c : playerPiles) {
+			Rectangle computedIntersection = SwingUtilities.computeIntersection(xPos, yPos, width, height,
+					c.getBounds());
 			double area = computedIntersection.getWidth() * computedIntersection.getHeight();
-			if(area > maxTouch){
+			if (area > maxTouch) {
 				maxTouchIndex = index;
 				maxTouch = area;
 			}
 			index++;
 		}
 		CardStack target = playerPiles.get(maxTouchIndex);
-		if(maxTouch > 10000 && target.canDropCardOn() && isValidMove(target)){
+		if (maxTouch > 10000 && target.canDropCardOn() && isValidMove(target)) {
 			int targetX = target.getX() + 10;
 			int targetY = target.getY() + 10;
 			int cwidth = currentCardClicked.getWidth();
@@ -141,83 +152,107 @@ public class GameBoard extends JFrame{
 			currentCardClicked.setBounds(targetX, targetY, cwidth, cheight);
 			target.addCard(currentCardClicked);
 			cardsOnBoard.remove(currentCardInt);
-			this.reorganizeCardGraphics();
 			currentCardClicked.removeMouseMotionListener(currentCardClicked.getMouseMotionListeners()[0]);
 			currentCardClicked.removeMouseListener(currentCardClicked.getMouseListeners()[0]);
+			mbg.drawCardForPlayer(player);
 			this.cpuTurn();
-		}
-		else{
+		} else {
 			returnToOriginalPos();
 		}
 	}
+
 	private boolean isValidMove(CardStack c) {
-		if(c.getName().equals("Distance") && currentCardClicked.getCard() instanceof DistanceCard){
+		if (c.getName().equals("Distance") && currentCardClicked.getCard() instanceof DistanceCard) {
 			return true;
-		}
-		else if(c.getName().equals("Battle") && c.getOwner().equals(cpu.getName()) && currentCardClicked.getCard() instanceof HazardCard){
+		} else if (c.getName().equals("Battle") && c.getOwner().equals(cpu.getName())
+				&& currentCardClicked.getCard() instanceof HazardCard) {
 			return true;
-		}
-		else if(c.getName().equals("Battle") && c.getOwner().equals(player.getName()) && currentCardClicked.getCard() instanceof RemedyCard){
+		} else if (c.getName().equals("Battle") && c.getOwner().equals(player.getName())
+				&& currentCardClicked.getCard() instanceof RemedyCard) {
 			return true;
-		}
-		else if(c.getName().equals("Safety") && currentCardClicked.getCard() instanceof SafetyCard){
+		} else if (c.getName().equals("Safety") && currentCardClicked.getCard() instanceof SafetyCard) {
 			return true;
 		}
 		return false;
 	}
 
-	private class CardDrag extends MouseMotionAdapter{
+	private class CardDrag extends MouseMotionAdapter {
 		private int mouseX, mouseY;
+
 		@Override
-		public void mouseDragged(MouseEvent e){
-			if(currentCardInt != -1){
+		public void mouseDragged(MouseEvent e) {
+			if (currentCardInt != -1) {
 				currentCardClicked = cardsOnBoard.get(currentCardInt);
 				mouseX = currentCardClicked.getX() + e.getX();
 				mouseY = currentCardClicked.getY() + e.getY();
-				currentCardClicked.setBounds(mouseX - currentCardClicked.getWidth()/2, mouseY - currentCardClicked.getHeight()/2, currentCardClicked.getWidth(), currentCardClicked.getHeight());
+				currentCardClicked.setBounds(mouseX - currentCardClicked.getWidth() / 2,
+						mouseY - currentCardClicked.getHeight() / 2, currentCardClicked.getWidth(),
+						currentCardClicked.getHeight());
 			}
-			
+
 		}
 	}
-	
-	public void cpuTurn() {
 
-		if(player.hasWon()){
+	public void cpuTurn() {
+		boolean hasntMoved = true;
+		if (player.hasWon()) {
 			mbg.gameWon();
-		}
-		else{
-			if(cpu.canMoveNormally()){
-				ArrayList<DraggableCard> allDists = new ArrayList<DraggableCard>();
-				ArrayList<DraggableCard> allHazards = new ArrayList<DraggableCard>();
-				ArrayList<DraggableCard> allSafes = new ArrayList<DraggableCard>();
-				ArrayList<DraggableCard> allRemedy = new ArrayList<DraggableCard>();
-				
-				ArrayList<Integer> dInts = new ArrayList<Integer>();
-				ArrayList<Integer> hInts = new ArrayList<Integer>();
-				ArrayList<Integer> sInts = new ArrayList<Integer>();
-				ArrayList<Integer> rInts = new ArrayList<Integer>();
-				for(int i = 0; i < cpuCardsOnBoard.size(); i++){
-					Card c = cpuCardsOnBoard.get(i).getCard();
-					if(c instanceof DistanceCard){
-						allDists.add(cpuCardsOnBoard.get(i));
-						dInts.add(i);
-					}
-					if(c instanceof SafetyCard){
-						allSafes.add(cpuCardsOnBoard.get(i));
-						sInts.add(i);
-					}
-					if(c instanceof HazardCard){
-						allHazards.add(cpuCardsOnBoard.get(i));
-						hInts.add(i);
-					}
-					if(c instanceof RemedyCard){
-						allRemedy.add(cpuCardsOnBoard.get(i));
-						rInts.add(i);
+		} else {
+			ArrayList<DraggableCard> allDists = new ArrayList<DraggableCard>();
+			ArrayList<DraggableCard> allHazards = new ArrayList<DraggableCard>();
+			ArrayList<DraggableCard> allSafes = new ArrayList<DraggableCard>();
+			ArrayList<DraggableCard> allRemedy = new ArrayList<DraggableCard>();
+
+			ArrayList<Integer> dInts = new ArrayList<Integer>();
+			ArrayList<Integer> hInts = new ArrayList<Integer>();
+			ArrayList<Integer> sInts = new ArrayList<Integer>();
+			ArrayList<Integer> rInts = new ArrayList<Integer>();
+			for (int i = 0; i < cpuCardsOnBoard.size(); i++) {
+				Card c = cpuCardsOnBoard.get(i).getCard();
+				if (c instanceof DistanceCard) {
+					allDists.add(cpuCardsOnBoard.get(i));
+					dInts.add(i);
+				}
+				if (c instanceof SafetyCard) {
+					allSafes.add(cpuCardsOnBoard.get(i));
+					sInts.add(i);
+				}
+				if (c instanceof HazardCard) {
+					allHazards.add(cpuCardsOnBoard.get(i));
+					hInts.add(i);
+				}
+				if (c instanceof RemedyCard) {
+					allRemedy.add(cpuCardsOnBoard.get(i));
+					rInts.add(i);
+				}
+			}
+			if (cpu.canMove() && allHazards.size() > 0 && hasntMoved) {
+				CardStack target = player.getBattle();
+				DraggableCard cpuCard = allHazards.get(0);
+				int targetX = target.getX() + 10;
+				int targetY = target.getY() + 10;
+				int cwidth = cpuCard.getWidth();
+				int cheight = cpuCard.getHeight();
+				cpuCard.setBounds(targetX, targetY, cwidth, cheight);
+				cpuCard.flipCard();
+				target.addCard(cpuCard);
+				cpuCardsOnBoard.remove(hInts.remove(0).intValue());
+				hasntMoved = false;
+				this.reorganizeCpuCardGraphics();
+			}
+			if (allDists.size() > 0 && hasntMoved && cpu.canMoveNormally()) {
+				int minLeft = 1000;
+				int ind = -1;
+				for (int i = 0; i < allDists.size(); i++) {
+					int tempVal = cpu.getNeededDistance() - ((DistanceCard) allDists.get(i).getCard()).getValue();
+					if (tempVal > 0 && tempVal < minLeft) {
+						ind = i;
+						minLeft = tempVal;
 					}
 				}
-				if(allHazards.size() > 0){
-					CardStack target = player.getBattle();
-					DraggableCard cpuCard = allHazards.get(0);
+				if (ind != -1) {
+					CardStack target = cpu.getDistance();
+					DraggableCard cpuCard = allDists.get(ind);
 					int targetX = target.getX() + 10;
 					int targetY = target.getY() + 10;
 					int cwidth = cpuCard.getWidth();
@@ -225,19 +260,42 @@ public class GameBoard extends JFrame{
 					cpuCard.setBounds(targetX, targetY, cwidth, cheight);
 					cpuCard.flipCard();
 					target.addCard(cpuCard);
-					cpuCardsOnBoard.remove(hInts.remove(0).intValue());
+					cpuCardsOnBoard.remove(dInts.remove(ind).intValue());
+					hasntMoved = false;
 					this.reorganizeCpuCardGraphics();
 				}
-				
+
 			}
-			else{
-				
+			if (allDists.size() > 0 && hasntMoved && cpu.canMove()) {
+				int minLeft = 1000;
+				int ind = -1;
+				for (int i = 0; i < allDists.size(); i++) {
+					int tempVal = cpu.getNeededDistance() - ((DistanceCard) allDists.get(i).getCard()).getValue();
+					if (tempVal > 0 && tempVal < minLeft && ((DistanceCard) allDists.get(i).getCard()).getValue() <= 50) {
+						ind = i;
+						minLeft = tempVal;
+					}
+				}
+				if (ind != -1) {
+					CardStack target = cpu.getDistance();
+					DraggableCard cpuCard = allDists.get(ind);
+					int targetX = target.getX() + 10;
+					int targetY = target.getY() + 10;
+					int cwidth = cpuCard.getWidth();
+					int cheight = cpuCard.getHeight();
+					cpuCard.setBounds(targetX, targetY, cwidth, cheight);
+					cpuCard.flipCard();
+					target.addCard(cpuCard);
+					cpuCardsOnBoard.remove(dInts.remove(ind).intValue());
+					hasntMoved = false;
+					this.reorganizeCpuCardGraphics();
+				}
+
 			}
+
 		}
-		
+
 	}
-	
-	
 
 
 }

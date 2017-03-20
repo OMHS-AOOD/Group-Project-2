@@ -88,4 +88,5 @@ public class Deck extends CardStack {
 			stack.add(discard.getStack().remove(index));
 		}
 	}
+
 }

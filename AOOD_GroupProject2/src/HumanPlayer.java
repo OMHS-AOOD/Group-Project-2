@@ -53,6 +53,9 @@ public class HumanPlayer {
 		}
 		return points;
 	}
+	public int getNeededDistance(){
+		return pointsToWin - this.getCurrentPoints();
+	}
 	public boolean hasWon(){
 		if(getCurrentPoints() == pointsToWin){
 			return true;
@@ -63,5 +66,9 @@ public class HumanPlayer {
 	public boolean canMoveNormally(){
 		return true;
 	}
+	public boolean canMove(){
+		return true;
+	}
+	
 	
 }	

@@ -11,7 +11,5 @@ public class ComputerPlayer extends HumanPlayer {
 		distance.setColor(Color.RED);;
 	}
 	
-	public int getNeededDistance(){
-		return pointsToWin - this.getCurrentPoints();
-	}
+
 }
