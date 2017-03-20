@@ -5,6 +5,7 @@ public class HumanPlayer {
 	protected String name;
 	protected CardStack battle, distance, safety;
 	protected ArrayList<Card> hand;
+	protected ArrayList<DraggableCard> visibleCards;
 	protected int pointsToWin;
 	public HumanPlayer(String n){
 		name = n;
@@ -12,11 +13,13 @@ public class HumanPlayer {
 		distance = new CardStack("Distance", name, Color.BLACK);
 		safety = new CardStack("Safety",name, Color.BLACK);
 		hand = new ArrayList<Card>();
+		visibleCards = new ArrayList<DraggableCard>();
 		pointsToWin = 1000;
 
 	}
-	public void addCardToHand(Card c){
-		hand.add(c);
+	public void addCardToHand(DraggableCard dc){
+		visibleCards.add(dc);
+		hand.add(dc.getCard());
 	}
 	public String handToString(){
 		String out = "Player " + name + "\n";
@@ -25,8 +28,8 @@ public class HumanPlayer {
 		}
 		return out;
 	}
-	public Card getCard(int i){
-		return hand.get(i);
+	public DraggableCard getCard(int i){
+		return visibleCards.get(i);
 	}
 	public Card playCard(int i){
 		return hand.remove(i);
@@ -68,6 +71,10 @@ public class HumanPlayer {
 	}
 	public boolean canMove(){
 		return true;
+	}
+	
+	public ArrayList<DraggableCard> getHand(){
+		return visibleCards;
 	}
 	
 	

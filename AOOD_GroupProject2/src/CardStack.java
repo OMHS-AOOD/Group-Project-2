@@ -4,14 +4,15 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-public class CardStack extends JPanel{
+public class CardStack extends JPanel {
 	protected boolean takesCard;
 	protected ArrayList<Card> stack;
 	protected ArrayList<DraggableCard> visibleStack;
 	protected String name;
 	protected String owner;
 	protected Color myColor;
-	public CardStack(String n, String o, Color c){
+
+	public CardStack(String n, String o, Color c) {
 		stack = new ArrayList<Card>();
 		visibleStack = new ArrayList<DraggableCard>();
 		takesCard = true;
@@ -20,46 +21,66 @@ public class CardStack extends JPanel{
 		myColor = c;
 		this.setLayout(null);
 	}
-	public void addCard(Card c){
-		stack.add(c);
-	}
-	public void addCard(DraggableCard c){
+
+
+
+	public void addCard(DraggableCard c) {
 		visibleStack.add(c);
 		stack.add(c.getCard());
 	}
-	public Card removeCard(){
-		return stack.remove(stack.size()-1);
+
+	public DraggableCard removeCard() {
+
+		stack.remove(stack.size() - 1);
+		return visibleStack.remove(visibleStack.size()-1);
 	}
-	public ArrayList<Card> getStack(){
+
+	public ArrayList<Card> getStack() {
 		return stack;
 	}
-	public boolean canDropCardOn(){
+
+	public boolean canDropCardOn() {
 		return takesCard;
 	}
+
 	public String getOwner() {
 		return owner;
 	}
-	public String getName(){
+
+	public String getName() {
 		return name;
 	}
+
 	@Override
-	public void paintComponent(Graphics g){
+	public void paintComponent(Graphics g) {
 		g.setColor(myColor);
-		g.drawRect(10, 10, this.getWidth()-20, this.getHeight()-20);
-		g.drawString(name +"(" + owner + ")", 10, 10);
+		g.drawRect(10, 10, this.getWidth() - 20, this.getHeight() - 20);
+		if (owner != "") {
+			g.drawString(name + "(" + owner + ")", 10, 10);
+
+		} else {
+			g.drawString(name, 10, 10);
+
+		}
 	}
-	public void setOwner(String o){
+
+	public void setOwner(String o) {
 		owner = o;
 	}
+
 	public void setDrop(boolean b) {
 		takesCard = b;
-		
+
 	}
+
 	public void setColor(Color c) {
 		myColor = c;
 	}
+
 	public int getCurrentSize() {
 		return stack.size();
 	}
-	
+	public ArrayList<DraggableCard> getVisibleStack(){
+		return visibleStack;
+	}
 }

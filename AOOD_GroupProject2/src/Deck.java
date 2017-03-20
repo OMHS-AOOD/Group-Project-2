@@ -3,8 +3,9 @@ import java.util.ArrayList;
 
 public class Deck extends CardStack {
 	public Deck() {
-		super("Deck", "None", Color.BLACK);
+		super("Deck", "", Color.BLACK);
 		takesCard = false;
+		myColor = Color.BLUE;
 		ArrayList<Card> allCards = new ArrayList<Card>();
 		allCards.add(new SafetyCard("Driving Ace"));
 		allCards.add(new SafetyCard("Extra Tank"));
@@ -75,18 +76,27 @@ public class Deck extends CardStack {
 			int index = (int)(Math.random()*allCards.size());
 			stack.add(allCards.remove(index));
 		}
+		createDraggableCards();
 	}
 	
-	public Card drawTopCard(){
-		return super.removeCard();
-	}
-	
-	
-	public void reformDeck(CardStack discard){
-		while(discard.getStack().size() > 0){
-			int index = (int)(Math.random()*discard.getStack().size());
-			stack.add(discard.getStack().remove(index));
+	public void createDraggableCards(){
+		for(Card c: stack){
+			DraggableCard drc = new DraggableCard(c, "", this.getX() + 10, this.getY() + 10);
+			visibleStack.add(drc);
+			drc.flipCard();
 		}
 	}
+	
+	public void reformDeck(CardStack discard){
+		while(discard.getVisibleStack().size() > 0){
+			int index = (int)(Math.random()*discard.getVisibleStack().size());
+			stack.add(discard.getStack().remove(index));
+		}
+		for(DraggableCard dc: discard.getVisibleStack()){
+			dc.setBounds(this.getX() +10, this.getY() + 10, dc.getWidth(), dc.getHeight());
+		}
+	}
+
+	
 
 }

@@ -14,7 +14,7 @@ public class MilleBornesGame {
 
 	public MilleBornesGame() {
 		deck = new Deck();
-		discard = new CardStack("Discard", "None", Color.BLACK);
+		discard = new CardStack("Discard", "", Color.BLUE);
 		String name = JOptionPane.showInputDialog("Enter a username(10 characters or less)");
 		if (name == null) {
 			player = new HumanPlayer("Player");
@@ -26,12 +26,7 @@ public class MilleBornesGame {
 		}
 		cpu = new ComputerPlayer();
 		gb = new GameBoard(this, player, cpu);
-		for (int i = 0; i < 6; i++) {
-			player.addCardToHand(deck.removeCard());
-			cpu.addCardToHand(deck.removeCard());
-		}
-		System.out.println(player.handToString() + "\n");
-		System.out.println(cpu.handToString());
+		
 
 		gb.add(player.getDistance(), 150, 270, 120, 173);
 		gb.add(player.getSafety(), 290, 270, 120, 173);
@@ -39,14 +34,38 @@ public class MilleBornesGame {
 		gb.add(cpu.getDistance(), 850, 270, 120, 173);
 		gb.add(cpu.getSafety(), 710, 270, 120, 173);
 		gb.add(cpu.getBattle(), 570, 270, 120, 173);
+		gb.add(deck, 10, 270, 120, 173);
+		
+		discard.setColor(Color.BLUE);
+		gb.add(discard, 990, 270, 120, 173);
 
-		for (int i = 0; i < 6; i++) {
-			DraggableCard dc = new DraggableCard(player.getCard(i), player.getName(), (i * 120) + 10, 475);
-			DraggableCard dc2 = new DraggableCard(cpu.getCard(i), cpu.getName(), (i * 120) + 10, 10);
+		
+		for(DraggableCard dc: deck.getVisibleStack()){
 			gb.add(dc, dc.getWantedX(), dc.getWantedY(), 100, 153);
-			gb.add(dc2, dc2.getWantedX(), dc2.getWantedY(), 100, 153);
-			dc2.flipCard();
 		}
+		
+		for (int i = 0; i < 6; i++) {
+			DraggableCard dc1 = deck.removeCard();
+			DraggableCard dc2 = deck.removeCard();
+			dc1.setOwner(player.getName());
+			dc2.setOwner(cpu.getName());
+			player.addCardToHand(dc1);
+			cpu.addCardToHand(dc2);
+			
+		}
+		System.out.println(player.handToString() + "\n");
+		System.out.println(cpu.handToString());
+		
+		for (int i = 0; i < 6; i++) {
+			DraggableCard dc = player.getCard(i);
+			DraggableCard dc2 = cpu.getCard(i);
+			gb.add(dc, (i * 120) + 10, 475, 100, 153);
+			gb.add(dc2, (i * 120) + 10, 10, 100, 153);
+			dc.flipCard();
+		}
+		
+		gb.pack();
+		gb.resetSize();
 
 	}
 	public void gameWon(){
@@ -54,15 +73,21 @@ public class MilleBornesGame {
 	}
 	
 	public void drawCardForPlayer(HumanPlayer p){
-		Card c = deck.removeCard();
-		p.addCardToHand(c);
-		DraggableCard dc = new DraggableCard(c, p.getName(), (5 * 120) + 10, 475);
+		DraggableCard dc = deck.removeCard();
+		p.addCardToHand(dc);
+		dc.updateWanted(5*120,  475);
 		gb.add(dc, dc.getWantedX(), dc.getWantedY(), 100, 153);
+		dc.setOwner(p.getName());
+		if(dc.getOwner().equals(player.getName())){
+			dc.flipCard();
+		}
 		gb.pack();
 		gb.resetSize();
 	}
 	
 	
-	
+	public CardStack getDiscard(){
+		return discard;
+	}
 
 }

@@ -43,6 +43,9 @@ public class DraggableCard extends JPanel{
 	public String getOwner(){
 		return owner;
 	}
+	public void setOwner(String o){
+		owner = o;
+	}
 	public boolean isDraggable(){
 		return draggable;
 	}
