@@ -7,10 +7,10 @@ public class Deck extends CardStack {
 		takesCard = false;
 		myColor = Color.BLUE;
 		ArrayList<Card> allCards = new ArrayList<Card>();
-		allCards.add(new SafetyCard("Driving Ace"));
-		allCards.add(new SafetyCard("Extra Tank"));
-		allCards.add(new SafetyCard("Puncture Proof"));
-		allCards.add(new SafetyCard("Right of Way"));
+		allCards.add(new SafetyCard("Driving Ace", 'a'));
+		allCards.add(new SafetyCard("Extra Tank", 'o'));
+		allCards.add(new SafetyCard("Puncture Proof", 'f'));
+		allCards.add(new SafetyCard("Right of Way", 'l'));
 
 		for (int i = 0; i < 5; i++) {
 			allCards.add(new HazardCard("Stop",'s'));

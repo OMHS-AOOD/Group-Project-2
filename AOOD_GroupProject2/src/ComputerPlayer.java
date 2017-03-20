@@ -3,7 +3,6 @@ import java.awt.Color;
 public class ComputerPlayer extends HumanPlayer {
 	public ComputerPlayer(){
 		super("CPU");
-		battle.setDrop(false);
 		safety.setDrop(false);
 		distance.setDrop(false);
 		battle.setColor(Color.RED);

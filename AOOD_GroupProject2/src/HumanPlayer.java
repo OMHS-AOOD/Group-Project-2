@@ -67,10 +67,44 @@ public class HumanPlayer {
 	}
 	
 	public boolean canMoveNormally(){
+		
+		ArrayList<Character> remChars = new ArrayList<Character>();
+		ArrayList<Character> hazChars = new ArrayList<Character>();
+		ArrayList<Character> safChars = new ArrayList<Character>();
+		for(Card c: battle.getStack()){
+			if(c instanceof RemedyCard){
+				remChars.add(((RemedyCard) c).getType());
+			}
+			else if(c instanceof HazardCard){
+				hazChars.add(((HazardCard) c).getType());
+			}
+		}
+		for(Card c: safety.getStack()){
+				safChars.add(((SafetyCard) c).getType());
+		}
+		for(Character ch: safChars){
+			for(Character ch2: hazChars){
+				if(ch.equals(ch2)){
+					hazChars.removeAll(safChars);
+				}
+			}
+		}
+		for(Character ch: remChars){
+			for(Character ch2: hazChars){
+				if(ch.equals(ch2)){
+					hazChars.removeAll(safChars);
+				}
+			}
+		}
+		if(hazChars.size() > 0){
+			return false;
+		}
 		return true;
+	
 	}
 	public boolean canMove(){
-		return true;
+		return canMoveNormally();
+		//TODO
 	}
 	
 	public ArrayList<DraggableCard> getHand(){

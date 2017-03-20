@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -73,7 +74,7 @@ public class GameBoard extends JFrame {
 
 	public void reorganizeCardGraphics() {
 		int i = 0;
-		for (DraggableCard dc: player.getHand()) {
+		for (DraggableCard dc : player.getHand()) {
 			if (dc.getMouseListeners().length != 0) {
 				dc.removeMouseListener(dc.getMouseListeners()[0]);
 			}
@@ -139,15 +140,23 @@ public class GameBoard extends JFrame {
 			CardStack discard = mbg.getDiscard();
 			CardStack target = null;
 
-			Rectangle computedIntersection = SwingUtilities.computeIntersection(xPos, yPos, width, height,
+			Rectangle computedIntersection1 = SwingUtilities.computeIntersection(xPos, yPos, width, height,
 					discard.getBounds());
-			double area = computedIntersection.getWidth() * computedIntersection.getHeight();
-			if (area > maxTouch) {
+			double area1 = computedIntersection1.getWidth() * computedIntersection1.getHeight();
+			if (area1 > maxTouch) {
 				target = discard;
-				maxTouch = area;
+				maxTouch = area1;
 			} else {
 				target = playerPiles.get(maxTouchIndex);
 			}
+			Rectangle computedIntersection2 = SwingUtilities.computeIntersection(xPos, yPos, width, height,
+					cpu.getBattle().getBounds());
+			double area2 = computedIntersection2.getWidth() * computedIntersection2.getHeight();
+			if (area2 > maxTouch) {
+				target = cpu.getBattle();
+				maxTouch = area2;
+			}
+
 			if (maxTouch > 10000 && target.canDropCardOn() && isValidMove(target)) {
 				int targetX = target.getX() + 10;
 				int targetY = target.getY() + 10;
@@ -162,7 +171,7 @@ public class GameBoard extends JFrame {
 				currentCardClicked.removeMouseMotionListener(currentCardClicked.getMouseMotionListeners()[0]);
 				currentCardClicked.removeMouseListener(currentCardClicked.getMouseListeners()[0]);
 				mbg.drawCardForPlayer(player);
-				player.getCard(player.getHand().size()-1).addMouseMotionListener(new CardDrag());
+				player.getCard(player.getHand().size() - 1).addMouseMotionListener(new CardDrag());
 				this.reorganizeCardGraphics();
 				this.cpuTurn();
 			} else {
@@ -174,6 +183,12 @@ public class GameBoard extends JFrame {
 
 	private boolean isValidMove(CardStack c) {
 		if (c.getName().equals("Distance") && currentCardClicked.getCard() instanceof DistanceCard) {
+			if(!player.canMoveNormally() && player.canMove() && ((DistanceCard) currentCardClicked.getCard()).getValue() > 50){
+				return false;
+			}
+			if(!player.canMove()){
+				return false;
+			}
 			return true;
 		} else if (c.getName().equals("Battle") && c.getOwner().equals(cpu.getName())
 				&& currentCardClicked.getCard() instanceof HazardCard) {

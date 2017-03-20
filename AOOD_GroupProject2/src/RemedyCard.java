@@ -11,10 +11,7 @@ public class RemedyCard extends Card {
 		super(n);
 		type = t;
 	}
-	public RemedyCard(String n){
-		super(n);
 
-	}
 	public char getType(){
 		return type;
 	}
