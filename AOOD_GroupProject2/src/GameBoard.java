@@ -1,3 +1,4 @@
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -11,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
 
 public class GameBoard extends JFrame{
@@ -19,9 +21,10 @@ public class GameBoard extends JFrame{
 	private ArrayList<DraggableCard> cardsOnBoard;
 	private ArrayList<CardStack> playerPiles, cpuPiles;
 	private int currentCardInt;
-	private boolean validSpace;
-	public GameBoard(){
+	private MilleBornesGame mbg;
+	public GameBoard(MilleBornesGame m){
 		super("Mille Bornes");
+		mbg = m;
 		currentCardInt = -1;
 		this.setSize(1200, 675);
 		this.setVisible(true);
@@ -34,7 +37,6 @@ public class GameBoard extends JFrame{
 		
 		cardsOnBoard = new ArrayList<DraggableCard>();
 		playerPiles = new ArrayList<CardStack>();
-		validSpace = false;
 	}
 
 	public void add(JComponent j, int x, int y, int w, int h){
@@ -53,6 +55,14 @@ public class GameBoard extends JFrame{
 		j.setBounds(x, y, w ,h);
 	}
 	
+	public void returnToOriginalPos(){
+		int targetX = currentCardClicked.getWantedX();
+		int targetY = currentCardClicked.getWantedY();
+		int width = currentCardClicked.getWidth();
+		int height = currentCardClicked.getHeight();
+		currentCardClicked.setBounds(targetX, targetY, width, height);
+
+	}
 	public ArrayList<DraggableCard> getUsersHand(){
 		return cardsOnBoard;
 	}
@@ -78,65 +88,50 @@ public class GameBoard extends JFrame{
 			currentCardInt = cardInt;
 		}
 		
+		
+		
 		@Override
 		public void mouseReleased(MouseEvent e){
-			int targetX = (currentCardInt * 120) + 10;
-			int targetY = 475;
-			int width = currentCardClicked.getWidth();
-			int height = currentCardClicked.getHeight();
-			double multiplier = .1;
-			/*
-			if(!validSpace){
-				while(currentCardClicked.getX() != targetX || currentCardClicked.getY() != targetY){
-					int distX = currentCardClicked.getX() - (targetX);
-					int distY = currentCardClicked.getY() - (targetY);
-
-					if(distX < 10 && distX > 0){
-						distX = 10;
-					}
-					else if(distX > -10 && distX < 0){
-						distX = -10;
-					}
-					if(distY < 10 && distY > 0){
-						distY = 10;
-					}
-					else if(distY > -10 && distY < 0){
-						distY = -10;
-					}
-					int newPosX = (int)(currentCardClicked.getX() - distX*multiplier);
-					int newPosY = (int)(currentCardClicked.getY() - distY*multiplier);
-					System.out.println(newPosX + " " + newPosY);
-					currentCardClicked.setBounds(newPosX, newPosY, width, height);
-					
-					if(Math.abs(distX) ==1){
-						currentCardClicked.setBounds(targetX , currentCardClicked.getY(), 100, 153);
-					}
-					if(Math.abs(distY) ==1){
-						currentCardClicked.setBounds(currentCardClicked.getX(), targetY, 100, 153);
-					}
-
-					try {
-						Thread.sleep(10);
-					} catch (InterruptedException e1) {
-						e1.printStackTrace();
-					}
-					
-				}
-			}
-			*/
-			if(!validSpace){
-				currentCardClicked.setBounds(targetX, targetY, width, height);
-
-			}
-			else{
-				decideStack();
-			}
+			decideStack();
 			currentCardInt = -1;
 			currentCardClicked = null;
 		}
 		
 	}
-	
+	public void decideStack(){
+		int xPos = currentCardClicked.getX();
+		int yPos = currentCardClicked.getY();
+		int width = currentCardClicked.getWidth();
+		int height = currentCardClicked.getHeight();
+		double maxTouch = 0;
+		int maxTouchIndex = 0;
+		int index = 0;
+		for(CardStack c: playerPiles){
+			Rectangle computedIntersection = SwingUtilities.computeIntersection(xPos, yPos, width, height, c.getBounds());
+			double area = computedIntersection.getWidth() * computedIntersection.getHeight();
+			if(area > maxTouch){
+				maxTouchIndex = index;
+				maxTouch = area;
+			}
+			index++;
+		}
+		CardStack target = playerPiles.get(maxTouchIndex);
+		if(maxTouch > 10000){
+			int targetX = target.getX() + 10;
+			int targetY = target.getY() + 10;
+			int cwidth = currentCardClicked.getWidth();
+			int cheight = currentCardClicked.getHeight();
+			currentCardClicked.setBounds(targetX, targetY, cwidth, cheight);
+			target.addCard(currentCardClicked);
+			cardsOnBoard.remove(currentCardInt);
+			this.reorganizeCardGraphics();
+			currentCardClicked.removeMouseMotionListener(currentCardClicked.getMouseMotionListeners()[0]);
+			currentCardClicked.removeMouseListener(currentCardClicked.getMouseListeners()[0]);
+		}
+		else{
+			returnToOriginalPos();
+		}
+	}
 	private class CardDrag extends MouseMotionAdapter{
 		private int mouseX, mouseY;
 		@Override
@@ -151,44 +146,7 @@ public class GameBoard extends JFrame{
 		}
 	}
 	
-	public void decideStack(){
-		int xPos = currentCardClicked.getX();
-		int yPos = currentCardClicked.getY();
-		int width = currentCardClicked.getWidth();
-		int height = currentCardClicked.getHeight();
-		int maxTouch = 0;
-		int maxTouchIndex = 0;
-		int index = 0;
-		for(CardStack c: playerPiles){
-			int xPosStack = c.getX();
-			int yPosStack = c.getY();
-			int widthStack = c.getWidth();
-			int heightStack = c.getHeight();
-			
-			int xTouch = 0;
-			int yTouch = 0;
-			if(xPos >= xPosStack){
-				xTouch = (xPosStack + widthStack) - xPos;
-			}
-			else{
-				xTouch = (xPos + width) - xPosStack;
-			}
-			
-			if(xPos >= xPosStack){
-				yTouch =
-			}
-			else{
-				yTouch = 
-			}
-			
-			int overlap = xTouch * yTouch;
-			if(overlap > maxTouch){
-				m
-			}
-			
-			index++;
-		}
-	}
+	
 	
 	
 

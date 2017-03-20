@@ -6,10 +6,12 @@ import javax.swing.JPanel;
 public class CardStack extends JPanel{
 	protected boolean takesCard;
 	protected ArrayList<Card> stack;
+	protected ArrayList<DraggableCard> visibleStack;
 	protected String name;
 	protected String owner;
 	public CardStack(String n, String o){
 		stack = new ArrayList<Card>();
+		visibleStack = new ArrayList<DraggableCard>();
 		takesCard = true;
 		name = n;
 		owner = o;
@@ -17,6 +19,10 @@ public class CardStack extends JPanel{
 	}
 	public void addCard(Card c){
 		stack.add(c);
+	}
+	public void addCard(DraggableCard c){
+		visibleStack.add(c);
+		stack.add(c.getCard());
 	}
 	public Card removeCard(){
 		return stack.remove(stack.size()-1);

@@ -9,7 +9,8 @@ public class DraggableCard extends JPanel{
 	private JLabel image;
 	private String owner;
 	private boolean draggable;
-	public DraggableCard(Card c, String o){
+	private int wantedX, wantedY;
+	public DraggableCard(Card c, String o, int x, int y){
 		thisCard = c;
 		owner = o;
 		
@@ -20,7 +21,8 @@ public class DraggableCard extends JPanel{
 		image.setIcon(currentImage);
 		 
 		draggable = true;
-		
+		wantedX = x;
+		wantedY = y;
 	}
 	public void updateImage(){
 		currentImage = thisCard.getImage();
@@ -46,5 +48,16 @@ public class DraggableCard extends JPanel{
 	}
 	public void setDraggable(boolean b){
 		draggable = b;
+	}
+	public void updateWanted(int x, int y){
+		wantedX = x;
+		wantedY = y;
+		
+	}
+	public int getWantedX(){
+		return wantedX;
+	}
+	public int getWantedY(){
+		return wantedY;
 	}
 }
