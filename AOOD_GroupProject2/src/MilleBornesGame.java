@@ -41,7 +41,7 @@ public class MilleBornesGame {
 
 		
 		for(DraggableCard dc: deck.getVisibleStack()){
-			gb.add(dc, dc.getWantedX(), dc.getWantedY(), 100, 153);
+			gb.add(dc, deck.getX()+10, deck.getY()+10, 100, 153);
 		}
 		
 		for (int i = 0; i < 6; i++) {
