@@ -68,8 +68,9 @@ public class MilleBornesGame {
 		gb.resetSize();
 
 	}
-	public void gameWon(){
-		
+	public void gameWon(String winner){
+		JOptionPane.showMessageDialog(null, "The winner is " + winner + "!", "Winner" , JOptionPane.INFORMATION_MESSAGE);
+
 	}
 	
 	public void drawCardForPlayer(HumanPlayer p){

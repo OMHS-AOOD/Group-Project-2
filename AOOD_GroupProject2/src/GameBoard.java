@@ -18,6 +18,7 @@ import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
 
 public class GameBoard extends JFrame {
 	private JPanel board;
+	private JLabel playerScore, cpuScore;
 	private DraggableCard currentCardClicked;
 	private ArrayList<CardStack> playerPiles, cpuPiles;
 	private int currentCardInt;
@@ -41,7 +42,10 @@ public class GameBoard extends JFrame {
 		cpu = c;
 		playerPiles = new ArrayList<CardStack>();
 		cpuPiles = new ArrayList<CardStack>();
-
+		playerScore = new JLabel(player.getName() + ": " + player.getCurrentPoints());
+		cpuScore = new JLabel(cpu.getName() + ": " + cpu.getCurrentPoints());
+		this.add(playerScore, 800, 475, 100, 30);
+		this.add(cpuScore, 800, 505, 100, 30);
 	}
 
 	public void add(JComponent j, int x, int y, int w, int h) {
@@ -173,6 +177,7 @@ public class GameBoard extends JFrame {
 				mbg.drawCardForPlayer(player);
 				player.getCard(player.getHand().size() - 1).addMouseMotionListener(new CardDrag());
 				this.reorganizeCardGraphics();
+				playerScore.setText(player.getName() + ": " + player.getCurrentPoints());
 				this.cpuTurn();
 			} else {
 				returnToOriginalPos();
@@ -183,10 +188,15 @@ public class GameBoard extends JFrame {
 
 	private boolean isValidMove(CardStack c) {
 		if (c.getName().equals("Distance") && currentCardClicked.getCard() instanceof DistanceCard) {
+			System.out.println(player.canMove());
+			System.out.println(player.canMoveNormally());
 			if(!player.canMoveNormally() && player.canMove() && ((DistanceCard) currentCardClicked.getCard()).getValue() > 50){
 				return false;
 			}
 			if(!player.canMove()){
+				return false;
+			}
+			if(player.getNeededDistance() < ((DistanceCard) currentCardClicked.getCard()).getValue()){
 				return false;
 			}
 			return true;
@@ -224,7 +234,7 @@ public class GameBoard extends JFrame {
 	public void cpuTurn() {
 		boolean hasntMoved = true;
 		if (player.hasWon()) {
-			mbg.gameWon();
+			mbg.gameWon(player.getName());
 		} else {
 			ArrayList<DraggableCard> allDists = new ArrayList<DraggableCard>();
 			ArrayList<DraggableCard> allHazards = new ArrayList<DraggableCard>();
@@ -292,6 +302,10 @@ public class GameBoard extends JFrame {
 					cpu.getHand().remove(dInts.remove(ind).intValue());
 					hasntMoved = false;
 					mbg.drawCardForPlayer(cpu);
+					cpuScore.setText(cpu.getName() + ": " + cpu.getCurrentPoints());
+					if (cpu.hasWon()) {
+						mbg.gameWon(cpu.getName());
+					}
 					this.reorganizeCpuCardGraphics();
 				}
 
@@ -320,6 +334,10 @@ public class GameBoard extends JFrame {
 					cpu.getHand().remove(dInts.remove(ind).intValue());
 					hasntMoved = false;
 					mbg.drawCardForPlayer(cpu);
+					cpuScore.setText(cpu.getName() + ": " + cpu.getCurrentPoints());
+					if (player.hasWon()) {
+						mbg.gameWon(player.getName());
+					}
 					this.reorganizeCpuCardGraphics();
 				}
 

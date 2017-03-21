@@ -2,7 +2,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
 
 public class CardStack extends JPanel {
 	protected boolean takesCard;
@@ -11,6 +13,7 @@ public class CardStack extends JPanel {
 	protected String name;
 	protected String owner;
 	protected Color myColor;
+	
 
 	public CardStack(String n, String o, Color c) {
 		stack = new ArrayList<Card>();
@@ -20,6 +23,8 @@ public class CardStack extends JPanel {
 		owner = o;
 		myColor = c;
 		this.setLayout(null);
+		
+
 	}
 
 

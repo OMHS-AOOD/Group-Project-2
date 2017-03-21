@@ -7,7 +7,7 @@ public class ComputerPlayer extends HumanPlayer {
 		distance.setDrop(false);
 		battle.setColor(Color.RED);
 		safety.setColor(Color.RED);
-		distance.setColor(Color.RED);;
+		distance.setColor(Color.RED);
 	}
 	
 
