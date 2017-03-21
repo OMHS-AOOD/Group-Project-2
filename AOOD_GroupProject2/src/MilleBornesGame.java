@@ -78,13 +78,11 @@ public class MilleBornesGame {
 		DraggableCard dc = deck.removeCard();
 		p.addCardToHand(dc);
 		dc.updateWanted(5*120,  475);
-		gb.add(dc, dc.getWantedX(), dc.getWantedY(), 100, 153);
 		dc.setOwner(p.getName());
 		if(dc.getOwner().equals(player.getName())){
 			dc.flipCard();
 		}
-		gb.pack();
-		gb.resetSize();
+
 	}
 	
 	

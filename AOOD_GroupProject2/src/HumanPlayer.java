@@ -7,6 +7,7 @@ public class HumanPlayer {
 	protected ArrayList<Card> hand;
 	protected ArrayList<DraggableCard> visibleCards;
 	protected int pointsToWin;
+	protected int used200s;
 
 	public HumanPlayer(String n) {
 		name = n;
@@ -16,6 +17,7 @@ public class HumanPlayer {
 		hand = new ArrayList<Card>();
 		visibleCards = new ArrayList<DraggableCard>();
 		pointsToWin = 1000;
+		used200s = 0;
 
 	}
 
@@ -72,7 +74,10 @@ public class HumanPlayer {
 		return pointsToWin - this.getCurrentPoints();
 	}
 
-	public boolean hasWon() {
+	public boolean hasWon(HumanPlayer other) {
+		if(other.getCurrentPoints() == 0 && this.getCurrentPoints()>900){
+			return true;
+		}
 		if (getCurrentPoints() == pointsToWin) {
 			return true;
 		}
@@ -94,20 +99,39 @@ public class HumanPlayer {
 		for (Card c : safety.getStack()) {
 			safChars.add(((SafetyCard) c).getType());
 		}
-		for (Character ch : safChars) {
-			for (Character ch2 : hazChars) {
-				if (ch.equals(ch2)) {
-					hazChars.removeAll(safChars);
+		for(int i = 0; i < safChars.size(); i++){
+			for(int j = 0; j < hazChars.size(); j++){	
+				if (safChars.get(i).charValue() == hazChars.get(j).charValue()) {
+					hazChars.remove(j);
+					j--;
 				}
 			}
 		}
-		for (Character ch : remChars) {
-			for (Character ch2 : hazChars) {
-				if (ch.equals(ch2)) {
-					hazChars.removeAll(safChars);
+		for(int i = 0; i < remChars.size(); i++){
+			for(int j = 0; j < hazChars.size(); j++){	
+				if (remChars.get(i).charValue() == hazChars.get(j).charValue()) {
+					hazChars.remove(j);
+					remChars.remove(i);
+					i--;
+					j--;
+					break;
 				}
 			}
 		}
+		
+		if (hazChars.size() > 0) {
+			for(int i = 0; i < remChars.size(); i++){
+				for(int j = 0; j < hazChars.size(); j++){	
+					if (remChars.get(i).charValue() == '*') {
+						hazChars.remove(j);
+						remChars.remove(i);
+						i--;
+						j--;
+					}
+				}
+			}
+		}
+		
 		if (hazChars.size() > 0) {
 			return false;
 		}
@@ -130,22 +154,41 @@ public class HumanPlayer {
 			safChars.add(((SafetyCard) c).getType());
 		}
 
+
 		
-		
-		for (Character ch : safChars) {
-			for (Character ch2 : hazChars) {
-				if (ch.charValue() == ch2.charValue()) {
-					hazChars.remove(ch2);
+		for(int i = 0; i < safChars.size(); i++){
+			for(int j = 0; j < hazChars.size(); j++){	
+				if (safChars.get(i).charValue() == hazChars.get(j).charValue()) {
+					hazChars.remove(j);
+					j--;
 				}
 			}
 		}
-		for (Character ch : remChars) {
-			for (Character ch2 : hazChars) {
-				if (ch.charValue()== ch2.charValue()) {
-					hazChars.remove(ch2);
+		for(int i = 0; i < remChars.size(); i++){
+			for(int j = 0; j < hazChars.size(); j++){	
+				if (remChars.get(i).charValue() == hazChars.get(j).charValue()) {
+					hazChars.remove(j);
+					remChars.remove(i);
+					i--;
+					j--;
+					break;
 				}
 			}
 		}
+
+		if (hazChars.size() > 0) {
+			for(int i = 0; i < remChars.size(); i++){
+				for(int j = 0; j < hazChars.size(); j++){	
+					if (remChars.get(i).charValue() == '*') {
+						hazChars.remove(j);
+						remChars.remove(i);
+						i--;
+						j--;
+					}
+				}
+			}
+		}
+		
 		if (hazChars.size() > 1) {
 			return false;
 		}
@@ -157,6 +200,12 @@ public class HumanPlayer {
 
 	public ArrayList<DraggableCard> getHand() {
 		return visibleCards;
+	}
+	public int getUsed200s(){
+		return used200s;
+	}
+	public void add200(){
+		used200s++;
 	}
 
 }

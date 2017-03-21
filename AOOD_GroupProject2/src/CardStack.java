@@ -88,4 +88,15 @@ public class CardStack extends JPanel {
 	public ArrayList<DraggableCard> getVisibleStack(){
 		return visibleStack;
 	}
+
+
+
+	public boolean containsCard(String name2) {
+		for(Card c: stack){
+			if(c.getName().equals(name2)){
+				return true;
+			}
+		}
+		return false;
+	}
 }

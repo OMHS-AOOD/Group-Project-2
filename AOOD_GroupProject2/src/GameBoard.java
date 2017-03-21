@@ -42,10 +42,10 @@ public class GameBoard extends JFrame {
 		cpu = c;
 		playerPiles = new ArrayList<CardStack>();
 		cpuPiles = new ArrayList<CardStack>();
-		playerScore = new JLabel(player.getName() + ": " + player.getCurrentPoints());
-		cpuScore = new JLabel(cpu.getName() + ": " + cpu.getCurrentPoints());
-		this.add(playerScore, 800, 475, 100, 30);
-		this.add(cpuScore, 800, 505, 100, 30);
+		playerScore = new JLabel(player.getName() + ": " + player.getCurrentPoints() + "           200's used: " + player.getUsed200s());
+		cpuScore = new JLabel(cpu.getName() + ": " + cpu.getCurrentPoints() + "           200's used: " + cpu.getUsed200s());
+		this.add(playerScore, 800, 475, 300, 30);
+		this.add(cpuScore, 800, 505, 300, 30);
 	}
 
 	public void add(JComponent j, int x, int y, int w, int h) {
@@ -161,7 +161,7 @@ public class GameBoard extends JFrame {
 				maxTouch = area2;
 			}
 
-			if (maxTouch > 10000 && target.canDropCardOn() && isValidMove(target)) {
+			if (maxTouch > 10000 && target.canDropCardOn() && isValidMove(target, currentCardClicked, player, cpu)) {
 				int targetX = target.getX() + 10;
 				int targetY = target.getY() + 10;
 				int cwidth = currentCardClicked.getWidth();
@@ -177,7 +177,7 @@ public class GameBoard extends JFrame {
 				mbg.drawCardForPlayer(player);
 				player.getCard(player.getHand().size() - 1).addMouseMotionListener(new CardDrag());
 				this.reorganizeCardGraphics();
-				playerScore.setText(player.getName() + ": " + player.getCurrentPoints());
+				playerScore.setText(player.getName() + ": " + player.getCurrentPoints() + "           200's used: " + player.getUsed200s());
 				this.cpuTurn();
 			} else {
 				returnToOriginalPos();
@@ -186,25 +186,40 @@ public class GameBoard extends JFrame {
 
 	}
 
-	private boolean isValidMove(CardStack c) {
-		if (c.getName().equals("Distance") && currentCardClicked.getCard() instanceof DistanceCard) {
-			if(!player.canMoveNormally() && player.canMove() && ((DistanceCard) currentCardClicked.getCard()).getValue() > 50){
+	private boolean isValidMove(CardStack c, DraggableCard dc, HumanPlayer p, HumanPlayer cp) {
+		if (c.getName().equals("Distance") && dc.getCard() instanceof DistanceCard) {
+			if (!p.canMoveNormally() && p.canMove() && ((DistanceCard) currentCardClicked.getCard()).getValue() > 50) {
 				return false;
 			}
-			if(!player.canMove()){
+			if(p.getUsed200s() == 2 && ((DistanceCard) dc.getCard()).getValue() == 200){
 				return false;
 			}
-			if(player.getNeededDistance() < ((DistanceCard) currentCardClicked.getCard()).getValue()){
+			if (!p.canMove()) {
+				return false;
+			}
+			if (p.getNeededDistance() < ((DistanceCard) dc.getCard()).getValue()) {
+				return false;
+			}
+			
+			
+			if(((DistanceCard) dc.getCard()).getValue() == 200){
+				p.add200();
+			}
+			
+			return true;
+		} else if (c.getName().equals("Battle") && c.getOwner().equals(cp.getName())
+				&& dc.getCard() instanceof HazardCard) {
+			if (c.containsCard(dc.getCard().getName())) {
 				return false;
 			}
 			return true;
-		} else if (c.getName().equals("Battle") && c.getOwner().equals(cpu.getName())
-				&& currentCardClicked.getCard() instanceof HazardCard) {
+		} else if (c.getName().equals("Battle") && c.getOwner().equals(p.getName())
+				&& dc.getCard() instanceof RemedyCard) {
 			return true;
-		} else if (c.getName().equals("Battle") && c.getOwner().equals(player.getName())
-				&& currentCardClicked.getCard() instanceof RemedyCard) {
-			return true;
-		} else if (c.getName().equals("Safety") && currentCardClicked.getCard() instanceof SafetyCard) {
+		} else if (c.getName().equals("Safety") && dc.getCard() instanceof SafetyCard) {
+			if (c.containsCard(dc.getCard().getName())) {
+				return false;
+			}
 			return true;
 		} else if (c.getName().equals("Discard")) {
 			return true;
@@ -231,7 +246,7 @@ public class GameBoard extends JFrame {
 
 	public void cpuTurn() {
 		boolean hasntMoved = true;
-		if (player.hasWon()) {
+		if (player.hasWon(cpu)) {
 			mbg.gameWon(player.getName());
 		} else {
 			ArrayList<DraggableCard> allDists = new ArrayList<DraggableCard>();
@@ -262,20 +277,40 @@ public class GameBoard extends JFrame {
 					rInts.add(i);
 				}
 			}
+			if (allSafes.size() > 0 && hasntMoved) {
+				CardStack target = cpu.getSafety();
+				DraggableCard cpuCard = allSafes.get(0);
+				if (isValidMove(target, cpuCard, cpu, player)) {
+					int targetX = target.getX() + 10;
+					int targetY = target.getY() + 10;
+					int cwidth = cpuCard.getWidth();
+					int cheight = cpuCard.getHeight();
+					cpuCard.setBounds(targetX, targetY, cwidth, cheight);
+					cpuCard.flipCard();
+					target.addCard(cpuCard);
+					cpu.getHand().remove(sInts.remove(0).intValue());
+					hasntMoved = false;
+					mbg.drawCardForPlayer(cpu);
+					this.reorganizeCpuCardGraphics();
+				}
+			}
 			if (cpu.canMove() && allHazards.size() > 0 && hasntMoved) {
 				CardStack target = player.getBattle();
 				DraggableCard cpuCard = allHazards.get(0);
-				int targetX = target.getX() + 10;
-				int targetY = target.getY() + 10;
-				int cwidth = cpuCard.getWidth();
-				int cheight = cpuCard.getHeight();
-				cpuCard.setBounds(targetX, targetY, cwidth, cheight);
-				cpuCard.flipCard();
-				target.addCard(cpuCard);
-				cpu.getHand().remove(hInts.remove(0).intValue());
-				hasntMoved = false;
-				mbg.drawCardForPlayer(cpu);
-				this.reorganizeCpuCardGraphics();
+				if (isValidMove(target, cpuCard, cpu, player)) {
+					int targetX = target.getX() + 10;
+					int targetY = target.getY() + 10;
+					int cwidth = cpuCard.getWidth();
+					int cheight = cpuCard.getHeight();
+					cpuCard.setBounds(targetX, targetY, cwidth, cheight);
+					cpuCard.flipCard();
+					target.addCard(cpuCard);
+					cpu.getHand().remove(hInts.remove(0).intValue());
+					hasntMoved = false;
+					mbg.drawCardForPlayer(cpu);
+					this.reorganizeCpuCardGraphics();
+				}
+
 			}
 			if (allDists.size() > 0 && hasntMoved && cpu.canMoveNormally()) {
 				int minLeft = 1000;
@@ -290,21 +325,24 @@ public class GameBoard extends JFrame {
 				if (ind != -1) {
 					CardStack target = cpu.getDistance();
 					DraggableCard cpuCard = allDists.get(ind);
-					int targetX = target.getX() + 10;
-					int targetY = target.getY() + 10;
-					int cwidth = cpuCard.getWidth();
-					int cheight = cpuCard.getHeight();
-					cpuCard.setBounds(targetX, targetY, cwidth, cheight);
-					cpuCard.flipCard();
-					target.addCard(cpuCard);
-					cpu.getHand().remove(dInts.remove(ind).intValue());
-					hasntMoved = false;
-					mbg.drawCardForPlayer(cpu);
-					cpuScore.setText(cpu.getName() + ": " + cpu.getCurrentPoints());
-					if (cpu.hasWon()) {
-						mbg.gameWon(cpu.getName());
+					if (isValidMove(target, cpuCard, cpu, player)) {
+						int targetX = target.getX() + 10;
+						int targetY = target.getY() + 10;
+						int cwidth = cpuCard.getWidth();
+						int cheight = cpuCard.getHeight();
+						cpuCard.setBounds(targetX, targetY, cwidth, cheight);
+						cpuCard.flipCard();
+						target.addCard(cpuCard);
+						cpu.getHand().remove(dInts.remove(ind).intValue());
+						hasntMoved = false;
+						mbg.drawCardForPlayer(cpu);
+						cpuScore.setText(cpu.getName() + ": " + cpu.getCurrentPoints() + "           200's used: " + cpu.getUsed200s());
+						if (cpu.hasWon(player)) {
+							mbg.gameWon(cpu.getName());
+						}
+						this.reorganizeCpuCardGraphics();
 					}
-					this.reorganizeCpuCardGraphics();
+
 				}
 
 			}
@@ -322,22 +360,47 @@ public class GameBoard extends JFrame {
 				if (ind != -1) {
 					CardStack target = cpu.getDistance();
 					DraggableCard cpuCard = allDists.get(ind);
-					int targetX = target.getX() + 10;
-					int targetY = target.getY() + 10;
-					int cwidth = cpuCard.getWidth();
-					int cheight = cpuCard.getHeight();
-					cpuCard.setBounds(targetX, targetY, cwidth, cheight);
-					cpuCard.flipCard();
-					target.addCard(cpuCard);
-					cpu.getHand().remove(dInts.remove(ind).intValue());
-					hasntMoved = false;
-					mbg.drawCardForPlayer(cpu);
-					cpuScore.setText(cpu.getName() + ": " + cpu.getCurrentPoints());
-					if (player.hasWon()) {
-						mbg.gameWon(player.getName());
+					if (isValidMove(target, cpuCard, cpu, player)) {
+						int targetX = target.getX() + 10;
+						int targetY = target.getY() + 10;
+						int cwidth = cpuCard.getWidth();
+						int cheight = cpuCard.getHeight();
+						cpuCard.setBounds(targetX, targetY, cwidth, cheight);
+						cpuCard.flipCard();
+						target.addCard(cpuCard);
+						cpu.getHand().remove(dInts.remove(ind).intValue());
+						hasntMoved = false;
+						mbg.drawCardForPlayer(cpu);
+						cpuScore.setText(cpu.getName() + ": " + cpu.getCurrentPoints() + "           200's used: " + cpu.getUsed200s());
+						if (player.hasWon(cpu)) {
+							mbg.gameWon(player.getName());
+						}
+						this.reorganizeCpuCardGraphics();
 					}
-					this.reorganizeCpuCardGraphics();
+
 				}
+
+			}
+			/*
+			if (!cpu.canMove() && hasntMoved && allRemedy.size() > 0) {
+				ArrayList<DraggableCard> enemyHazards = cpu.getBattle().getVisibleStack();
+
+			}
+			*/
+			if (hasntMoved) {
+				CardStack target = mbg.getDiscard();
+				DraggableCard cpuCard = cpu.getHand().remove((int)(Math.random() * 6));
+
+				int targetX = target.getX() + 10;
+				int targetY = target.getY() + 10;
+				int cwidth = cpuCard.getWidth();
+				int cheight = cpuCard.getHeight();
+				cpuCard.setBounds(targetX, targetY, cwidth, cheight);
+				cpuCard.flipCard();
+				target.addCard(cpuCard);
+				hasntMoved = false;
+				mbg.drawCardForPlayer(cpu);
+				this.reorganizeCpuCardGraphics();
 
 			}
 
