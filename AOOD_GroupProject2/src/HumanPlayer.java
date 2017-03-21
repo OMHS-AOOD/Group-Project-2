@@ -11,9 +11,9 @@ public class HumanPlayer {
 
 	public HumanPlayer(String n) {
 		name = n;
-		battle = new CardStack("Battle", name, Color.BLACK);
-		distance = new CardStack("Distance", name, Color.BLACK);
-		safety = new CardStack("Safety", name, Color.BLACK);
+		battle = new CardStack("Battle", name, Color.GREEN);
+		distance = new CardStack("Distance", name, Color.GREEN);
+		safety = new CardStack("Safety", name, Color.GREEN);
 		hand = new ArrayList<Card>();
 		visibleCards = new ArrayList<DraggableCard>();
 		pointsToWin = 1000;

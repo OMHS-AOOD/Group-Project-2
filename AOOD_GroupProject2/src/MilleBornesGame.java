@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Component;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -28,20 +29,20 @@ public class MilleBornesGame {
 		gb = new GameBoard(this, player, cpu);
 		
 
-		gb.add(player.getDistance(), 150, 270, 120, 173);
-		gb.add(player.getSafety(), 290, 270, 120, 173);
-		gb.add(player.getBattle(), 430, 270, 120, 173);
-		gb.add(cpu.getDistance(), 850, 270, 120, 173);
-		gb.add(cpu.getSafety(), 710, 270, 120, 173);
-		gb.add(cpu.getBattle(), 570, 270, 120, 173);
-		gb.add(deck, 10, 270, 120, 173);
+		gb.add(player.getDistance(), 150, 250, 130, 193);
+		gb.add(player.getSafety(), 290, 250, 130, 193);
+		gb.add(player.getBattle(), 430, 250, 130, 193);
+		gb.add(cpu.getDistance(), 850, 250, 130, 193);
+		gb.add(cpu.getSafety(), 710, 250, 130, 193);
+		gb.add(cpu.getBattle(), 570, 250, 130, 193);
+		gb.add(deck, 10, 250, 130, 193);
 		
 		discard.setColor(Color.BLUE);
-		gb.add(discard, 990, 270, 120, 173);
+		gb.add(discard, 990, 250, 130, 193);
 
 		
 		for(DraggableCard dc: deck.getVisibleStack()){
-			gb.add(dc, deck.getX()+10, deck.getY()+10, 100, 153);
+			gb.add(dc, deck.getX()+15, deck.getY()+30, 100, 153);
 		}
 		
 		for (int i = 0; i < 6; i++) {
@@ -53,8 +54,8 @@ public class MilleBornesGame {
 			cpu.addCardToHand(dc2);
 			
 		}
-		System.out.println(player.handToString() + "\n");
-		System.out.println(cpu.handToString());
+		//System.out.println(player.handToString() + "\n");
+		//System.out.println(cpu.handToString());
 		
 		for (int i = 0; i < 6; i++) {
 			DraggableCard dc = player.getCard(i);
@@ -88,6 +89,9 @@ public class MilleBornesGame {
 	
 	public CardStack getDiscard(){
 		return discard;
+	}
+	public CardStack getDeck() {
+		return deck;
 	}
 
 }

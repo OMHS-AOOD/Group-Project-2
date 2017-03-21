@@ -1,3 +1,5 @@
+import java.awt.Color;
+
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -23,6 +25,9 @@ public class DraggableCard extends JPanel{
 		draggable = true;
 		wantedX = x;
 		wantedY = y;
+		
+		this.setBackground(Color.BLACK);
+		this.setOpaque(false);
 	}
 	public void updateImage(){
 		currentImage = thisCard.getImage();
