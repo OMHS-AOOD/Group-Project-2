@@ -188,8 +188,6 @@ public class GameBoard extends JFrame {
 
 	private boolean isValidMove(CardStack c) {
 		if (c.getName().equals("Distance") && currentCardClicked.getCard() instanceof DistanceCard) {
-			System.out.println(player.canMove());
-			System.out.println(player.canMoveNormally());
 			if(!player.canMoveNormally() && player.canMove() && ((DistanceCard) currentCardClicked.getCard()).getValue() > 50){
 				return false;
 			}

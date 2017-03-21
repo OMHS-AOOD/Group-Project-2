@@ -129,22 +129,20 @@ public class HumanPlayer {
 		for (Card c : safety.getStack()) {
 			safChars.add(((SafetyCard) c).getType());
 		}
-		
-		System.out.println(hazChars.size());
-		
+
 		
 		
 		for (Character ch : safChars) {
 			for (Character ch2 : hazChars) {
-				if (ch.equals(ch2)) {
-					hazChars.removeAll(safChars);
+				if (ch.charValue() == ch2.charValue()) {
+					hazChars.remove(ch2);
 				}
 			}
 		}
 		for (Character ch : remChars) {
 			for (Character ch2 : hazChars) {
-				if (ch.equals(ch2)) {
-					hazChars.removeAll(safChars);
+				if (ch.charValue()== ch2.charValue()) {
+					hazChars.remove(ch2);
 				}
 			}
 		}

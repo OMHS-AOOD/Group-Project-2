@@ -70,6 +70,7 @@ public class MilleBornesGame {
 	}
 	public void gameWon(String winner){
 		JOptionPane.showMessageDialog(null, "The winner is " + winner + "!", "Winner" , JOptionPane.INFORMATION_MESSAGE);
+		System.exit(0);
 
 	}
 	
