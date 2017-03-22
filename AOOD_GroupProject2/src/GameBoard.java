@@ -331,6 +331,7 @@ public class GameBoard extends JFrame {
 					cpuCard.setBounds(targetX, targetY, cwidth, cheight);
 					cpuCard.flipCard();
 					target.addCard(cpuCard);
+					reorderComponents(cpuCard);
 					cpu.getHand().remove(sInts.remove(0).intValue());
 					hasntMoved = false;
 					mbg.drawCardForPlayer(cpu);
@@ -348,6 +349,7 @@ public class GameBoard extends JFrame {
 					cpuCard.setBounds(targetX, targetY, cwidth, cheight);
 					cpuCard.flipCard();
 					target.addCard(cpuCard);
+					reorderComponents(cpuCard);
 					cpu.getHand().remove(hInts.remove(0).intValue());
 					hasntMoved = false;
 					mbg.drawCardForPlayer(cpu);
@@ -376,6 +378,7 @@ public class GameBoard extends JFrame {
 						cpuCard.setBounds(targetX, targetY, cwidth, cheight);
 						cpuCard.flipCard();
 						target.addCard(cpuCard);
+						reorderComponents(cpuCard);
 						cpu.getHand().remove(dInts.remove(ind).intValue());
 						hasntMoved = false;
 						mbg.drawCardForPlayer(cpu);
@@ -412,6 +415,7 @@ public class GameBoard extends JFrame {
 						cpuCard.setBounds(targetX, targetY, cwidth, cheight);
 						cpuCard.flipCard();
 						target.addCard(cpuCard);
+						reorderComponents(cpuCard);
 						cpu.getHand().remove(dInts.remove(ind).intValue());
 						hasntMoved = false;
 						mbg.drawCardForPlayer(cpu);
@@ -490,6 +494,7 @@ public class GameBoard extends JFrame {
 									cpuCard.setBounds(targetX, targetY, cwidth, cheight);
 									cpuCard.flipCard();
 									target.addCard(cpuCard);
+									reorderComponents(cpuCard);
 									cpu.getHand().remove(rInts.remove(i).intValue());
 									hasntMoved = false;
 									mbg.drawCardForPlayer(cpu);
@@ -512,6 +517,7 @@ public class GameBoard extends JFrame {
 				cpuCard.setBounds(targetX, targetY, cwidth, cheight);
 				cpuCard.flipCard();
 				target.addCard(cpuCard);
+				reorderComponents(cpuCard);
 				hasntMoved = false;
 				mbg.drawCardForPlayer(cpu);
 				this.reorganizeCpuCardGraphics();
@@ -545,7 +551,6 @@ public class GameBoard extends JFrame {
 			}
 			board.validate();
 		}
-		System.out.println("===========");
 		
 	}
 	private void drawDecks(){
