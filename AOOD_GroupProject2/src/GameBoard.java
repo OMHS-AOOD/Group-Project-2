@@ -128,7 +128,8 @@ public class GameBoard extends JFrame {
 				if(i > myStack.getVisibleStack().size()-1){
 					i = 0;
 				}
-				reorderComponents(myStack.getVisibleStack().get(i));
+				DraggableCard dc = myStack.getVisibleStack().get(i);
+				reorderComponents(dc);
 				i++;
 			}
 			
@@ -523,6 +524,7 @@ public class GameBoard extends JFrame {
 
 	
 	private void reorderComponents(Component topC){
+
 		Component[] components = board.getComponents();
 		int i = 0;
 		int index = -1;
@@ -537,11 +539,13 @@ public class GameBoard extends JFrame {
 			Component temp = components[index];
 			components[index] = components[0];
 			components[0] = temp;
+
 			for (Component comp : components) {
 			    board.add(comp);
-			}                
+			}
 			board.validate();
 		}
+		System.out.println("===========");
 		
 	}
 	private void drawDecks(){

@@ -127,6 +127,7 @@ public class HumanPlayer {
 						remChars.remove(i);
 						i--;
 						j--;
+						break;
 					}
 				}
 			}

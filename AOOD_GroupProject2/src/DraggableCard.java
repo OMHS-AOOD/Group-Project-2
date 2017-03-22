@@ -15,7 +15,6 @@ public class DraggableCard extends JPanel{
 	public DraggableCard(Card c, String o, int x, int y){
 		thisCard = c;
 		owner = o;
-		
 		image = new JLabel();
 		this.add(image);
 		
@@ -68,4 +67,5 @@ public class DraggableCard extends JPanel{
 	public int getWantedY(){
 		return wantedY;
 	}
+
 }

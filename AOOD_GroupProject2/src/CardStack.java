@@ -13,7 +13,6 @@ public class CardStack extends JPanel {
 	protected String name;
 	protected String owner;
 	protected Color myColor;
-	
 
 	public CardStack(String n, String o, Color c) {
 		stack = new ArrayList<Card>();
@@ -23,7 +22,6 @@ public class CardStack extends JPanel {
 		owner = o;
 		myColor = c;
 		this.setLayout(null);
-		
 
 	}
 
@@ -68,6 +66,8 @@ public class CardStack extends JPanel {
 			g.drawString(name, 10, 10);
 
 		}
+
+		
 	}
 
 	
@@ -101,4 +101,6 @@ public class CardStack extends JPanel {
 		}
 		return false;
 	}
+	
+
 }
