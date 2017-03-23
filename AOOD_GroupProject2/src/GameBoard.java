@@ -9,7 +9,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
-
+import javax.swing.UIManager;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
@@ -26,6 +26,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
+import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
 
 public class GameBoard extends JFrame {
@@ -41,6 +42,7 @@ public class GameBoard extends JFrame {
 	private JScrollPane pHaz, cHaz;
 	private DefaultListModel<String> pDLM, cDLM;
 	private JList pList, cList;
+
 	public GameBoard(MilleBornesGame m, HumanPlayer p, ComputerPlayer c) {
 		super("Mille Bornes");
 		mbg = m;
@@ -63,22 +65,20 @@ public class GameBoard extends JFrame {
 		c200 = new JLabel("200's used: " + cpu.getUsed200s());
 		pMove = new JLabel("Movement Status: Normal");
 		cMove = new JLabel("Movement Status: Normal");
-		
+
 		pDLM = new DefaultListModel<String>();
 		cDLM = new DefaultListModel<String>();
 		pList = new JList(pDLM);
 		cList = new JList(cDLM);
 		pHaz = new JScrollPane(pList);
 		cHaz = new JScrollPane(cList);
-		
+
 		pHaz.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 		cHaz.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 
 		pHaz.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		cHaz.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-
-		
 		this.add(playerScore, 800, 475, 300, 30);
 		this.add(cpuScore, 800, 10, 300, 30);
 
@@ -87,7 +87,7 @@ public class GameBoard extends JFrame {
 
 		this.add(pMove, 800, 500, 300, 30);
 		this.add(cMove, 800, 60, 300, 30);
-		
+
 		this.add(pHaz, 800, 560, 300, 75);
 		this.add(cHaz, 800, 95, 300, 75);
 
@@ -102,18 +102,21 @@ public class GameBoard extends JFrame {
 		pList.setBackground(Color.BLACK);
 		cList.setBackground(Color.BLACK);
 		board.setBackground(Color.BLACK);
-		
+
 		pList.setCellRenderer(new MyCellRenderer());
 		cList.setCellRenderer(new MyCellRenderer());
-		
-		playerScore.setFont(new Font("OCR A Std", Font.PLAIN, 18));
-		cpuScore.setFont(new Font("OCR A Std", Font.PLAIN, 18));
-		p200.setFont(new Font("OCR A Std", Font.PLAIN, 18));
-		c200.setFont(new Font("OCR A Std", Font.PLAIN, 18));
-		pMove.setFont(new Font("OCR A Std", Font.PLAIN, 18));
-		cMove.setFont(new Font("OCR A Std", Font.PLAIN, 18));
+
+		playerScore.setFont(new Font("OCR A Std", Font.PLAIN, 16));
+		cpuScore.setFont(new Font("OCR A Std", Font.PLAIN, 16));
+		p200.setFont(new Font("OCR A Std", Font.PLAIN, 16));
+		c200.setFont(new Font("OCR A Std", Font.PLAIN, 16));
+		pMove.setFont(new Font("OCR A Std", Font.PLAIN, 16));
+		cMove.setFont(new Font("OCR A Std", Font.PLAIN, 16));
 		pList.setFont(new Font("OCR A Std", Font.PLAIN, 12));
 		cList.setFont(new Font("OCR A Std", Font.PLAIN, 12));
+		
+		
+
 
 	}
 
@@ -139,7 +142,7 @@ public class GameBoard extends JFrame {
 		j.setBounds(x, y, w, h);
 	}
 
-	public void placeCard(DraggableCard j, int x, int y, int w, int h){
+	public void placeCard(DraggableCard j, int x, int y, int w, int h) {
 		if (j.getOwner().equals(player.getName())) {
 			j.addMouseMotionListener(new CardDrag());
 			reorganizeCardGraphics();
@@ -149,6 +152,7 @@ public class GameBoard extends JFrame {
 		}
 		j.setBounds(x, y, w, h);
 	}
+
 	public void returnToOriginalPos() {
 		int targetX = currentCardClicked.getWantedX();
 		int targetY = currentCardClicked.getWantedY();
@@ -198,6 +202,8 @@ public class GameBoard extends JFrame {
 				for (DraggableCard dc : myStack.getVisibleStack()) {
 					display = display + dc.getCard().getName() + "\n";
 				}
+
+				
 				JOptionPane.showMessageDialog(null, display, myStack.getName() + ": " + myStack.getOwner(),
 						JOptionPane.INFORMATION_MESSAGE);
 
@@ -697,29 +703,30 @@ public class GameBoard extends JFrame {
 		updateMoveText(l4, p2);
 
 	}
-	
-	private void updateHazards(){
+
+	private void updateHazards() {
 		ArrayList<String> temp = player.getCurrentHazards();
 		pDLM.removeAllElements();
-		for(String str: temp){
+		for (String str : temp) {
 			pDLM.addElement(str);
 		}
 		ArrayList<String> temp2 = cpu.getCurrentHazards();
 		cDLM.removeAllElements();
-		for(String str: temp2){
+		for (String str : temp2) {
 			cDLM.addElement(str);
 		}
 	}
-	public class MyCellRenderer extends DefaultListCellRenderer {
-	     @Override
-	     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-	         Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-	         if (isSelected) {
-	             c.setBackground(Color.WHITE);
-	         }
-	         return c;
-	     }
-	}
 
+	public class MyCellRenderer extends DefaultListCellRenderer {
+		@Override
+		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+				boolean cellHasFocus) {
+			Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+			if (isSelected) {
+				c.setBackground(Color.WHITE);
+			}
+			return c;
+		}
+	}
 
 }

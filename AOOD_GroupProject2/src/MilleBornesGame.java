@@ -1,10 +1,12 @@
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 public class MilleBornesGame {
 	private Deck deck;
@@ -14,6 +16,12 @@ public class MilleBornesGame {
 	private GameBoard gb;
 
 	public MilleBornesGame() {
+		UIManager.put("OptionPane.background", Color.black);
+		UIManager.put("OptionPane.messageForeground", Color.green);
+		UIManager.put("OptionPane.messageDialogTitle", Color.black);
+		UIManager.put("Panel.background", Color.BLACK);
+		UIManager.put("OptionPane.messageFont", new Font("OCR A Std", Font.PLAIN, 12));
+		
 		deck = new Deck();
 		discard = new CardStack("Discard", "", Color.BLUE);
 		String name = JOptionPane.showInputDialog("Enter a username(10 characters or less)");
@@ -70,6 +78,9 @@ public class MilleBornesGame {
 
 	}
 	public void gameWon(String winner){
+		if(winner.equals(cpu.getName())){
+			UIManager.put("OptionPane.messageForeground", Color.red);
+		}
 		JOptionPane.showMessageDialog(null, "The winner is " + winner + "!", "Winner" , JOptionPane.INFORMATION_MESSAGE);
 		System.exit(0);
 
