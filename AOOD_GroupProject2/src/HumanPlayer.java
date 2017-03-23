@@ -58,10 +58,6 @@ public class HumanPlayer {
 		return safety;
 	}
 
-	public void adjustPointsToWin(int i) {
-		pointsToWin = pointsToWin - i;
-	}
-
 	public int getCurrentPoints() {
 		int points = 0;
 		for (Card c : distance.getStack()) {
@@ -75,7 +71,7 @@ public class HumanPlayer {
 	}
 
 	public boolean hasWon(HumanPlayer other) {
-		if(other.getCurrentPoints() == 0 && this.getCurrentPoints()>900){
+		if (other.getCurrentPoints() == 0 && this.getCurrentPoints() > 900) {
 			return true;
 		}
 		if (getCurrentPoints() == pointsToWin) {
@@ -99,16 +95,16 @@ public class HumanPlayer {
 		for (Card c : safety.getStack()) {
 			safChars.add(((SafetyCard) c).getType());
 		}
-		for(int i = 0; i < safChars.size(); i++){
-			for(int j = 0; j < hazChars.size(); j++){	
+		for (int i = 0; i < safChars.size(); i++) {
+			for (int j = 0; j < hazChars.size(); j++) {
 				if (safChars.get(i).charValue() == hazChars.get(j).charValue()) {
 					hazChars.remove(j);
 					j--;
 				}
 			}
 		}
-		for(int i = 0; i < remChars.size(); i++){
-			for(int j = 0; j < hazChars.size(); j++){	
+		for (int i = 0; i < remChars.size(); i++) {
+			for (int j = 0; j < hazChars.size(); j++) {
 				if (remChars.get(i).charValue() == hazChars.get(j).charValue()) {
 					hazChars.remove(j);
 					remChars.remove(i);
@@ -118,10 +114,10 @@ public class HumanPlayer {
 				}
 			}
 		}
-		
+
 		if (hazChars.size() > 0) {
-			for(int i = 0; i < remChars.size(); i++){
-				for(int j = 0; j < hazChars.size(); j++){	
+			for (int i = 0; i < remChars.size(); i++) {
+				for (int j = 0; j < hazChars.size(); j++) {
 					if (remChars.get(i).charValue() == '*') {
 						hazChars.remove(j);
 						remChars.remove(i);
@@ -132,7 +128,7 @@ public class HumanPlayer {
 				}
 			}
 		}
-		
+
 		if (hazChars.size() > 0) {
 			return false;
 		}
@@ -155,18 +151,16 @@ public class HumanPlayer {
 			safChars.add(((SafetyCard) c).getType());
 		}
 
-
-		
-		for(int i = 0; i < safChars.size(); i++){
-			for(int j = 0; j < hazChars.size(); j++){	
+		for (int i = 0; i < safChars.size(); i++) {
+			for (int j = 0; j < hazChars.size(); j++) {
 				if (safChars.get(i).charValue() == hazChars.get(j).charValue()) {
 					hazChars.remove(j);
 					j--;
 				}
 			}
 		}
-		for(int i = 0; i < remChars.size(); i++){
-			for(int j = 0; j < hazChars.size(); j++){	
+		for (int i = 0; i < remChars.size(); i++) {
+			for (int j = 0; j < hazChars.size(); j++) {
 				if (remChars.get(i).charValue() == hazChars.get(j).charValue()) {
 					hazChars.remove(j);
 					remChars.remove(i);
@@ -178,8 +172,8 @@ public class HumanPlayer {
 		}
 
 		if (hazChars.size() > 0) {
-			for(int i = 0; i < remChars.size(); i++){
-				for(int j = 0; j < hazChars.size(); j++){	
+			for (int i = 0; i < remChars.size(); i++) {
+				for (int j = 0; j < hazChars.size(); j++) {
 					if (remChars.get(i).charValue() == '*') {
 						hazChars.remove(j);
 						remChars.remove(i);
@@ -189,7 +183,7 @@ public class HumanPlayer {
 				}
 			}
 		}
-		
+
 		if (hazChars.size() > 1) {
 			return false;
 		}
@@ -202,11 +196,143 @@ public class HumanPlayer {
 	public ArrayList<DraggableCard> getHand() {
 		return visibleCards;
 	}
-	public int getUsed200s(){
+
+	public int getUsed200s() {
 		return used200s;
 	}
-	public void add200(){
+
+	public void add200() {
 		used200s++;
 	}
 
+	public boolean willTakeBattleCard(DraggableCard dc) {
+		ArrayList<Character> remChars = new ArrayList<Character>();
+		ArrayList<Character> hazChars = new ArrayList<Character>();
+		ArrayList<Character> safChars = new ArrayList<Character>();
+		for (Card c : battle.getStack()) {
+			if (c instanceof RemedyCard) {
+				remChars.add(((RemedyCard) c).getType());
+			} else if (c instanceof HazardCard) {
+				hazChars.add(((HazardCard) c).getType());
+			}
+		}
+		for (Card c : safety.getStack()) {
+			safChars.add(((SafetyCard) c).getType());
+		}
+
+		for (int i = 0; i < safChars.size(); i++) {
+			for (int j = 0; j < hazChars.size(); j++) {
+				if (safChars.get(i).charValue() == hazChars.get(j).charValue()) {
+					hazChars.remove(j);
+					j--;
+				}
+			}
+		}
+		for (int i = 0; i < remChars.size(); i++) {
+			for (int j = 0; j < hazChars.size(); j++) {
+				if (remChars.get(i).charValue() == hazChars.get(j).charValue()) {
+					hazChars.remove(j);
+					remChars.remove(i);
+					i--;
+					j--;
+					break;
+				}
+			}
+		}
+
+		if (hazChars.size() > 0) {
+			for (int i = 0; i < remChars.size(); i++) {
+				for (int j = 0; j < hazChars.size(); j++) {
+					if (remChars.get(i).charValue() == '*') {
+						hazChars.remove(j);
+						remChars.remove(i);
+						i--;
+						j--;
+					}
+				}
+			}
+		}
+
+		if (hazChars.size() == 0) {
+			return true;
+		} else {
+			for (Character c : hazChars) {
+				if (c.charValue() == ((HazardCard) dc.getCard()).getType()) {
+					return false;
+				}
+			}
+			for(Character c: safChars){
+				if (c.charValue() == ((HazardCard) dc.getCard()).getType()) {
+					return false;
+				}
+			}
+		}
+		return true;
+
+	}
+
+	public boolean willTakeRemedyCard(DraggableCard dc) {
+		ArrayList<Character> remChars = new ArrayList<Character>();
+		ArrayList<Character> hazChars = new ArrayList<Character>();
+		ArrayList<Character> safChars = new ArrayList<Character>();
+		for (Card c : battle.getStack()) {
+			if (c instanceof RemedyCard) {
+				remChars.add(((RemedyCard) c).getType());
+			} else if (c instanceof HazardCard) {
+				hazChars.add(((HazardCard) c).getType());
+			}
+		}
+		for (Card c : safety.getStack()) {
+			safChars.add(((SafetyCard) c).getType());
+		}
+
+		for (int i = 0; i < safChars.size(); i++) {
+			for (int j = 0; j < hazChars.size(); j++) {
+				if (safChars.get(i).charValue() == hazChars.get(j).charValue()) {
+					hazChars.remove(j);
+					j--;
+				}
+			}
+		}
+		for (int i = 0; i < remChars.size(); i++) {
+			for (int j = 0; j < hazChars.size(); j++) {
+				if (remChars.get(i).charValue() == hazChars.get(j).charValue()) {
+					hazChars.remove(j);
+					remChars.remove(i);
+					i--;
+					j--;
+					break;
+				}
+			}
+		}
+
+		if (hazChars.size() > 0) {
+			for (int i = 0; i < remChars.size(); i++) {
+				for (int j = 0; j < hazChars.size(); j++) {
+					if (remChars.get(i).charValue() == '*') {
+						hazChars.remove(j);
+						remChars.remove(i);
+						i--;
+						j--;
+					}
+				}
+			}
+		}
+
+		if (hazChars.size() == 0) {
+			return false;
+		}
+		if (((RemedyCard) dc.getCard()).getType() == '*') {
+			return true;
+		}
+
+		for (Character c : hazChars) {
+			if (c.charValue() == ((RemedyCard) dc.getCard()).getType()) {
+				return true;
+			}
+		}
+
+		return false;
+
+	}
 }

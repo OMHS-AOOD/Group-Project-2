@@ -29,20 +29,20 @@ public class MilleBornesGame {
 		gb = new GameBoard(this, player, cpu);
 		
 
-		gb.add(player.getDistance(), 150, 250, 130, 193);
-		gb.add(player.getSafety(), 290, 250, 130, 193);
-		gb.add(player.getBattle(), 430, 250, 130, 193);
-		gb.add(cpu.getDistance(), 850, 250, 130, 193);
-		gb.add(cpu.getSafety(), 710, 250, 130, 193);
-		gb.add(cpu.getBattle(), 570, 250, 130, 193);
-		gb.add(deck, 10, 250, 130, 193);
+		gb.add(player.getDistance(), 150, 250, 130, 198);
+		gb.add(player.getSafety(), 290, 250, 130, 198);
+		gb.add(player.getBattle(), 430, 250, 130, 198);
+		gb.add(cpu.getDistance(), 850, 250, 130, 198);
+		gb.add(cpu.getSafety(), 710, 250, 130, 198);
+		gb.add(cpu.getBattle(), 570, 250, 130, 198);
+		gb.add(deck, 10, 250, 130, 198);
 		
 		discard.setColor(Color.BLUE);
-		gb.add(discard, 990, 250, 130, 193);
+		gb.add(discard, 990, 250, 130, 198);
 
 		
 		for(DraggableCard dc: deck.getVisibleStack()){
-			gb.add(dc, deck.getX()+15, deck.getY()+30, 100, 153);
+			gb.add(dc, deck.getX()+15, deck.getY()+35, 100, 153);
 		}
 		
 		for (int i = 0; i < 6; i++) {
@@ -60,8 +60,8 @@ public class MilleBornesGame {
 		for (int i = 0; i < 6; i++) {
 			DraggableCard dc = player.getCard(i);
 			DraggableCard dc2 = cpu.getCard(i);
-			gb.add(dc, (i * 120) + 10, 475, 100, 153);
-			gb.add(dc2, (i * 120) + 10, 10, 100, 153);
+			gb.placeCard(dc, (i * 120) + 10, 475, 100, 153);
+			gb.placeCard(dc2, (i * 120) + 10, 10, 100, 153);
 			dc.flipCard();
 		}
 		

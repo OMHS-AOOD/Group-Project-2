@@ -58,7 +58,7 @@ public class CardStack extends JPanel {
 	public void paintComponent(Graphics g) {
 		g.setColor(myColor);
 		g.drawRect(10, 15, this.getWidth() - 20, this.getHeight() - 20);
-		g.fillRect(10, 15, this.getWidth()-20, 20);
+		g.fillRect(10, 15, this.getWidth()-20, 15);
 		if (owner != "") {
 			g.drawString(name + "(" + owner + ")", 10, 10);
 

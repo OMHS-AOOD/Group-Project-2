@@ -81,7 +81,7 @@ public class Deck extends CardStack {
 	
 	public void createDraggableCards(){
 		for(Card c: stack){
-			DraggableCard drc = new DraggableCard(c, "", this.getX() + 15, this.getY() + 30);
+			DraggableCard drc = new DraggableCard(c, "", this.getX() + 15, this.getY() + 35);
 			visibleStack.add(drc);
 			drc.flipCard();
 		}
@@ -93,7 +93,7 @@ public class Deck extends CardStack {
 			stack.add(discard.getStack().remove(index));
 		}
 		for(DraggableCard dc: discard.getVisibleStack()){
-			dc.setBounds(this.getX() +15, this.getY() + 30, dc.getWidth(), dc.getHeight());
+			dc.setBounds(this.getX() +15, this.getY() + 35, dc.getWidth(), dc.getHeight());
 		}
 	}
 

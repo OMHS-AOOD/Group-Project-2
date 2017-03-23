@@ -17,7 +17,9 @@ public class DraggableCard extends JPanel{
 		owner = o;
 		image = new JLabel();
 		this.add(image);
-		
+
+		this.setLayout(null);
+		image.setBounds(0, 0, 100, 153);
 		currentImage = c.getImage();
 		image.setIcon(currentImage);
 		 
