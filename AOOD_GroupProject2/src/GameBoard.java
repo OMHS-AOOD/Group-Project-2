@@ -203,7 +203,15 @@ public class GameBoard extends JFrame {
 					display = display + dc.getCard().getName() + "\n";
 				}
 
-				
+				if(myStack.getOwner().equals(player.getName())){
+					UIManager.put("OptionPane.messageForeground", Color.green);
+				}
+				else if(myStack.getOwner().equals(cpu.getName())){
+					UIManager.put("OptionPane.messageForeground", Color.red);
+				}
+				else{
+					UIManager.put("OptionPane.messageForeground", Color.blue);
+				}
 				JOptionPane.showMessageDialog(null, display, myStack.getName() + ": " + myStack.getOwner(),
 						JOptionPane.INFORMATION_MESSAGE);
 
