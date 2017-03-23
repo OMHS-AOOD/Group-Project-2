@@ -106,14 +106,14 @@ public class GameBoard extends JFrame {
 		pList.setCellRenderer(new MyCellRenderer());
 		cList.setCellRenderer(new MyCellRenderer());
 		
-		playerScore.setFont(new Font("Rapscallion", Font.PLAIN, 24));
-		cpuScore.setFont(new Font("Rapscallion", Font.PLAIN, 24));
-		p200.setFont(new Font("Rapscallion", Font.PLAIN, 24));
-		c200.setFont(new Font("Rapscallion", Font.PLAIN, 24));
-		pMove.setFont(new Font("Rapscallion", Font.PLAIN, 24));
-		cMove.setFont(new Font("Rapscallion", Font.PLAIN, 24));
-		pList.setFont(new Font("Rapscallion", Font.PLAIN, 14));
-		cList.setFont(new Font("Rapscallion", Font.PLAIN, 14));
+		playerScore.setFont(new Font("OCR A Std", Font.PLAIN, 18));
+		cpuScore.setFont(new Font("OCR A Std", Font.PLAIN, 18));
+		p200.setFont(new Font("OCR A Std", Font.PLAIN, 18));
+		c200.setFont(new Font("OCR A Std", Font.PLAIN, 18));
+		pMove.setFont(new Font("OCR A Std", Font.PLAIN, 18));
+		cMove.setFont(new Font("OCR A Std", Font.PLAIN, 18));
+		pList.setFont(new Font("OCR A Std", Font.PLAIN, 12));
+		cList.setFont(new Font("OCR A Std", Font.PLAIN, 12));
 
 	}
 
