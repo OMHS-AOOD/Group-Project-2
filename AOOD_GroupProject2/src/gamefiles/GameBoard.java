@@ -1,3 +1,4 @@
+package gamefiles;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -205,12 +206,18 @@ public class GameBoard extends JFrame {
 
 				if(myStack.getOwner().equals(player.getName())){
 					UIManager.put("OptionPane.messageForeground", Color.green);
+					UIManager.put("Button.foreground", Color.GREEN);
+
 				}
 				else if(myStack.getOwner().equals(cpu.getName())){
 					UIManager.put("OptionPane.messageForeground", Color.red);
+					UIManager.put("Button.foreground", Color.red);
+
 				}
 				else{
 					UIManager.put("OptionPane.messageForeground", Color.blue);
+					UIManager.put("Button.foreground", Color.blue);
+
 				}
 				JOptionPane.showMessageDialog(null, display, myStack.getName() + ": " + myStack.getOwner(),
 						JOptionPane.INFORMATION_MESSAGE);

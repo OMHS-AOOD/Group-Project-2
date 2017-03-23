@@ -1,3 +1,4 @@
+package gamefiles;
 
 public class DistanceCard extends Card {
 	private int value;

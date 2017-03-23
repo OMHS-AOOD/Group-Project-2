@@ -1,3 +1,4 @@
+package gamefiles;
 import java.awt.Color;
 
 import javax.swing.ImageIcon;
@@ -17,12 +18,11 @@ public class DraggableCard extends JPanel{
 		owner = o;
 		image = new JLabel();
 		this.add(image);
-
+		this.setVisible(true);
 		this.setLayout(null);
 		image.setBounds(0, 0, 100, 153);
-		currentImage = c.getImage();
+		currentImage = thisCard.getImage();
 		image.setIcon(currentImage);
-		 
 		draggable = true;
 		wantedX = x;
 		wantedY = y;

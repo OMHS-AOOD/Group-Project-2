@@ -1,3 +1,4 @@
+package gamefiles;
 
 public class HazardCard extends Card {
 	private char type;

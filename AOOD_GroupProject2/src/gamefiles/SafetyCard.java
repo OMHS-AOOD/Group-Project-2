@@ -1,5 +1,6 @@
+package gamefiles;
 
-public class RemedyCard extends Card {
+public class SafetyCard extends Card {
 	private char type;
 	//'s' = Go
 	//'a' = Repairs
@@ -7,7 +8,7 @@ public class RemedyCard extends Card {
 	//'o' = Gasoline
 	//'f' = Spare Tire
 	//'*' = Road Service
-	public RemedyCard(String n, char t){
+	public SafetyCard(String n, char t){
 		super(n);
 		type = t;
 	}

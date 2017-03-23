@@ -1,3 +1,4 @@
+package gamefiles;
 import java.awt.Color;
 
 public class ComputerPlayer extends HumanPlayer {

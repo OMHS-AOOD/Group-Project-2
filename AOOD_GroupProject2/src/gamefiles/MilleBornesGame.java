@@ -1,3 +1,4 @@
+package gamefiles;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -21,14 +22,20 @@ public class MilleBornesGame {
 		UIManager.put("OptionPane.messageDialogTitle", Color.black);
 		UIManager.put("Panel.background", Color.BLACK);
 		UIManager.put("OptionPane.messageFont", new Font("OCR A Std", Font.PLAIN, 12));
+		UIManager.put("Button.background", Color.black);
+		UIManager.put("Button.foreground", Color.GREEN);
+		UIManager.put("Button.select", Color.white);
+
+
+
 		
 		deck = new Deck();
 		discard = new CardStack("Discard", "", Color.BLUE);
 		String name = JOptionPane.showInputDialog("Enter a username(10 characters or less)");
-		if (name == null) {
+		if (name == null || name.equals("")) {
 			player = new HumanPlayer("Player");
 		} else if(name.length() <= 10) {
-			player = new HumanPlayer(name);
+			player = new HumanPlayer(name.trim());
 		}
 		else{
 			player = new HumanPlayer("Player");
@@ -80,6 +87,16 @@ public class MilleBornesGame {
 	public void gameWon(String winner){
 		if(winner.equals(cpu.getName())){
 			UIManager.put("OptionPane.messageForeground", Color.red);
+			UIManager.put("Button.foreground", Color.RED);
+			UIManager.put("Button.foreground", Color.RED);
+
+
+		}
+		else{
+			UIManager.put("OptionPane.messageForeground", Color.green);
+			UIManager.put("Button.foreground", Color.green);
+			UIManager.put("Button.foreground", Color.GREEN);
+
 		}
 		JOptionPane.showMessageDialog(null, "The winner is " + winner + "!", "Winner" , JOptionPane.INFORMATION_MESSAGE);
 		System.exit(0);
@@ -95,6 +112,8 @@ public class MilleBornesGame {
 		if(dc.getOwner().equals(player.getName())){
 			dc.setFlip(false);
 		}
+
+
 
 	}
 	private void checkIfDeckNeedsReforming(){
