@@ -1,6 +1,8 @@
 import java.awt.Color;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 public class Deck extends CardStack {
 	public Deck() {
 		super("Deck", "", Color.BLACK);
@@ -86,14 +88,16 @@ public class Deck extends CardStack {
 			drc.flipCard();
 		}
 	}
-	
+
 	public void reformDeck(CardStack discard){
 		while(discard.getVisibleStack().size() > 0){
-			int index = (int)(Math.random()*discard.getVisibleStack().size());
+			int index = (int)(Math.random()*(discard.getVisibleStack().size()-1));
 			stack.add(discard.getStack().remove(index));
+			visibleStack.add(discard.getVisibleStack().remove(index));
 		}
-		for(DraggableCard dc: discard.getVisibleStack()){
+		for(DraggableCard dc: visibleStack){
 			dc.setBounds(this.getX() +15, this.getY() + 35, dc.getWidth(), dc.getHeight());
+			dc.setFlip(true);
 		}
 	}
 

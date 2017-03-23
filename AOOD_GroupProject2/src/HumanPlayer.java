@@ -261,7 +261,7 @@ public class HumanPlayer {
 					return false;
 				}
 			}
-			for(Character c: safChars){
+			for (Character c : safChars) {
 				if (c.charValue() == ((HazardCard) dc.getCard()).getType()) {
 					return false;
 				}
@@ -334,5 +334,77 @@ public class HumanPlayer {
 
 		return false;
 
+	}
+
+	public ArrayList<String> getCurrentHazards(){
+		ArrayList<Character> remChars = new ArrayList<Character>();
+		ArrayList<Character> hazChars = new ArrayList<Character>();
+		ArrayList<Character> safChars = new ArrayList<Character>();
+		for (Card c : battle.getStack()) {
+			if (c instanceof RemedyCard) {
+				remChars.add(((RemedyCard) c).getType());
+			} else if (c instanceof HazardCard) {
+				hazChars.add(((HazardCard) c).getType());
+			}
+		}
+		for (Card c : safety.getStack()) {
+			safChars.add(((SafetyCard) c).getType());
+		}
+
+		for (int i = 0; i < safChars.size(); i++) {
+			for (int j = 0; j < hazChars.size(); j++) {
+				if (safChars.get(i).charValue() == hazChars.get(j).charValue()) {
+					hazChars.remove(j);
+					j--;
+				}
+			}
+		}
+		for (int i = 0; i < remChars.size(); i++) {
+			for (int j = 0; j < hazChars.size(); j++) {
+				if (remChars.get(i).charValue() == hazChars.get(j).charValue()) {
+					hazChars.remove(j);
+					remChars.remove(i);
+					i--;
+					j--;
+					break;
+				}
+			}
+		}
+
+		if (hazChars.size() > 0) {
+			for (int i = 0; i < remChars.size(); i++) {
+				for (int j = 0; j < hazChars.size(); j++) {
+					if (remChars.get(i).charValue() == '*') {
+						hazChars.remove(j);
+						remChars.remove(i);
+						i--;
+						j--;
+					}
+				}
+			}
+		}
+		
+		if(hazChars.size() == 0){
+			return new ArrayList<String>();
+		}
+		ArrayList<String> output = new ArrayList<String>();
+		for(Character h: hazChars){
+			if(h == 's'){
+				output.add("Stop");
+			}
+			if(h == 'a'){
+				output.add("Accident");
+			}
+			if(h == 'l'){
+				output.add("Speed Limit");
+			}
+			if(h == 'o'){
+				output.add("Out of Gas");
+			}
+			if(h == 'f'){
+				output.add("Flat Tire");
+			}
+		}
+		return output;
 	}
 }

@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
@@ -33,7 +34,8 @@ public class CardStack extends JPanel {
 	}
 
 	public DraggableCard removeCard() {
-
+		if(stack.size() == 0){
+		}
 		stack.remove(stack.size() - 1);
 		return visibleStack.remove(visibleStack.size()-1);
 	}
@@ -59,8 +61,9 @@ public class CardStack extends JPanel {
 		g.setColor(myColor);
 		g.drawRect(10, 15, this.getWidth() - 20, this.getHeight() - 20);
 		g.fillRect(10, 15, this.getWidth()-20, 15);
+		g.setFont(new Font("Rapscallion", Font.PLAIN, 12));
 		if (owner != "") {
-			g.drawString(name + "(" + owner + ")", 10, 10);
+			g.drawString(name + ": " + owner, 10, 10);
 
 		} else {
 			g.drawString(name, 10, 10);

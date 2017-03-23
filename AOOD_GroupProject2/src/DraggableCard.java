@@ -46,6 +46,10 @@ public class DraggableCard extends JPanel{
 		thisCard.flip();
 		updateImage();
 	}
+	public void setFlip(boolean b){
+		thisCard.setFlipped(b);
+		updateImage();
+	}
 	public String getOwner(){
 		return owner;
 	}

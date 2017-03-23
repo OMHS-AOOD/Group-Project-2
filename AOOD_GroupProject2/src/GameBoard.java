@@ -1,5 +1,7 @@
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,15 +11,19 @@ import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JList;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
@@ -32,7 +38,9 @@ public class GameBoard extends JFrame {
 	private HumanPlayer player;
 	private ComputerPlayer cpu;
 	private DraggableCard previousCpuCard;
-
+	private JScrollPane pHaz, cHaz;
+	private DefaultListModel<String> pDLM, cDLM;
+	private JList pList, cList;
 	public GameBoard(MilleBornesGame m, HumanPlayer p, ComputerPlayer c) {
 		super("Mille Bornes");
 		mbg = m;
@@ -50,19 +58,38 @@ public class GameBoard extends JFrame {
 		playerPiles = new ArrayList<CardStack>();
 		cpuPiles = new ArrayList<CardStack>();
 		playerScore = new JLabel(player.getName() + ": " + player.getCurrentPoints() + " Miles");
-		cpuScore = new JLabel(cpu.getName() + ": " + cpu.getCurrentPoints());
+		cpuScore = new JLabel(cpu.getName() + ": " + cpu.getCurrentPoints() + " Miles");
 		p200 = new JLabel("200's used: " + player.getUsed200s());
 		c200 = new JLabel("200's used: " + cpu.getUsed200s());
 		pMove = new JLabel("Movement Status: Normal");
 		cMove = new JLabel("Movement Status: Normal");
+		
+		pDLM = new DefaultListModel<String>();
+		cDLM = new DefaultListModel<String>();
+		pList = new JList(pDLM);
+		cList = new JList(cDLM);
+		pHaz = new JScrollPane(pList);
+		cHaz = new JScrollPane(cList);
+		
+		pHaz.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		cHaz.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+
+		pHaz.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		cHaz.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+
+		
 		this.add(playerScore, 800, 475, 300, 30);
-		this.add(cpuScore, 800, 520, 300, 30);
+		this.add(cpuScore, 800, 10, 300, 30);
 
-		this.add(p200, 800, 505, 300, 30);
-		this.add(c200, 800, 550, 300, 30);
+		this.add(p200, 800, 525, 300, 30);
+		this.add(c200, 800, 35, 300, 30);
 
-		this.add(pMove, 800, 490, 300, 30);
-		this.add(cMove, 800, 535, 300, 30);
+		this.add(pMove, 800, 500, 300, 30);
+		this.add(cMove, 800, 60, 300, 30);
+		
+		this.add(pHaz, 800, 560, 300, 75);
+		this.add(cHaz, 800, 95, 300, 75);
 
 		playerScore.setForeground(Color.GREEN);
 		cpuScore.setForeground(Color.RED);
@@ -70,7 +97,23 @@ public class GameBoard extends JFrame {
 		c200.setForeground(Color.RED);
 		pMove.setForeground(Color.GREEN);
 		cMove.setForeground(Color.RED);
+		pList.setForeground(Color.GREEN);
+		cList.setForeground(Color.RED);
+		pList.setBackground(Color.BLACK);
+		cList.setBackground(Color.BLACK);
 		board.setBackground(Color.BLACK);
+		
+		pList.setCellRenderer(new MyCellRenderer());
+		cList.setCellRenderer(new MyCellRenderer());
+		
+		playerScore.setFont(new Font("Rapscallion", Font.PLAIN, 24));
+		cpuScore.setFont(new Font("Rapscallion", Font.PLAIN, 24));
+		p200.setFont(new Font("Rapscallion", Font.PLAIN, 24));
+		c200.setFont(new Font("Rapscallion", Font.PLAIN, 24));
+		pMove.setFont(new Font("Rapscallion", Font.PLAIN, 24));
+		cMove.setFont(new Font("Rapscallion", Font.PLAIN, 24));
+		pList.setFont(new Font("Rapscallion", Font.PLAIN, 14));
+		cList.setFont(new Font("Rapscallion", Font.PLAIN, 14));
 
 	}
 
@@ -122,7 +165,7 @@ public class GameBoard extends JFrame {
 				dc.removeMouseListener(dc.getMouseListeners()[0]);
 			}
 			dc.addMouseListener(new CardClick(i));
-			dc.updateWanted((i * 120), 475);
+			dc.updateWanted((i * 120) + 10, 475);
 			dc.setBounds(dc.getWantedX(), dc.getWantedY(), 100, 153);
 			i++;
 		}
@@ -132,7 +175,7 @@ public class GameBoard extends JFrame {
 		for (int i = 0; i < cpu.getHand().size(); i++) {
 			DraggableCard dc = cpu.getHand().get(i);
 			dc.setBounds((i * 120) + 10, 10, 100, 153);
-			dc.getCard().setFlipped(true);
+			dc.setFlip(true);
 		}
 	}
 
@@ -250,6 +293,7 @@ public class GameBoard extends JFrame {
 				mbg.drawCardForPlayer(player);
 				player.getCard(player.getHand().size() - 1).addMouseMotionListener(new CardDrag());
 				this.reorganizeCardGraphics();
+				updateHazards();
 				this.updateLabels(playerScore, p200, pMove, player, cMove, cpu);
 				this.cpuTurn();
 			} else {
@@ -368,13 +412,14 @@ public class GameBoard extends JFrame {
 					reorderComponents(cpuCard);
 					cpu.getHand().remove(sInts.remove(0).intValue());
 					hasntMoved = false;
+					updateHazards();
 					borderLastCpuCard(cpuCard);
 					this.updateLabels(playerScore, p200, pMove, player, cMove, cpu);
 					mbg.drawCardForPlayer(cpu);
 					this.reorganizeCpuCardGraphics();
 				}
 			}
-			if (cpu.canMove() && allHazards.size() > 0 && hasntMoved) {
+			if (allHazards.size() > 0 && hasntMoved) {
 				CardStack target = player.getBattle();
 				DraggableCard cpuCard = allHazards.get(0);
 				if (isValidMove(target, cpuCard, cpu, player)) {
@@ -388,6 +433,7 @@ public class GameBoard extends JFrame {
 					reorderComponents(cpuCard);
 					cpu.getHand().remove(hInts.remove(0).intValue());
 					hasntMoved = false;
+					updateHazards();
 					borderLastCpuCard(cpuCard);
 					this.updateLabels(playerScore, p200, pMove, player, cMove, cpu);
 					mbg.drawCardForPlayer(cpu);
@@ -419,6 +465,7 @@ public class GameBoard extends JFrame {
 						reorderComponents(cpuCard);
 						cpu.getHand().remove(dInts.remove(ind).intValue());
 						hasntMoved = false;
+						updateHazards();
 						borderLastCpuCard(cpuCard);
 						mbg.drawCardForPlayer(cpu);
 						this.updateLabels(cpuScore, c200, cMove, cpu, pMove, player);
@@ -457,6 +504,7 @@ public class GameBoard extends JFrame {
 						reorderComponents(cpuCard);
 						cpu.getHand().remove(dInts.remove(ind).intValue());
 						hasntMoved = false;
+						updateHazards();
 						borderLastCpuCard(cpuCard);
 						mbg.drawCardForPlayer(cpu);
 						this.updateLabels(cpuScore, c200, cMove, cpu, pMove, player);
@@ -536,6 +584,7 @@ public class GameBoard extends JFrame {
 									reorderComponents(cpuCard);
 									cpu.getHand().remove(rInts.remove(i).intValue());
 									hasntMoved = false;
+									updateHazards();
 									borderLastCpuCard(cpuCard);
 									this.updateLabels(playerScore, p200, pMove, player, cMove, cpu);
 									mbg.drawCardForPlayer(cpu);
@@ -562,6 +611,7 @@ public class GameBoard extends JFrame {
 				borderLastCpuCard(cpuCard);
 				reorderComponents(cpuCard);
 				hasntMoved = false;
+				updateHazards();
 				this.updateLabels(playerScore, p200, pMove, player, cMove, cpu);
 				mbg.drawCardForPlayer(cpu);
 				this.reorganizeCpuCardGraphics();
@@ -647,4 +697,29 @@ public class GameBoard extends JFrame {
 		updateMoveText(l4, p2);
 
 	}
+	
+	private void updateHazards(){
+		ArrayList<String> temp = player.getCurrentHazards();
+		pDLM.removeAllElements();
+		for(String str: temp){
+			pDLM.addElement(str);
+		}
+		ArrayList<String> temp2 = cpu.getCurrentHazards();
+		cDLM.removeAllElements();
+		for(String str: temp2){
+			cDLM.addElement(str);
+		}
+	}
+	public class MyCellRenderer extends DefaultListCellRenderer {
+	     @Override
+	     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+	         Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+	         if (isSelected) {
+	             c.setBackground(Color.WHITE);
+	         }
+	         return c;
+	     }
+	}
+
+
 }

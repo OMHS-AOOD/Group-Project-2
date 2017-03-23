@@ -19,7 +19,7 @@ public class MilleBornesGame {
 		String name = JOptionPane.showInputDialog("Enter a username(10 characters or less)");
 		if (name == null) {
 			player = new HumanPlayer("Player");
-		} else if(name.length() < 10) {
+		} else if(name.length() <= 10) {
 			player = new HumanPlayer(name);
 		}
 		else{
@@ -29,16 +29,16 @@ public class MilleBornesGame {
 		gb = new GameBoard(this, player, cpu);
 		
 
-		gb.add(player.getDistance(), 150, 250, 130, 198);
-		gb.add(player.getSafety(), 290, 250, 130, 198);
-		gb.add(player.getBattle(), 430, 250, 130, 198);
-		gb.add(cpu.getDistance(), 850, 250, 130, 198);
-		gb.add(cpu.getSafety(), 710, 250, 130, 198);
-		gb.add(cpu.getBattle(), 570, 250, 130, 198);
-		gb.add(deck, 10, 250, 130, 198);
+		gb.add(player.getDistance(), 150, 225, 130, 198);
+		gb.add(player.getSafety(), 290, 225, 130, 198);
+		gb.add(player.getBattle(), 430, 225, 130, 198);
+		gb.add(cpu.getDistance(), 850, 225, 130, 198);
+		gb.add(cpu.getSafety(), 710, 225, 130, 198);
+		gb.add(cpu.getBattle(), 570, 225, 130, 198);
+		gb.add(deck, 10, 225, 130, 198);
 		
 		discard.setColor(Color.BLUE);
-		gb.add(discard, 990, 250, 130, 198);
+		gb.add(discard, 990, 225, 130, 198);
 
 		
 		for(DraggableCard dc: deck.getVisibleStack()){
@@ -76,21 +76,29 @@ public class MilleBornesGame {
 	}
 	
 	public void drawCardForPlayer(HumanPlayer p){
+		checkIfDeckNeedsReforming();
 		DraggableCard dc = deck.removeCard();
 		p.addCardToHand(dc);
 		dc.updateWanted(5*120,  475);
 		dc.setOwner(p.getName());
 		if(dc.getOwner().equals(player.getName())){
-			dc.flipCard();
+			dc.setFlip(false);
 		}
 
 	}
-	
+	private void checkIfDeckNeedsReforming(){
+		if(deck.getVisibleStack().size() == 0 && discard.getVisibleStack().size()>0){
+			deck.reformDeck(discard);
+		}
+		else if(deck.getVisibleStack().size() == 0 && discard.getVisibleStack().size()==0){
+			gameWon("neither player");
+		}
+	}
 	
 	public CardStack getDiscard(){
 		return discard;
 	}
-	public CardStack getDeck() {
+	public Deck getDeck() {
 		return deck;
 	}
 
