@@ -97,6 +97,7 @@ public class Deck extends CardStack {
 		}
 		for(DraggableCard dc: visibleStack){
 			dc.setBounds(this.getX() +15, this.getY() + 35, dc.getWidth(), dc.getHeight());
+			dc.setOwner("");
 			dc.setFlip(true);
 		}
 	}
