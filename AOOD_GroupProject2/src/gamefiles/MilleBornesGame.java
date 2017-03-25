@@ -2,6 +2,7 @@ package gamefiles;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -9,25 +10,48 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
-public class MilleBornesGame {
+public class MilleBornesGame implements Serializable {
 	private Deck deck;
 	private CardStack discard;
 	private HumanPlayer player;
 	private ComputerPlayer cpu;
 	private GameBoard gb;
+	private MilleBornesContainer mbc;
 
-	public MilleBornesGame() {
+	public MilleBornesGame(MilleBornesContainer m) {
+		Font myFont = new Font("OCR A Std", Font.PLAIN, 12);
 		UIManager.put("OptionPane.background", Color.black);
 		UIManager.put("OptionPane.messageForeground", Color.green);
 		UIManager.put("OptionPane.messageDialogTitle", Color.black);
 		UIManager.put("Panel.background", Color.BLACK);
-		UIManager.put("OptionPane.messageFont", new Font("OCR A Std", Font.PLAIN, 12));
+		UIManager.put("OptionPane.messageFont", myFont);
 		UIManager.put("Button.background", Color.black);
 		UIManager.put("Button.foreground", Color.GREEN);
 		UIManager.put("Button.select", Color.white);
+		UIManager.put("Button.font", myFont);
+		UIManager.put("Menu.selectionBackground", Color.white);
+		UIManager.put("Menu.selectionForeground", Color.green);
+		UIManager.put("MenuItem.selectionBackground", Color.white);
+		UIManager.put("MenuItem.selectionForeground", Color.green);
+		UIManager.put("MenuItem.font", myFont);
+		UIManager.put("Menu.font", myFont);
+		
+		UIManager.put("ComboBox.background", Color.BLACK);
+	    UIManager.put("ComboBox.foreground", Color.GREEN);
+	    UIManager.put("ComboBox.font", myFont);
+	    
+	    UIManager.put("TextField.background", Color.BLACK);
+	    UIManager.put("TextField.foreground", Color.GREEN);
+	    UIManager.put("TextField.font", myFont);
+	    UIManager.put("Label.background", Color.BLACK);
+	    UIManager.put("Label.foreground", Color.GREEN);
+	    UIManager.put("Label.font", myFont);
+	    
+	    UIManager.put("Viewport.background", Color.BLACK);
+	    UIManager.put("Viewport.foreground", Color.GREEN);
 
 
-
+		mbc = m;
 		
 		deck = new Deck();
 		discard = new CardStack("Discard", "", Color.BLUE);
@@ -107,7 +131,7 @@ public class MilleBornesGame {
 		checkIfDeckNeedsReforming();
 		DraggableCard dc = deck.removeCard();
 		p.addCardToHand(dc);
-		dc.updateWanted(5*120,  475);
+		dc.updateWanted(6*120,  475);
 		dc.setOwner(p.getName());
 		if(dc.getOwner().equals(player.getName())){
 			dc.setFlip(false);
@@ -130,6 +154,13 @@ public class MilleBornesGame {
 	}
 	public Deck getDeck() {
 		return deck;
+	}
+	
+	public void save(){
+		mbc.save();
+	}
+	public void load(){
+		mbc.load();
 	}
 
 }

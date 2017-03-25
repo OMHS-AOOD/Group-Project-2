@@ -1,6 +1,8 @@
 package gamefiles;
 
-public class HazardCard extends Card {
+import java.io.Serializable;
+
+public class HazardCard extends Card implements Serializable {
 	private char type;
 	//'s' = Stop
 	//'a' = Accident

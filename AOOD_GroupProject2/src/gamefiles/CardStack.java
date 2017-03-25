@@ -2,13 +2,14 @@ package gamefiles;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
-public class CardStack extends JPanel {
+public class CardStack extends JPanel implements Serializable {
 	protected boolean takesCard;
 	protected ArrayList<Card> stack;
 	protected ArrayList<DraggableCard> visibleStack;
@@ -106,5 +107,6 @@ public class CardStack extends JPanel {
 		return false;
 	}
 	
+
 
 }

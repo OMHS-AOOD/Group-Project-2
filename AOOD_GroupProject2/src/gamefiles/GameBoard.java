@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.io.Serializable;
 import java.util.ArrayList;
 import javax.swing.UIManager;
 import javax.swing.BorderFactory;
@@ -20,18 +21,22 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
 
-public class GameBoard extends JFrame {
+public class GameBoard extends JFrame implements Serializable {
 	private JPanel board;
+	private JTextArea noteBox;
 	private JLabel playerScore, cpuScore, p200, c200, pMove, cMove;
 	private DraggableCard currentCardClicked;
 	private ArrayList<CardStack> playerPiles, cpuPiles;
@@ -43,19 +48,70 @@ public class GameBoard extends JFrame {
 	private JScrollPane pHaz, cHaz;
 	private DefaultListModel<String> pDLM, cDLM;
 	private JList pList, cList;
-
+	private JMenuBar jm;
+	private JMenu options;
+	private JMenuItem save, load;
+	private boolean hasDrawnCard, canCF;
 	public GameBoard(MilleBornesGame m, HumanPlayer p, ComputerPlayer c) {
 		super("Mille Bornes");
 		mbg = m;
+		hasDrawnCard = false;
+		canCF = false;
 		currentCardInt = -1;
-		this.setSize(1200, 675);
+		this.setSize(1280, 700);
 		this.setVisible(true);
-		this.setLocation(200, 112);
+		this.setLocation(160, 90);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
 		board = new JPanel();
 		this.add(board);
 		board.setLayout(null);
+		
+		jm = new JMenuBar();
+		this.setJMenuBar(jm);
+		
+		noteBox = new JTextArea();
+		noteBox.setFont(new Font("OCR A Std", Font.PLAIN, 16));
+		noteBox.setForeground(Color.white);
+		noteBox.setBackground(Color.black);
+		noteBox.setWrapStyleWord(true);
+		noteBox.setLineWrap(true);
+		noteBox.setEditable(false);
+		this.add(noteBox, 1130, 225, 130, 198);
+		
+		options = new JMenu("Options");
+		save = new JMenuItem("Save");
+		load = new JMenuItem("Load");
+		
+		jm.add(options);
+		options.add(save);
+		options.add(load);
+
+		jm.setForeground(Color.green);
+		jm.setBackground(Color.black);
+		options.setForeground(Color.green);
+		options.setBackground(Color.black);
+		save.setForeground(Color.green);
+		save.setBackground(Color.black);
+		load.setForeground(Color.green);
+		load.setBackground(Color.black);
+		
+		save.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				mbg.save();
+			}
+		});
+		load.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				mbg.load();
+			}
+		});
+		
+		
 		player = p;
 		cpu = c;
 		playerPiles = new ArrayList<CardStack>();
@@ -80,17 +136,17 @@ public class GameBoard extends JFrame {
 		pHaz.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		cHaz.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-		this.add(playerScore, 800, 475, 300, 30);
-		this.add(cpuScore, 800, 10, 300, 30);
+		this.add(playerScore, 950, 475, 300, 30);
+		this.add(cpuScore, 950, 10, 300, 30);
 
-		this.add(p200, 800, 525, 300, 30);
-		this.add(c200, 800, 35, 300, 30);
+		this.add(p200, 950, 525, 300, 30);
+		this.add(c200, 950, 35, 300, 30);
 
-		this.add(pMove, 800, 500, 300, 30);
-		this.add(cMove, 800, 60, 300, 30);
+		this.add(pMove, 950, 500, 300, 30);
+		this.add(cMove, 950, 60, 300, 30);
 
-		this.add(pHaz, 800, 560, 300, 75);
-		this.add(cHaz, 800, 95, 300, 75);
+		this.add(pHaz, 950, 560, 300, 75);
+		this.add(cHaz, 950, 95, 300, 75);
 
 		playerScore.setForeground(Color.GREEN);
 		cpuScore.setForeground(Color.RED);
@@ -103,7 +159,8 @@ public class GameBoard extends JFrame {
 		pList.setBackground(Color.BLACK);
 		cList.setBackground(Color.BLACK);
 		board.setBackground(Color.BLACK);
-
+		
+		
 		pList.setCellRenderer(new MyCellRenderer());
 		cList.setCellRenderer(new MyCellRenderer());
 
@@ -115,6 +172,7 @@ public class GameBoard extends JFrame {
 		cMove.setFont(new Font("OCR A Std", Font.PLAIN, 16));
 		pList.setFont(new Font("OCR A Std", Font.PLAIN, 12));
 		cList.setFont(new Font("OCR A Std", Font.PLAIN, 12));
+
 		
 		
 
@@ -138,6 +196,9 @@ public class GameBoard extends JFrame {
 		}
 		if (j instanceof CardStack && ((CardStack) j).getOwner().equals(cpu.getName())) {
 			cpuPiles.add((CardStack) j);
+		}
+		if (j instanceof Deck) {
+			j.addMouseListener(new DeckClick((Deck) j));
 		}
 		board.add(j);
 		j.setBounds(x, y, w, h);
@@ -185,9 +246,26 @@ public class GameBoard extends JFrame {
 	}
 
 	public void resetSize() {
-		this.setSize(1200, 675);
+		this.setSize(1280, 700);
 	}
 
+	private class DeckClick extends MouseAdapter{
+		private Deck myDeck;
+		public DeckClick(Deck d) {
+			myDeck = d;
+		}
+		@Override
+		public void mousePressed(MouseEvent e) {
+			if(hasDrawnCard == false){
+				noteBox.setText("");
+				mbg.drawCardForPlayer(player);
+				hasDrawnCard = true;
+				player.getCard(player.getHand().size() - 1).addMouseMotionListener(new CardDrag());
+				reorganizeCardGraphics();
+			}
+		}
+	}
+	
 	private class StackClick extends MouseAdapter {
 		private CardStack myStack;
 		int i = 0;
@@ -223,11 +301,7 @@ public class GameBoard extends JFrame {
 						JOptionPane.INFORMATION_MESSAGE);
 
 			}
-			/*
-			 * if(myStack.getVisibleStack().size() !=0){ if(i >
-			 * myStack.getVisibleStack().size()-1){ i = 0; } DraggableCard dc =
-			 * myStack.getVisibleStack().get(i); reorderComponents(dc); i++; }
-			 */
+
 
 		}
 	}
@@ -297,7 +371,17 @@ public class GameBoard extends JFrame {
 				target = cpu.getBattle();
 				maxTouch = area2;
 			}
-
+			
+			if(previousCpuCard.getCard() instanceof HazardCard && currentCardClicked.getCard() instanceof SafetyCard){
+				if(((HazardCard) previousCpuCard.getCard()).getType() != ((SafetyCard) currentCardClicked.getCard()).getType()){
+					canCF = false;
+				}
+			}
+			if(canCF == false){
+				returnToOriginalPos();
+				noteBox.setText("Must draw card first.");
+				return;
+			}
 			if (maxTouch > 10000 && target.canDropCardOn() && isValidMove(target, currentCardClicked, player, cpu)) {
 				int targetX = target.getX() + 15;
 				int targetY = target.getY() + 35;
@@ -311,12 +395,20 @@ public class GameBoard extends JFrame {
 				player.getHand().remove(currentCardInt);
 				currentCardClicked.removeMouseMotionListener(currentCardClicked.getMouseMotionListeners()[0]);
 				currentCardClicked.removeMouseListener(currentCardClicked.getMouseListeners()[0]);
-				mbg.drawCardForPlayer(player);
-				player.getCard(player.getHand().size() - 1).addMouseMotionListener(new CardDrag());
+				if(hasDrawnCard == false){
+					mbg.drawCardForPlayer(player);
+					player.getCard(player.getHand().size() - 1).addMouseMotionListener(new CardDrag());
+					player.coupFourre();
+					canCF = false;
+					noteBox.setText("Coup-Fourre!");
+				}
+				hasDrawnCard = false;
 				this.reorganizeCardGraphics();
 				updateHazards();
 				this.updateLabels(playerScore, p200, pMove, player, cMove, cpu);
 				this.cpuTurn();
+				noteBox.setText("");
+				
 			} else {
 				returnToOriginalPos();
 			}
@@ -324,18 +416,23 @@ public class GameBoard extends JFrame {
 
 	}
 
+
 	private boolean isValidMove(CardStack c, DraggableCard dc, HumanPlayer p, HumanPlayer cp) {
 		if (c.getName().equals("Distance") && dc.getCard() instanceof DistanceCard) {
 			if (!p.canMoveNormally() && p.canMove() && ((DistanceCard) dc.getCard()).getValue() > 50) {
+				noteBox.setText("Can't go over 50 miles.");
 				return false;
 			}
 			if (p.getUsed200s() == 2 && ((DistanceCard) dc.getCard()).getValue() == 200) {
+				noteBox.setText("Can only use 2 200s for distance.");
 				return false;
 			}
 			if (!p.canMove()) {
+				noteBox.setText("Cannot move.");
 				return false;
 			}
 			if (p.getNeededDistance() < ((DistanceCard) dc.getCard()).getValue()) {
+				noteBox.setText("Can't go over 1000 miles total.");
 				return false;
 			}
 
@@ -347,23 +444,27 @@ public class GameBoard extends JFrame {
 		} else if (c.getName().equals("Battle") && c.getOwner().equals(cp.getName())
 				&& dc.getCard() instanceof HazardCard) {
 			if (!cp.willTakeBattleCard(dc)) {
+				noteBox.setText("Battle pile already contains that card.");
 				return false;
 			}
 			return true;
 		} else if (c.getName().equals("Battle") && c.getOwner().equals(p.getName())
 				&& dc.getCard() instanceof RemedyCard) {
 			if (!p.willTakeRemedyCard(dc)) {
+				noteBox.setText("Can't use that card without appropriate status.");
 				return false;
 			}
 			return true;
 		} else if (c.getName().equals("Safety") && dc.getCard() instanceof SafetyCard) {
 			if (c.containsCard(dc.getCard().getName())) {
+				noteBox.setText("Safety pile already contains that card.");
 				return false;
 			}
 			return true;
 		} else if (c.getName().equals("Discard")) {
 			return true;
 		}
+		noteBox.setText("Invalid card type");
 		return false;
 	}
 
@@ -387,10 +488,13 @@ public class GameBoard extends JFrame {
 	}
 
 	public void cpuTurn() {
+		canCF = false;
 		boolean hasntMoved = true;
 		if (player.hasWon(cpu)) {
 			mbg.gameWon(player.getName());
 		} else {
+			mbg.drawCardForPlayer(cpu);
+			this.reorganizeCpuCardGraphics();
 			ArrayList<DraggableCard> allDists = new ArrayList<DraggableCard>();
 			ArrayList<DraggableCard> allHazards = new ArrayList<DraggableCard>();
 			ArrayList<DraggableCard> allSafes = new ArrayList<DraggableCard>();
@@ -433,10 +537,10 @@ public class GameBoard extends JFrame {
 					reorderComponents(cpuCard);
 					cpu.getHand().remove(sInts.remove(0).intValue());
 					hasntMoved = false;
+					
 					updateHazards();
 					borderLastCpuCard(cpuCard);
 					this.updateLabels(playerScore, p200, pMove, player, cMove, cpu);
-					mbg.drawCardForPlayer(cpu);
 					this.reorganizeCpuCardGraphics();
 				}
 			}
@@ -454,10 +558,10 @@ public class GameBoard extends JFrame {
 					reorderComponents(cpuCard);
 					cpu.getHand().remove(hInts.remove(0).intValue());
 					hasntMoved = false;
+					canCF = true;
 					updateHazards();
 					borderLastCpuCard(cpuCard);
 					this.updateLabels(playerScore, p200, pMove, player, cMove, cpu);
-					mbg.drawCardForPlayer(cpu);
 					this.reorganizeCpuCardGraphics();
 				}
 
@@ -467,7 +571,7 @@ public class GameBoard extends JFrame {
 				int ind = -1;
 				for (int i = 0; i < allDists.size(); i++) {
 					int tempVal = cpu.getNeededDistance() - ((DistanceCard) allDists.get(i).getCard()).getValue();
-					if (tempVal > 0 && tempVal < minLeft) {
+					if (tempVal >= 0 && tempVal < minLeft) {
 						ind = i;
 						minLeft = tempVal;
 					}
@@ -486,9 +590,9 @@ public class GameBoard extends JFrame {
 						reorderComponents(cpuCard);
 						cpu.getHand().remove(dInts.remove(ind).intValue());
 						hasntMoved = false;
+						
 						updateHazards();
 						borderLastCpuCard(cpuCard);
-						mbg.drawCardForPlayer(cpu);
 						this.updateLabels(cpuScore, c200, cMove, cpu, pMove, player);
 
 						if (cpu.hasWon(player)) {
@@ -505,7 +609,7 @@ public class GameBoard extends JFrame {
 				int ind = -1;
 				for (int i = 0; i < allDists.size(); i++) {
 					int tempVal = cpu.getNeededDistance() - ((DistanceCard) allDists.get(i).getCard()).getValue();
-					if (tempVal > 0 && tempVal < minLeft
+					if (tempVal >= 0 && tempVal < minLeft
 							&& ((DistanceCard) allDists.get(i).getCard()).getValue() <= 50) {
 						ind = i;
 						minLeft = tempVal;
@@ -525,9 +629,9 @@ public class GameBoard extends JFrame {
 						reorderComponents(cpuCard);
 						cpu.getHand().remove(dInts.remove(ind).intValue());
 						hasntMoved = false;
+						
 						updateHazards();
 						borderLastCpuCard(cpuCard);
-						mbg.drawCardForPlayer(cpu);
 						this.updateLabels(cpuScore, c200, cMove, cpu, pMove, player);
 
 						if (player.hasWon(cpu)) {
@@ -605,10 +709,10 @@ public class GameBoard extends JFrame {
 									reorderComponents(cpuCard);
 									cpu.getHand().remove(rInts.remove(i).intValue());
 									hasntMoved = false;
+									
 									updateHazards();
 									borderLastCpuCard(cpuCard);
 									this.updateLabels(playerScore, p200, pMove, player, cMove, cpu);
-									mbg.drawCardForPlayer(cpu);
 									this.reorganizeCpuCardGraphics();
 								}
 							}
@@ -632,9 +736,9 @@ public class GameBoard extends JFrame {
 				borderLastCpuCard(cpuCard);
 				reorderComponents(cpuCard);
 				hasntMoved = false;
+				
 				updateHazards();
 				this.updateLabels(playerScore, p200, pMove, player, cMove, cpu);
-				mbg.drawCardForPlayer(cpu);
 				this.reorganizeCpuCardGraphics();
 
 			}
@@ -687,13 +791,14 @@ public class GameBoard extends JFrame {
 		}
 		mbg.getDiscard().repaint();
 		mbg.getDeck().repaint();
+		noteBox.repaint();
 	}
 
 	private void borderLastCpuCard(DraggableCard dc) {
 		if (previousCpuCard != null) {
 			previousCpuCard.setBorder(null);
 		}
-		Border border = BorderFactory.createLineBorder(new Color(200, 200, 200), 10);
+		Border border = BorderFactory.createLineBorder(new Color(148, 0, 211), 10);
 		dc.setBorder(border);
 		previousCpuCard = dc;
 	}

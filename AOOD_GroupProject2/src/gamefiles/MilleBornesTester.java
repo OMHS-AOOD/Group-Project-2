@@ -3,7 +3,7 @@ package gamefiles;
 public class MilleBornesTester {
 
 	public static void main(String[] args) {
-		MilleBornesGame mbg = new MilleBornesGame();
+		MilleBornesContainer mbc = new MilleBornesContainer();
 
 	}
 

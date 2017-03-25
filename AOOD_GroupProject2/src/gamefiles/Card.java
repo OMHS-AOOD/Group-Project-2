@@ -1,12 +1,13 @@
 package gamefiles;
 import java.awt.Image;
 import java.io.File;
+import java.io.Serializable;
 import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 
-public class Card {
+public class Card implements Serializable{
 
 	protected boolean flipped;
 	protected String name;

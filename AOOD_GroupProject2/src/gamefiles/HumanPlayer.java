@@ -1,15 +1,16 @@
 package gamefiles;
 import java.awt.Color;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class HumanPlayer {
+public class HumanPlayer implements Serializable {
 	protected String name;
 	protected CardStack battle, distance, safety;
 	protected ArrayList<Card> hand;
 	protected ArrayList<DraggableCard> visibleCards;
-	protected int pointsToWin;
+	protected int maxPointsToWin;
 	protected int used200s;
-
+	private ArrayList<Integer> validWinningConditions;
 	public HumanPlayer(String n) {
 		name = n;
 		battle = new CardStack("Battle", name, Color.GREEN);
@@ -17,8 +18,10 @@ public class HumanPlayer {
 		safety = new CardStack("Safety", name, Color.GREEN);
 		hand = new ArrayList<Card>();
 		visibleCards = new ArrayList<DraggableCard>();
-		pointsToWin = 1000;
+		maxPointsToWin = 1000;
 		used200s = 0;
+		validWinningConditions = new ArrayList<Integer>();
+		validWinningConditions.add(1000);
 
 	}
 
@@ -68,15 +71,18 @@ public class HumanPlayer {
 	}
 
 	public int getNeededDistance() {
-		return pointsToWin - this.getCurrentPoints();
+		return maxPointsToWin - this.getCurrentPoints();
 	}
 
 	public boolean hasWon(HumanPlayer other) {
 		if (other.getCurrentPoints() == 0 && this.getCurrentPoints() > 900) {
 			return true;
 		}
-		if (getCurrentPoints() == pointsToWin) {
-			return true;
+		
+		for(Integer i: validWinningConditions){
+			if(getCurrentPoints() == i.intValue()){
+				return true;
+			}
 		}
 		return false;
 	}
@@ -408,4 +414,19 @@ public class HumanPlayer {
 		}
 		return output;
 	}
+
+	public boolean handContainsSafetyCard() {
+		for(Card c: hand){
+			if(c instanceof SafetyCard){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
+	public void coupFourre(){
+		validWinningConditions.add(validWinningConditions.get(validWinningConditions.size()-1)-25);
+	}
+
 }

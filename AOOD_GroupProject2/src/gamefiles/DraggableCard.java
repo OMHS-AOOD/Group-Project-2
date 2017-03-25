@@ -1,12 +1,13 @@
 package gamefiles;
 import java.awt.Color;
+import java.io.Serializable;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class DraggableCard extends JPanel{
+public class DraggableCard extends JPanel implements Serializable{
 	private Card thisCard;
 	private ImageIcon currentImage;
 	private JLabel image;

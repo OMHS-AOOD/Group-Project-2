@@ -1,6 +1,8 @@
 package gamefiles;
 
-public class RemedyCard extends Card {
+import java.io.Serializable;
+
+public class RemedyCard extends Card implements Serializable {
 	private char type;
 	//'s' = Go
 	//'a' = Repairs

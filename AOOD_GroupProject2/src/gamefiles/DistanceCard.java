@@ -1,6 +1,8 @@
 package gamefiles;
 
-public class DistanceCard extends Card {
+import java.io.Serializable;
+
+public class DistanceCard extends Card implements Serializable {
 	private int value;
 	public DistanceCard(String n, int val){
 		super(n);
