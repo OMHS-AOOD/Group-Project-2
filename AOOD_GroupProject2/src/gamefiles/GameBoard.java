@@ -461,9 +461,16 @@ public class GameBoard extends JFrame implements Serializable {
 
 	private boolean isValidMove(CardStack c, DraggableCard dc, HumanPlayer p, HumanPlayer cp) {
 		if (c.getName().equals("Distance") && dc.getCard() instanceof DistanceCard) {
-			if (!p.canMoveNormally() && p.canMove() && ((DistanceCard) dc.getCard()).getValue() > 50) {
+			if (p.needsRoll()) {
 				if (p.getName().equals(player.getName())) {
-					noteBox.setText("Can't go over 50 miles.");
+					noteBox.setText("Currently need a roll card to move.");
+				}
+				return false;
+			}
+			if (!p.canMoveNormally() && p.canMove() && ((DistanceCard) dc.getCard()).getValue() > 50) {
+
+				if (p.getName().equals(player.getName())) {
+					noteBox.setText("Can't go over 50 miles while limited.");
 				}
 
 				return false;
@@ -475,17 +482,10 @@ public class GameBoard extends JFrame implements Serializable {
 
 				return false;
 			}
-			if (p.needsRoll()) {
-				if (p.getName().equals(player.getName())) {
-					noteBox.setText("Currently need a roll card to move.");
-				}
-				return false;
-			}
 			if (!p.canMove()) {
 				if (p.getName().equals(player.getName())) {
-					noteBox.setText("Cannot move.");
+					noteBox.setText("Cannot move due to status.");
 				}
-
 				return false;
 			}
 			if (p.getNeededDistance() < ((DistanceCard) dc.getCard()).getValue()) {
@@ -500,69 +500,62 @@ public class GameBoard extends JFrame implements Serializable {
 			if (((DistanceCard) dc.getCard()).getValue() == 200) {
 				p.add200();
 			}
-
 			return true;
-		} else if (c.getName().equals("Battle") && c.getOwner().equals(cp.getName())
-				&& dc.getCard() instanceof HazardCard) {
-			if (cp.getNumOfRolls() > 0 && !cp.canMove()) {
+		}
+		if (c.getName().equals("Battle") && c.getOwner().equals(cp.getName()) && dc.getCard() instanceof HazardCard) {
+			if (cp.hasAppropriateSafety(dc.getCard())) {
+				if (p.getName().equals(player.getName())) {
+					noteBox.setText("Player has immunity to this card.");
+					return false;
+				}
+			}
+			if (!cp.willTakeBattleCard(dc.getCard())) {
 				if (p.getName().equals(player.getName())) {
 					noteBox.setText("Battle pile contains unresolved card.");
-
 				}
-				if(cp.getBattle().getCurrentSize() > 0 && cp.getNumOfRolls() == 0){
-
-					if (p.getName().equals(player.getName())) {
-						noteBox.setText("Battle pile contains unresolved card.");
-
-					}
-					return false;
-				}
-				if(cp.needsRoll() && cp.getBattle().getCurrentSize() > 0){
-
-					if (p.getName().equals(player.getName())) {
-						noteBox.setText("Battle pile contains unresolved card.");
-
-					}
-					return false;
-				}
-			}
-			return true;
-		} else if (c.getName().equals("Battle") && c.getOwner().equals(p.getName())
-				&& dc.getCard() instanceof RemedyCard) {
-			if (p.needsRoll() && dc.getCard() instanceof RollCard) {
-				return true;
-			}
-			if (!p.willTakeRemedyCard(dc)) {
-				if (p.getName().equals(player.getName()) && !(dc.getCard() instanceof RollCard)) {
-					noteBox.setText("Can't use that card without appropriate status.");
-				}
-				if (p.getName().equals(player.getName()) && (dc.getCard() instanceof RollCard)) {
-					noteBox.setText("Can't use that card until hazard is resolved.");
-
-				}
-
 				return false;
 			}
+			return true;
+		}
+		if (c.getName().equals("Battle") && c.getOwner().equals(p.getName()) && dc.getCard() instanceof RemedyCard) {
 			if (p.needsRoll() && !(dc.getCard() instanceof RollCard)) {
 				if (p.getName().equals(player.getName())) {
 					noteBox.setText("Currently need a roll card to move.");
 				}
-				return false;
+				if (!p.willTakeRemedyCard(dc)) {
+					if (p.getName().equals(player.getName()) && !(dc.getCard() instanceof RollCard)) {
+						noteBox.setText("Can't use that card without appropriate status.");
+					}
+					if (p.getName().equals(player.getName()) && (dc.getCard() instanceof RollCard)) {
+						noteBox.setText("Can't use that card until hazard is resolved.");
+
+					}
+
+					return false;
+				}
+
 			}
 			return true;
-		} else
-			if (c.getName().equals("Limit") && c.getOwner().equals(cp.getName()) && dc.getCard() instanceof LimitCard) {
+		}
+		if (c.getName().equals("Limit") && c.getOwner().equals(cp.getName()) && dc.getCard() instanceof LimitCard) {
+			if (cp.hasAppropriateSafety(new HazardCard("Stop", 's'))) {
+				if (p.getName().equals(player.getName())) {
+					noteBox.setText("Player has Right of Way.");
+				}
+				return false;
+			}
 			if (!cp.willTakeLimitCard()) {
+
 				if (p.getName().equals(player.getName())) {
 					noteBox.setText("Limit pile can't take another limit.");
 
 				}
 				return false;
 			}
-			return true;
-		} else if (c.getName().equals("Limit") && c.getOwner().equals(p.getName())
-				&& dc.getCard() instanceof EoLimitCard) {
 
+			return true;
+		}
+		if (c.getName().equals("Limit") && c.getOwner().equals(p.getName()) && dc.getCard() instanceof EoLimitCard) {
 			if (!p.willTakeEoLimitCard()) {
 				if (p.getName().equals(player.getName())) {
 					noteBox.setText("Can't use that card without being limited first.");
@@ -571,43 +564,39 @@ public class GameBoard extends JFrame implements Serializable {
 				return false;
 			}
 			return true;
-		} else if (c.getName().equals("Safety") && dc.getCard() instanceof SafetyCard) {
-			if (c.containsCard(dc.getCard().getName())) {
-				if (p.getName().equals(player.getName())) {
-					noteBox.setText("Safety pile already contains that card.");
-
-				}
-
-				return false;
-			}
+		}
+		if (c.getName().equals("Safety") && dc.getCard() instanceof SafetyCard) {
 			return true;
-		} else if (c.getName().equals("Discard")) {
-			return true;
-		} else if (p.needsRoll() && dc.getCard() instanceof DistanceCard && c.getName().equals("Battle")
-				&& c.getOwner().equals(p.getName())) {
+		}
+		if (dc.getCard() instanceof DistanceCard && c.getName().equals("Battle") && c.getOwner().equals(p.getName())) {
 			DistanceCard temp = (DistanceCard) dc.getCard();
-			if (temp.getValue() == 200) {
-				return true;
-
-			}
-			if(temp.getValue() < 200){
+			if (temp.getValue() < 200) {
 				if (p.getName().equals(player.getName())) {
 					noteBox.setText("Invalid card for that pile.");
 
 				}
 				return false;
 			}
-			if (p.getName().equals(player.getName())) {
-				noteBox.setText("Need to be stopped first.");
+			if (p.canMove()) {
+				if (p.getName().equals(player.getName())) {
+					noteBox.setText("Need to be stopped first.");
+
+				}
+				return false;
+			}
+			if (temp.getValue() == 200) {
+				return true;
 
 			}
-			return false;
+
 		}
+		if (c.getName().equals("Discard")) {
+			return true;
+		}
+
 		if (p.getName().equals(player.getName())) {
 			noteBox.setText("Invalid card for that pile.");
-
 		}
-
 		return false;
 	}
 

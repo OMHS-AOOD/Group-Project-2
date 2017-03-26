@@ -97,8 +97,7 @@ public class MilleBornesGame implements Serializable {
 			cpu.addCardToHand(dc2);
 			
 		}
-		//System.out.println(player.handToString() + "\n");
-		//System.out.println(cpu.handToString());
+
 		
 		for (int i = 0; i < 6; i++) {
 			DraggableCard dc = player.getCard(i);

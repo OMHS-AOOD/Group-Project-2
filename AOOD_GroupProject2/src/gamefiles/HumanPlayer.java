@@ -116,196 +116,26 @@ public class HumanPlayer implements Serializable {
 	}
 
 	public boolean canMove() {
-
-		int numOfRolls = 0;
-		int numOfRepairs = 0;
-		int numOfGasoline = 0;
-		int numOfSpares = 0;
-		int numOfService = 0;
-
-		int numOfStops = 0;
-		int numOfAccidents = 0;
-		int numOfOuts = 0;
-		int numOfFlats = 0;
-
-		int stopsResolved = 0;
-		int accidentsResolved = 0;
-		int outsResolved = 0;
-		int flatsResolved = 0;
-
-		for (Card c : battle.getStack()) {
-			if (c instanceof RemedyCard) {
-				if (((RemedyCard) c).getType() == 's') {
-					numOfRolls++;
-				}
-				if (((RemedyCard) c).getType() == 'a') {
-					numOfRepairs++;
-				}
-				if (((RemedyCard) c).getType() == 'o') {
-					numOfGasoline++;
-				}
-				if (((RemedyCard) c).getType() == 'f') {
-					numOfSpares++;
-				}
-				if (((RemedyCard) c).getType() == '*') {
-					numOfService++;
-				}
-
-			} else if (c instanceof HazardCard) {
-				if (((HazardCard) c).getType() == 's') {
-					numOfStops++;
-				}
-				if (((HazardCard) c).getType() == 'a') {
-					numOfAccidents++;
-				}
-				if (((HazardCard) c).getType() == 'o') {
-					numOfOuts++;
-				}
-				if (((HazardCard) c).getType() == 'f') {
-					numOfFlats++;
-				}
-
-			}
+		if(this.getCurrentHazards().size() == 0){
+			return true;
 		}
-		for (Card c : safety.getStack()) {
-			if (((SafetyCard) c).getType() == 's') {
-				numOfStops = 0;
-			}
-			if (((SafetyCard) c).getType() == 'a') {
-				numOfAccidents = 0;
-			}
-			if (((SafetyCard) c).getType() == 'o') {
-				numOfOuts = 0;
-			}
-			if (((SafetyCard) c).getType() == 'f') {
-				numOfFlats = 0;
-			}
-		}
-		if (numOfRolls == 0) {
-			return false;
-		}
-		int totalHazards = numOfStops + numOfAccidents + numOfOuts + numOfFlats;
-
-		stopsResolved = numOfStops - numOfRolls;
-		accidentsResolved = numOfAccidents - numOfRepairs;
-		outsResolved = numOfOuts - numOfGasoline;
-		flatsResolved = numOfFlats - numOfSpares;
-
-		int totalRemainingHazards = stopsResolved + accidentsResolved + outsResolved + flatsResolved - numOfService;
-
-		if (totalRemainingHazards > 0) {
-			return false;
-		}
-		if(name.equals("CPU")){
-			if (totalHazards > numOfRolls) {
-				return false;
-			}
-		}
-		else{
-			if (totalHazards+1 > numOfRolls) {
-				return false;
-			}
-		}
+		return false;
 		
-
-		return true;
 	}
 
 	public boolean needsRoll() {
-		int numOfRolls = 0;
-		int numOfRepairs = 0;
-		int numOfGasoline = 0;
-		int numOfSpares = 0;
-		int numOfService = 0;
-
-		int numOfStops = 0;
-		int numOfAccidents = 0;
-		int numOfOuts = 0;
-		int numOfFlats = 0;
-
-		int stopsResolved = 0;
-		int accidentsResolved = 0;
-		int outsResolved = 0;
-		int flatsResolved = 0;
-
-		for (Card c : battle.getStack()) {
-			if (c instanceof RemedyCard) {
-				if (((RemedyCard) c).getType() == 's') {
-					numOfRolls++;
-				}
-				if (((RemedyCard) c).getType() == 'a') {
-					numOfRepairs++;
-				}
-				if (((RemedyCard) c).getType() == 'o') {
-					numOfGasoline++;
-				}
-				if (((RemedyCard) c).getType() == 'f') {
-					numOfSpares++;
-				}
-				if (((RemedyCard) c).getType() == '*') {
-					numOfService++;
-				}
-
-			} else if (c instanceof HazardCard) {
-				if (((HazardCard) c).getType() == 's') {
-					numOfStops++;
-				}
-				if (((HazardCard) c).getType() == 'a') {
-					numOfAccidents++;
-				}
-				if (((HazardCard) c).getType() == 'o') {
-					numOfOuts++;
-				}
-				if (((HazardCard) c).getType() == 'f') {
-					numOfFlats++;
-				}
-
-			}
-		}
-		for (Card c : safety.getStack()) {
-			if (((SafetyCard) c).getType() == 's') {
-				numOfStops = 0;
-			}
-			if (((SafetyCard) c).getType() == 'a') {
-				numOfAccidents = 0;
-			}
-			if (((SafetyCard) c).getType() == 'o') {
-				numOfOuts = 0;
-			}
-			if (((SafetyCard) c).getType() == 'f') {
-				numOfFlats = 0;
-			}
-		}
 		
-
-		int totalHazards = numOfStops + numOfAccidents + numOfOuts + numOfFlats;
-		stopsResolved = numOfStops - numOfRolls;
-		accidentsResolved = numOfAccidents - numOfRepairs;
-		outsResolved = numOfOuts - numOfGasoline;
-		flatsResolved = numOfFlats - numOfSpares;
-
-		int totalRemainingHazards = stopsResolved + accidentsResolved + outsResolved + flatsResolved - numOfService;
-
-		if(totalRemainingHazards == stopsResolved){
+		if (battle.getCurrentSize() == 0) {
 			return true;
 		}
-		if (totalRemainingHazards > 0) {
+		if((battle.getStack().get(battle.getCurrentSize()-1) instanceof RollCard)){
 			return false;
 		}
-		if(numOfRolls == 0){
+		if((battle.getStack().get(battle.getCurrentSize()-1) instanceof HazardCard)){
+			return false;
+		}
+		if((battle.getStack().get(battle.getCurrentSize()-1) instanceof RemedyCard)){
 			return true;
-		}
-
-
-		if(name.equals("CPU")){
-			if (totalHazards > numOfRolls) {
-				return false;
-			}
-		}
-		else{
-			if (totalHazards+1 > numOfRolls) {
-				return false;
-			}
 		}
 		return false;
 	}
@@ -322,147 +152,170 @@ public class HumanPlayer implements Serializable {
 		used200s++;
 	}
 
-	public boolean willTakeBattleCard() {
-		return canMove();
+	public boolean willTakeBattleCard(Card c) {
+		if (battle.getCurrentSize() == 0) {
+			return true;
+		}
+		if((battle.getStack().get(battle.getCurrentSize()-1) instanceof RemedyCard)){
+			return true;
+		}
+		return false;
+		
+	}
+
+	public boolean hasAppropriateSafety(Card c) {
+		for (Card s : safety.getStack()) {
+			if (((SafetyCard) s).getType() == ((HazardCard) c).getType()) {
+				return false;
+			}
+		}
+		return false;
 	}
 
 	public boolean willTakeRemedyCard(DraggableCard dc) {
-		ArrayList<Character> remChars = new ArrayList<Character>();
-		ArrayList<Character> hazChars = new ArrayList<Character>();
-		ArrayList<Character> safChars = new ArrayList<Character>();
-		for (Card c : battle.getStack()) {
-			if (c instanceof RemedyCard) {
-				remChars.add(((RemedyCard) c).getType());
-			} else if (c instanceof HazardCard) {
-				hazChars.add(((HazardCard) c).getType());
-			}
-		}
-		for (Card c : safety.getStack()) {
-			safChars.add(((SafetyCard) c).getType());
-		}
-
-		for (int i = 0; i < safChars.size(); i++) {
-			for (int j = 0; j < hazChars.size(); j++) {
-				if (safChars.get(i).charValue() == hazChars.get(j).charValue()) {
-					hazChars.remove(j);
-					j--;
-					break;
-				}
-			}
-		}
-		for (int i = 0; i < remChars.size(); i++) {
-			for (int j = 0; j < hazChars.size(); j++) {
-				if (remChars.get(i).charValue() == hazChars.get(j).charValue()) {
-					hazChars.remove(j);
-					remChars.remove(i);
-					i--;
-					j--;
-					break;
-				}
-			}
-		}
-
-		if (hazChars.size() > 0) {
-			for (int i = 0; i < remChars.size(); i++) {
-				for (int j = 0; j < hazChars.size(); j++) {
-					if (remChars.get(i).charValue() == '*') {
-						hazChars.remove(j);
-						remChars.remove(i);
-						i--;
-						j--;
-						break;
-					}
-				}
-			}
-		}
-
-		if (hazChars.size() == 0) {
+		RemedyCard rc = (RemedyCard) dc.getCard();
+		ArrayList<String> hazards = this.getCurrentHazards();
+		if (needsRoll()) {
 			return false;
 		}
-		if (((RemedyCard) dc.getCard()).getType() == '*') {
+		if(rc.getType() == '*' && hazards.size() > 0){
 			return true;
 		}
-
-		for (Character c : hazChars) {
-			if (c.charValue() == ((RemedyCard) dc.getCard()).getType()) {
-				return true;
-			}
+		if (rc.getType() == 's' && hazards.contains("Stop")) {
+			return true;
 		}
-
+		if (rc.getType() == 'a' && hazards.contains("Accident")) {
+			return true;
+		}
+		if (rc.getType() == 'o' && hazards.contains("Out of Gas")) {
+			return true;
+		}
+		if (rc.getType() == 'f' && hazards.contains("Flat Tire")) {
+			return true;
+		}
 		return false;
-
 	}
 
 	public ArrayList<String> getCurrentHazards() {
-		ArrayList<Character> remChars = new ArrayList<Character>();
-		ArrayList<Character> hazChars = new ArrayList<Character>();
-		ArrayList<Character> safChars = new ArrayList<Character>();
+		int numOfRolls = 0;
+		int numOfRepairs = 0;
+		int numOfGasoline = 0;
+		int numOfSpares = 0;
+		int numOfService = 0;
+
+		int numOfStops = 0;
+		int numOfAccidents = 0;
+		int numOfOuts = 0;
+		int numOfFlats = 0;
+
+		int stopsResolved = 0;
+		int accidentsResolved = 0;
+		int outsResolved = 0;
+		int flatsResolved = 0;
+
 		for (Card c : battle.getStack()) {
 			if (c instanceof RemedyCard) {
-				remChars.add(((RemedyCard) c).getType());
+				if (((RemedyCard) c).getType() == 's') {
+					numOfRolls++;
+				}
+				if (((RemedyCard) c).getType() == 'a') {
+					numOfRepairs++;
+				}
+				if (((RemedyCard) c).getType() == 'o') {
+					numOfGasoline++;
+				}
+				if (((RemedyCard) c).getType() == 'f') {
+					numOfSpares++;
+				}
+				if (((RemedyCard) c).getType() == '*') {
+					numOfService++;
+				}
+
 			} else if (c instanceof HazardCard) {
-				hazChars.add(((HazardCard) c).getType());
+				if (((HazardCard) c).getType() == 's') {
+					numOfStops++;
+				}
+				if (((HazardCard) c).getType() == 'a') {
+					numOfAccidents++;
+				}
+				if (((HazardCard) c).getType() == 'o') {
+					numOfOuts++;
+				}
+				if (((HazardCard) c).getType() == 'f') {
+					numOfFlats++;
+				}
+
 			}
 		}
 		for (Card c : safety.getStack()) {
-			safChars.add(((SafetyCard) c).getType());
-		}
-
-		for (int i = 0; i < safChars.size(); i++) {
-			for (int j = 0; j < hazChars.size(); j++) {
-				if (safChars.get(i).charValue() == hazChars.get(j).charValue()) {
-					hazChars.remove(j);
-					j--;
-				}
+			if (((SafetyCard) c).getType() == 's') {
+				numOfStops = 0;
 			}
-		}
-		for (int i = 0; i < remChars.size(); i++) {
-			for (int j = 0; j < hazChars.size(); j++) {
-				if (remChars.get(i).charValue() == hazChars.get(j).charValue()) {
-					hazChars.remove(j);
-					remChars.remove(i);
-					i--;
-					j--;
-					break;
-				}
+			if (((SafetyCard) c).getType() == 'a') {
+				numOfAccidents = 0;
+			}
+			if (((SafetyCard) c).getType() == 'o') {
+				numOfOuts = 0;
+			}
+			if (((SafetyCard) c).getType() == 'f') {
+				numOfFlats = 0;
 			}
 		}
 
-		if (hazChars.size() > 0) {
-			for (int i = 0; i < remChars.size(); i++) {
-				for (int j = 0; j < hazChars.size(); j++) {
-					if (remChars.get(i).charValue() == '*') {
-						hazChars.remove(j);
-						remChars.remove(i);
-						i--;
-						j--;
-						break;
-					}
-				}
+		int totalHazards = numOfStops + numOfAccidents + numOfOuts + numOfFlats;
+
+		if(battle.getCurrentSize() > 0 && battle.getStack().get(0) instanceof RollCard){
+			numOfRolls--;
+		}
+		stopsResolved = numOfStops - numOfRolls;
+		accidentsResolved = numOfAccidents - numOfRepairs;
+		outsResolved = numOfOuts - numOfGasoline;
+		flatsResolved = numOfFlats - numOfSpares;
+
+		int resolvedHazards = stopsResolved + accidentsResolved + outsResolved + flatsResolved;
+
+		while (numOfService > 0 && resolvedHazards > 0) {
+			if (stopsResolved > 0) {
+				stopsResolved--;
+				numOfService--;
+				resolvedHazards--;
+			} else if (accidentsResolved > 0) {
+				accidentsResolved--;
+				numOfService--;
+				resolvedHazards--;
+			} else if (accidentsResolved > 0) {
+				outsResolved--;
+				numOfService--;
+				resolvedHazards--;
+			} else if (flatsResolved > 0) {
+				flatsResolved--;
+				numOfService--;
+				resolvedHazards--;
 			}
 		}
-
 		ArrayList<String> output = new ArrayList<String>();
-		for (Character h : hazChars) {
-			if (h == 's') {
-				output.add("Stop");
-			}
-			if (h == 'a') {
-				output.add("Accident");
-			}
-			if (h == 'o') {
-				output.add("Out of Gas");
-			}
-			if (h == 'f') {
-				output.add("Flat Tire");
-			}
+		if (stopsResolved > 0) {
+			output.add("Stop");
 		}
-
+		if (accidentsResolved > 0) {
+			output.add("Accident");
+		}
+		if (outsResolved > 0) {
+			output.add("Out of Gas");
+		}
+		if (flatsResolved > 0) {
+			output.add("Flat Tire");
+		}
 		if (willTakeEoLimitCard()) {
 			output.add("Speed Limit");
 		}
-
+		if(this.needsRoll()){
+			output.add("Needs Roll Card");
+		}
 		return output;
+
+		
+	
 	}
 
 	public boolean handContainsSafetyCard() {
