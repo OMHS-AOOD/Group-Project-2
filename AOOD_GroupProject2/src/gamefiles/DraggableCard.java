@@ -74,5 +74,10 @@ public class DraggableCard extends JPanel implements Serializable{
 	public int getWantedY(){
 		return wantedY;
 	}
+	public void setCard(RemedyCard remedyCard) {
+		thisCard = remedyCard;
+		this.updateImage();
+		
+	}
 
 }

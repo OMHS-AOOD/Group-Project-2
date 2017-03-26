@@ -70,19 +70,23 @@ public class MilleBornesGame implements Serializable {
 
 		gb.add(player.getDistance(), 150, 225, 130, 198);
 		gb.add(player.getSafety(), 290, 225, 130, 198);
-		gb.add(player.getBattle(), 430, 225, 130, 198);
-		gb.add(cpu.getDistance(), 850, 225, 130, 198);
-		gb.add(cpu.getSafety(), 710, 225, 130, 198);
-		gb.add(cpu.getBattle(), 570, 225, 130, 198);
+		gb.add(player.getLimit(), 430, 225, 130, 198);
+		gb.add(player.getBattle(), 570, 225, 130, 198);
+		
+		gb.add(cpu.getDistance(), 1130, 225, 130, 198);
+		gb.add(cpu.getSafety(), 990, 225, 130, 198);
+		gb.add(cpu.getLimit(), 850, 225, 130, 198);
+		gb.add(cpu.getBattle(), 710, 225, 130, 198);
 		gb.add(deck, 10, 225, 130, 198);
 		
 		discard.setColor(Color.BLUE);
-		gb.add(discard, 990, 225, 130, 198);
+		gb.add(discard, 1270, 225, 130, 198);
 
 		
 		for(DraggableCard dc: deck.getVisibleStack()){
 			gb.add(dc, deck.getX()+15, deck.getY()+35, 100, 153);
 		}
+
 		
 		for (int i = 0; i < 6; i++) {
 			DraggableCard dc1 = deck.removeCard();

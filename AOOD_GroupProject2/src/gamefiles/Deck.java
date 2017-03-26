@@ -14,22 +14,22 @@ public class Deck extends CardStack implements Serializable {
 		allCards.add(new SafetyCard("Driving Ace", 'a'));
 		allCards.add(new SafetyCard("Extra Tank", 'o'));
 		allCards.add(new SafetyCard("Puncture Proof", 'f'));
-		allCards.add(new SafetyCard("Right of Way", 'l'));
+		allCards.add(new SafetyCard("Right of Way", 's'));
 
 		for (int i = 0; i < 5; i++) {
 			allCards.add(new HazardCard("Stop",'s'));
 		}
 		for (int i = 0; i < 2; i++) {
-			allCards.add(new HazardCard("Speed Limit",'l'));
-			allCards.add(new HazardCard("Speed Limit",'l'));
+			allCards.add(new LimitCard("Speed Limit"));
+			allCards.add(new LimitCard("Speed Limit"));
 
-			allCards.add(new RemedyCard("Roll",'s'));
-			allCards.add(new RemedyCard("Roll",'s'));
-			allCards.add(new RemedyCard("Roll",'s'));
-			allCards.add(new RemedyCard("Roll",'s'));
-			allCards.add(new RemedyCard("Roll",'s'));
-			allCards.add(new RemedyCard("Roll",'s'));
-			allCards.add(new RemedyCard("Roll",'s'));
+			allCards.add(new RollCard("Roll",'s'));
+			allCards.add(new RollCard("Roll",'s'));
+			allCards.add(new RollCard("Roll",'s'));
+			allCards.add(new RollCard("Roll",'s'));
+			allCards.add(new RollCard("Roll",'s'));
+			allCards.add(new RollCard("Roll",'s'));
+			allCards.add(new RollCard("Roll",'s'));
 
 			allCards.add(new DistanceCard("25 Miles", 25));
 			allCards.add(new DistanceCard("25 Miles", 25));
@@ -67,8 +67,8 @@ public class Deck extends CardStack implements Serializable {
 			allCards.add(new RemedyCard("Gasoline",'o'));
 			allCards.add(new RemedyCard("Spare Tire",'f'));
 			allCards.add(new RemedyCard("Spare Tire",'f'));
-			allCards.add(new RemedyCard("End of Limit",'l'));
-			allCards.add(new RemedyCard("End of Limit",'l'));
+			allCards.add(new EoLimitCard("End of Limit"));
+			allCards.add(new EoLimitCard("End of Limit"));
 
 			allCards.add(new DistanceCard("100 Miles", 100));
 			allCards.add(new DistanceCard("100 Miles", 100));

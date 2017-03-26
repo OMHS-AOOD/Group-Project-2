@@ -11,11 +11,11 @@ public class Card implements Serializable{
 
 	protected boolean flipped;
 	protected String name;
-
+	protected boolean wasCF;
 	public Card(String n) {
 		name = n;
 		flipped = false;
-
+		wasCF = false;
 
 	}
 
@@ -36,5 +36,11 @@ public class Card implements Serializable{
 			return new ImageIcon(getClass().getResource("Back.jpg"));
 		}
 		return new ImageIcon(getClass().getResource(name + ".png"));
+	}
+	public void beCF(){
+		wasCF = true;
+	}
+	public boolean getCF(){
+		return wasCF;
 	}
 }

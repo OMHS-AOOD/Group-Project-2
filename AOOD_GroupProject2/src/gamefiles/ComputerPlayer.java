@@ -10,15 +10,7 @@ public class ComputerPlayer extends HumanPlayer implements Serializable {
 		battle.setColor(Color.RED);
 		safety.setColor(Color.RED);
 		distance.setColor(Color.RED);
+		limit.setColor(Color.red);
 	}
-	@Override
-	public boolean hasWon(HumanPlayer other) {
-		if (other.getCurrentPoints() == 0 && this.getCurrentPoints() > 900) {
-			return true;
-		}
-		if (getCurrentPoints() == maxPointsToWin) {
-			return true;
-		}
-		return false;
-	}
+
 }
