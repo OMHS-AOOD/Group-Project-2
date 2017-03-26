@@ -116,6 +116,9 @@ public class HumanPlayer implements Serializable {
 	}
 
 	public boolean canMove() {
+		if(needsRoll()){
+			return false;
+		}
 		if(this.getCurrentHazards().size() == 0){
 			return true;
 		}
@@ -198,10 +201,11 @@ public class HumanPlayer implements Serializable {
 
 	public ArrayList<String> getCurrentHazards() {
 		int numOfRolls = 0;
+		int rollsForStops = 0;
 		int numOfRepairs = 0;
 		int numOfGasoline = 0;
 		int numOfSpares = 0;
-		int numOfService = 0;
+
 
 		int numOfStops = 0;
 		int numOfAccidents = 0;
@@ -213,10 +217,15 @@ public class HumanPlayer implements Serializable {
 		int outsResolved = 0;
 		int flatsResolved = 0;
 
+		Card previous = null;
+		
 		for (Card c : battle.getStack()) {
 			if (c instanceof RemedyCard) {
 				if (((RemedyCard) c).getType() == 's') {
 					numOfRolls++;
+					if(previous != null && previous instanceof HazardCard && ((HazardCard) previous).getType() == 's'){
+						rollsForStops++;
+					}
 				}
 				if (((RemedyCard) c).getType() == 'a') {
 					numOfRepairs++;
@@ -228,7 +237,18 @@ public class HumanPlayer implements Serializable {
 					numOfSpares++;
 				}
 				if (((RemedyCard) c).getType() == '*') {
-					numOfService++;
+					if(previous != null && previous instanceof HazardCard && ((HazardCard) previous).getType() == 's'){
+						rollsForStops++;
+					}
+					if(previous != null && previous instanceof HazardCard && ((HazardCard) previous).getType() == 'a'){
+						numOfRepairs++;
+					}
+					if(previous != null && previous instanceof HazardCard && ((HazardCard) previous).getType() == 'f'){
+						numOfSpares++;
+					}
+					if(previous != null && previous instanceof HazardCard && ((HazardCard) previous).getType() == 'o'){
+						numOfGasoline++;
+					}
 				}
 
 			} else if (c instanceof HazardCard) {
@@ -246,6 +266,7 @@ public class HumanPlayer implements Serializable {
 				}
 
 			}
+			previous = c;
 		}
 		for (Card c : safety.getStack()) {
 			if (((SafetyCard) c).getType() == 's') {
@@ -260,6 +281,7 @@ public class HumanPlayer implements Serializable {
 			if (((SafetyCard) c).getType() == 'f') {
 				numOfFlats = 0;
 			}
+			
 		}
 
 		int totalHazards = numOfStops + numOfAccidents + numOfOuts + numOfFlats;
@@ -267,32 +289,14 @@ public class HumanPlayer implements Serializable {
 		if(battle.getCurrentSize() > 0 && battle.getStack().get(0) instanceof RollCard){
 			numOfRolls--;
 		}
-		stopsResolved = numOfStops - numOfRolls;
+		stopsResolved = numOfStops - rollsForStops;
 		accidentsResolved = numOfAccidents - numOfRepairs;
 		outsResolved = numOfOuts - numOfGasoline;
 		flatsResolved = numOfFlats - numOfSpares;
 
 		int resolvedHazards = stopsResolved + accidentsResolved + outsResolved + flatsResolved;
 
-		while (numOfService > 0 && resolvedHazards > 0) {
-			if (stopsResolved > 0) {
-				stopsResolved--;
-				numOfService--;
-				resolvedHazards--;
-			} else if (accidentsResolved > 0) {
-				accidentsResolved--;
-				numOfService--;
-				resolvedHazards--;
-			} else if (accidentsResolved > 0) {
-				outsResolved--;
-				numOfService--;
-				resolvedHazards--;
-			} else if (flatsResolved > 0) {
-				flatsResolved--;
-				numOfService--;
-				resolvedHazards--;
-			}
-		}
+
 		ArrayList<String> output = new ArrayList<String>();
 		if (stopsResolved > 0) {
 			output.add("Stop");

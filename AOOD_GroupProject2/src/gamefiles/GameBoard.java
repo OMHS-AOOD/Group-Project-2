@@ -54,7 +54,7 @@ public class GameBoard extends JFrame implements Serializable {
 	private JMenuItem save, load;
 	private boolean hasDrawnCard, canCF, playedSafety;
 	private int bWidth, bHeight;
-
+	
 	public GameBoard(MilleBornesGame m, HumanPlayer p, ComputerPlayer c) {
 		super("Mille Bornes");
 		mbg = m;
@@ -174,6 +174,8 @@ public class GameBoard extends JFrame implements Serializable {
 		cMove.setFont(new Font("OCR A Std", Font.PLAIN, 16));
 		pList.setFont(new Font("OCR A Std", Font.PLAIN, 12));
 		cList.setFont(new Font("OCR A Std", Font.PLAIN, 12));
+		
+		updateHazards();
 
 	}
 
