@@ -57,6 +57,9 @@ public class MilleBornesGame implements Serializable {
 		UIManager.put("TextField.selectionBackground", Color.GREEN);
 		UIManager.put("TextField.selectionForeground", Color.BLACK);
 		
+		UIManager.put("ToolTip.foreground", Color.GREEN);
+		UIManager.put("ToolTip.background", Color.BLACK);
+		
 		mbc = m;
 
 		deck = new Deck();
@@ -211,6 +214,8 @@ public class MilleBornesGame implements Serializable {
 		UIManager.put("TextField.selectionBackground", Color.GREEN);
 		UIManager.put("TextField.selectionForeground", Color.BLACK);
 		
+		UIManager.put("ToolTip.foreground", Color.GREEN);
+		UIManager.put("ToolTip.background", Color.BLACK);
 		mbc = m;
 
 		deck = new Deck(mbg2.getDeck());
