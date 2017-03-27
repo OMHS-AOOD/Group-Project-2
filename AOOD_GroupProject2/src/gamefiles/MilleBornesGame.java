@@ -30,10 +30,10 @@ public class MilleBornesGame implements Serializable {
 		UIManager.put("Button.foreground", Color.GREEN);
 		UIManager.put("Button.select", Color.white);
 		UIManager.put("Button.font", myFont);
-		UIManager.put("Menu.selectionBackground", Color.white);
-		UIManager.put("Menu.selectionForeground", Color.green);
-		UIManager.put("MenuItem.selectionBackground", Color.white);
-		UIManager.put("MenuItem.selectionForeground", Color.green);
+		UIManager.put("Menu.selectionBackground", Color.GREEN);
+		UIManager.put("Menu.selectionForeground", Color.BLACK);
+		UIManager.put("MenuItem.selectionBackground", Color.GREEN);
+		UIManager.put("MenuItem.selectionForeground", Color.BLACK);
 		UIManager.put("MenuItem.font", myFont);
 		UIManager.put("Menu.font", myFont);
 
@@ -41,6 +41,9 @@ public class MilleBornesGame implements Serializable {
 		UIManager.put("ComboBox.foreground", Color.GREEN);
 		UIManager.put("ComboBox.font", myFont);
 
+		UIManager.put("ComboBox.selectionBackground", Color.GREEN);
+		UIManager.put("ComboBox.selectionForeground", Color.BLACK);
+		
 		UIManager.put("TextField.background", Color.BLACK);
 		UIManager.put("TextField.foreground", Color.GREEN);
 		UIManager.put("TextField.font", myFont);
@@ -51,6 +54,9 @@ public class MilleBornesGame implements Serializable {
 		UIManager.put("Viewport.background", Color.BLACK);
 		UIManager.put("Viewport.foreground", Color.GREEN);
 
+		UIManager.put("TextField.selectionBackground", Color.GREEN);
+		UIManager.put("TextField.selectionForeground", Color.BLACK);
+		
 		mbc = m;
 
 		deck = new Deck();
@@ -143,11 +149,11 @@ public class MilleBornesGame implements Serializable {
 
 	}
 
-	private void checkIfDeckNeedsReforming() {
+	public void checkIfDeckNeedsReforming() {
 		if (deck.getVisibleStack().size() == 0 && discard.getVisibleStack().size() > 0) {
 			deck.reformDeck(discard);
 
-		} 
+		}
 	}
 
 	public CardStack getDiscard() {
@@ -178,16 +184,19 @@ public class MilleBornesGame implements Serializable {
 		UIManager.put("Button.foreground", Color.GREEN);
 		UIManager.put("Button.select", Color.white);
 		UIManager.put("Button.font", myFont);
-		UIManager.put("Menu.selectionBackground", Color.white);
-		UIManager.put("Menu.selectionForeground", Color.green);
-		UIManager.put("MenuItem.selectionBackground", Color.white);
-		UIManager.put("MenuItem.selectionForeground", Color.green);
+		UIManager.put("Menu.selectionBackground", Color.GREEN);
+		UIManager.put("Menu.selectionForeground", Color.BLACK);
+		UIManager.put("MenuItem.selectionBackground", Color.GREEN);
+		UIManager.put("MenuItem.selectionForeground", Color.BLACK);
 		UIManager.put("MenuItem.font", myFont);
 		UIManager.put("Menu.font", myFont);
 
 		UIManager.put("ComboBox.background", Color.BLACK);
 		UIManager.put("ComboBox.foreground", Color.GREEN);
 		UIManager.put("ComboBox.font", myFont);
+
+		UIManager.put("ComboBox.selectionBackground", Color.GREEN);
+		UIManager.put("ComboBox.selectionForeground", Color.BLACK);
 
 		UIManager.put("TextField.background", Color.BLACK);
 		UIManager.put("TextField.foreground", Color.GREEN);
@@ -199,6 +208,9 @@ public class MilleBornesGame implements Serializable {
 		UIManager.put("Viewport.background", Color.BLACK);
 		UIManager.put("Viewport.foreground", Color.GREEN);
 
+		UIManager.put("TextField.selectionBackground", Color.GREEN);
+		UIManager.put("TextField.selectionForeground", Color.BLACK);
+		
 		mbc = m;
 
 		deck = new Deck(mbg2.getDeck());

@@ -458,12 +458,13 @@ public class GameBoard extends JFrame implements Serializable {
 				if (target.getName().equals("Battle") && target.getOwner().equals(player.getName())
 						&& currentCardClicked.getCard() instanceof DistanceCard) {
 					currentCardClicked.setCard(new RollCard("Roll", 's', 0));
-					player.add200();
+
 				}
 
 				if (currentCardClicked.getCard() instanceof SafetyCard) {
 					playedSafety = true;
 				}
+
 
 				target.addCard(currentCardClicked);
 				player.getHand().remove(currentCardInt);
@@ -502,6 +503,7 @@ public class GameBoard extends JFrame implements Serializable {
 				markCards();
 				updateHazards();
 				currentCardClicked.mark(false);
+				mbg.checkIfDeckNeedsReforming();
 			} else {
 				returnToOriginalPos();
 			}
@@ -547,7 +549,11 @@ public class GameBoard extends JFrame implements Serializable {
 				return false;
 			}
 
-			
+			if(((DistanceCard) dc.getCard()).getValue() == 200){
+
+				p.add200();
+
+			}
 			return true;
 		}
 		if (c.getName().equals("Battle") && c.getOwner().equals(cp.getName()) && dc.getCard() instanceof HazardCard) {
@@ -1189,7 +1195,10 @@ public class GameBoard extends JFrame implements Serializable {
 				}
 			}
 		}
-		noteBox.setText("");
+		if(!(noteBox.getText().equals("Coup Fourre!"))){
+			noteBox.setText("");
+		}
+
 
 	}
 

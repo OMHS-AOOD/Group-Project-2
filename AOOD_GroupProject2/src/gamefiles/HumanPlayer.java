@@ -171,6 +171,10 @@ public class HumanPlayer implements Serializable {
 			return false;
 		}
 		if((battle.getStack().get(battle.getCurrentSize()-1) instanceof HazardCard)){
+			HazardCard tempCard = (HazardCard) battle.getStack().get(battle.getCurrentSize()-1);
+			if(tempCard.getType() == 's'){
+				return true;
+			}
 			return false;
 		}
 		if((battle.getStack().get(battle.getCurrentSize()-1) instanceof RemedyCard)){
@@ -224,6 +228,9 @@ public class HumanPlayer implements Serializable {
 		}
 		if(needsRoll() && (rc instanceof RollCard)){
 			return true;
+		}
+		if(rc.getType() == '*' && hazards.size() == 1 && hazards.get(0).equals("Speed Limit")){
+			return false;
 		}
 		if(rc.getType() == '*' && hazards.size() > 0){
 			return true;

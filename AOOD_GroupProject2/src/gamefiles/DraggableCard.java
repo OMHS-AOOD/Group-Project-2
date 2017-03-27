@@ -66,14 +66,19 @@ public class DraggableCard extends JPanel implements Serializable {
 		
 		owner = dc.getOwner();
 		image = new JLabel();
+		overlay = new JPanel();
+		this.add(overlay);
 		this.add(image);
+		
 		this.setVisible(true);
 		this.setLayout(null);
 		image.setBounds(0, 0, 100, 153);
 		currentImage = thisCard.getImage();
 
 		image.setIcon(currentImage);
-
+		overlay.setBounds(0, 0, 100, 153);
+		overlay.setBackground(grayed);
+		overlay.setVisible(false);
 		wantedX = dc.getWantedX();
 		wantedY = dc.getWantedY();
 
