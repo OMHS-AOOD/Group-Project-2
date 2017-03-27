@@ -12,11 +12,13 @@ public class Card implements Serializable{
 	protected boolean flipped;
 	protected String name;
 	protected boolean wasCF;
-	public Card(String n) {
+	protected int internalVal;
+
+	public Card(String n, int iV) {
 		name = n;
 		flipped = false;
 		wasCF = false;
-
+		internalVal = iV;
 	}
 
 	public String getName() {
@@ -42,5 +44,8 @@ public class Card implements Serializable{
 	}
 	public boolean getCF(){
 		return wasCF;
+	}
+	public int getInternalVal(){
+		return internalVal;
 	}
 }

@@ -9,9 +9,14 @@ public class RemedyCard extends Card implements Serializable {
 	//'o' = Gasoline
 	//'f' = Spare Tire
 	//'*' = Road Service
-	public RemedyCard(String n, char t){
-		super(n);
+	public RemedyCard(String n, char t, int iv){
+		super(n, iv);
 		type = t;
+	}
+
+	public RemedyCard(Card card) {
+		super(card.getName(),card.getInternalVal());
+		type = ((RemedyCard) card).getType();
 	}
 
 	public char getType(){

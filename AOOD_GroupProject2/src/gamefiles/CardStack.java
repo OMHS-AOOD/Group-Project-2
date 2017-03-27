@@ -27,9 +27,40 @@ public class CardStack extends JPanel implements Serializable {
 		this.setLayout(null);
 
 	}
+	public CardStack(CardStack c2){
+		takesCard = c2.canDropCardOn();
+		name = c2.getName();
+		owner = c2.getOwner();
+		myColor = c2.getColor();
+		stack = new ArrayList<Card>();
+		for(Card c: c2.getStack()){
+			if (c instanceof DistanceCard) {
+				stack.add(new DistanceCard(c));
+			} else if (c instanceof EoLimitCard) {
+				stack.add(new EoLimitCard(c));
+			} else if (c instanceof HazardCard) {
+				stack.add(new HazardCard(c));
+			} else if (c instanceof LimitCard) {
+				stack.add(new LimitCard(c));
+			} else if (c instanceof RemedyCard) {
+				stack.add(new RemedyCard(c));
+			} else if (c instanceof RollCard) {
+				stack.add(new RollCard(c));
+			} else if (c instanceof SafetyCard) {
+				stack.add(new SafetyCard(c));
+			}
+		}
+		visibleStack = new ArrayList<DraggableCard>();
+		createDraggableCards();
+
+		this.setLayout(null);
+	}
 
 
 
+	private Color getColor() {
+		return myColor;
+	}
 	public void addCard(DraggableCard c) {
 		visibleStack.add(c);
 		stack.add(c.getCard());
@@ -107,6 +138,14 @@ public class CardStack extends JPanel implements Serializable {
 		return false;
 	}
 	
-
+	public void createDraggableCards(){
+		for(Card c: stack){
+			DraggableCard drc = new DraggableCard(c, this.owner, this.getX() + 15, this.getY() + 35);
+			visibleStack.add(drc);
+			if(name.equals("Deck")){
+				drc.setFlip(true);
+			}
+		}
+	}
 
 }

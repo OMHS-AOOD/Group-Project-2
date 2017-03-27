@@ -1,6 +1,7 @@
 package gamefiles;
 
 import java.awt.Color;
+import java.awt.Window;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -57,7 +58,7 @@ public class MilleBornesContainer implements Serializable {
 		}
 	}
 
-	public void load() {
+	public boolean load() {
 		JFileChooser jfc = new JFileChooser(desktop);
 		jfc.setDialogTitle("Select a Mille Bornes game");
 		jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -70,15 +71,22 @@ public class MilleBornesContainer implements Serializable {
 			try {
 		    	FileInputStream fis = new FileInputStream(f);
 			    ObjectInputStream ois = new ObjectInputStream(fis);
-			    mbg = null;
-			    mbg = (MilleBornesGame) ois.readObject();
+			    mbg.dispose();
+			    mbg = null;			    
+			    MilleBornesGame newMbg = (MilleBornesGame) ois.readObject();
+			    MilleBornesGame mbg2 = new MilleBornesGame(newMbg, this);
+
 		        ois.close();
+			    return true;
 			}
-		    catch (ClassNotFoundException | IOException e) {
+		    catch (IOException | ClassNotFoundException e) {
+		 
 				JOptionPane.showMessageDialog(null, "Error when trying to read game file", "Error" , JOptionPane.INFORMATION_MESSAGE);
-			}
+				return false;
+		    }
 			
 		}
+		return false;
 	}
 
 }

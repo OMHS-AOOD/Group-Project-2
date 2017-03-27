@@ -1,9 +1,15 @@
 package gamefiles;
 
-public class LimitCard extends Card{
+import java.io.Serializable;
 
-	public LimitCard(String n) {
-		super(n);
+public class LimitCard extends Card implements Serializable{
+
+	public LimitCard(String n, int iv) {
+		super(n, iv);
+	}
+
+	public LimitCard(Card card) {
+		super(card.getName(), card.getInternalVal());
 	}
 
 }

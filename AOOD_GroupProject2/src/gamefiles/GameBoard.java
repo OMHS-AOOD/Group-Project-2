@@ -55,7 +55,7 @@ public class GameBoard extends JFrame implements Serializable {
 	private boolean hasDrawnCard, canCF, playedSafety;
 	private int bWidth, bHeight;
 	
-	public GameBoard(MilleBornesGame m, HumanPlayer p, ComputerPlayer c) {
+	public GameBoard(MilleBornesGame m, HumanPlayer p, ComputerPlayer c, boolean newBoard) {
 		super("Mille Bornes");
 		mbg = m;
 		hasDrawnCard = false;
@@ -66,7 +66,7 @@ public class GameBoard extends JFrame implements Serializable {
 		bHeight = 700;
 		this.setSize(bWidth, bHeight);
 		this.setVisible(true);
-		this.setLocation(0, 0);
+		this.setLocation(25, 100);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
 		board = new JPanel();
@@ -176,7 +176,24 @@ public class GameBoard extends JFrame implements Serializable {
 		cList.setFont(new Font("OCR A Std", Font.PLAIN, 12));
 		
 		updateHazards();
+		
+		
+	}
 
+	private int getCurrentCardInt() {
+		return currentCardInt;
+	}
+
+	private boolean getPlayedSafety() {
+		return playedSafety;
+	}
+
+	private boolean getCanCF() {
+		return canCF;
+	}
+
+	private boolean getHasDrawnCard() {
+		return hasDrawnCard;
 	}
 
 	public void add(JComponent j, int x, int y, int w, int h) {
@@ -207,13 +224,40 @@ public class GameBoard extends JFrame implements Serializable {
 
 	public void placeCard(DraggableCard j, int x, int y, int w, int h) {
 		if (j.getOwner().equals(player.getName())) {
-			j.addMouseMotionListener(new CardDrag());
+			if(j.getMouseMotionListeners().length == 0){
+				j.addMouseMotionListener(new CardDrag());
+			}
+			else{
+				j.removeMouseMotionListener(j.getMouseMotionListeners()[0]);
+				j.addMouseMotionListener(new CardDrag());
+
+			}
+
 			reorganizeCardGraphics();
 		}
 		if (j.getOwner().equals(cpu.getName())) {
 			reorganizeCpuCardGraphics();
 		}
 		j.setBounds(x, y, w, h);
+	}
+	public void placeCardAgain(DraggableCard j, int x, int y, int w, int h) {
+		if (j.getOwner().equals(player.getName())) {
+			if(j.getMouseMotionListeners().length == 0){
+				j.addMouseMotionListener(new CardDrag());
+			}
+			else{
+				j.removeMouseMotionListener(j.getMouseMotionListeners()[0]);
+				j.addMouseMotionListener(new CardDrag());
+
+			}
+
+			reorganizeCardGraphics();
+		}
+		if (j.getOwner().equals(cpu.getName())) {
+			reorganizeCpuCardGraphics();
+		}
+		j.setBounds(x, y, w, h);
+		board.add(j);
 	}
 
 	public void returnToOriginalPos() {
@@ -392,8 +436,7 @@ public class GameBoard extends JFrame implements Serializable {
 				target = cpu.getLimit();
 				maxTouch = area3;
 			}
-
-			if (canCF == false && !hasDrawnCard) {
+			if ((canCF == false && !hasDrawnCard) || (!(currentCardClicked.getCard() instanceof SafetyCard) && !hasDrawnCard)) {
 				returnToOriginalPos();
 				noteBox.setText("Must draw card first.");
 				return;
@@ -414,7 +457,8 @@ public class GameBoard extends JFrame implements Serializable {
 				}
 				if (target.getName().equals("Battle") && target.getOwner().equals(player.getName())
 						&& currentCardClicked.getCard() instanceof DistanceCard) {
-					currentCardClicked.setCard(new RemedyCard("Roll", 's'));
+					currentCardClicked.setCard(new RollCard("Roll", 's', 0));
+					player.add200();
 				}
 
 				if (currentCardClicked.getCard() instanceof SafetyCard) {
@@ -432,6 +476,7 @@ public class GameBoard extends JFrame implements Serializable {
 					canCF = false;
 					currentCardClicked.getCard().beCF();
 					noteBox.setText("Coup-Fourre!");
+					markCards();
 
 				} else {
 					noteBox.setText("");
@@ -442,6 +487,7 @@ public class GameBoard extends JFrame implements Serializable {
 				this.updateLabels(playerScore, p200, pMove, player, cMove, cpu);
 				if (!playedSafety) {
 					this.cpuTurn();
+
 					if (previousCpuCard != null && previousCpuCard.getCard() instanceof HazardCard
 							&& currentCardClicked.getCard() instanceof SafetyCard) {
 						if (((HazardCard) previousCpuCard.getCard())
@@ -453,7 +499,9 @@ public class GameBoard extends JFrame implements Serializable {
 					canCF = false;
 					playedSafety = false;
 				}
+				markCards();
 				updateHazards();
+				currentCardClicked.mark(false);
 			} else {
 				returnToOriginalPos();
 			}
@@ -499,13 +547,11 @@ public class GameBoard extends JFrame implements Serializable {
 				return false;
 			}
 
-			if (((DistanceCard) dc.getCard()).getValue() == 200) {
-				p.add200();
-			}
+			
 			return true;
 		}
 		if (c.getName().equals("Battle") && c.getOwner().equals(cp.getName()) && dc.getCard() instanceof HazardCard) {
-			if (cp.hasAppropriateSafety(dc.getCard())) {
+			if (cp.isImmuneTo(dc.getCard())) {
 				if (p.getName().equals(player.getName())) {
 					noteBox.setText("Player has immunity to this card.");
 					return false;
@@ -524,23 +570,24 @@ public class GameBoard extends JFrame implements Serializable {
 				if (p.getName().equals(player.getName())) {
 					noteBox.setText("Currently need a roll card to move.");
 				}
-				if (!p.willTakeRemedyCard(dc)) {
-					if (p.getName().equals(player.getName()) && !(dc.getCard() instanceof RollCard)) {
-						noteBox.setText("Can't use that card without appropriate status.");
-					}
-					if (p.getName().equals(player.getName()) && (dc.getCard() instanceof RollCard)) {
-						noteBox.setText("Can't use that card until hazard is resolved.");
+				return false;
 
-					}
+			}
+			if (!p.willTakeRemedyCard(dc)) {
+				if (p.getName().equals(player.getName()) && !(dc.getCard() instanceof RollCard)) {
+					noteBox.setText("Can't use that card without appropriate status.");
+				}
+				if (p.getName().equals(player.getName()) && (dc.getCard() instanceof RollCard)) {
+					noteBox.setText("Can't use that card until hazard is resolved.");
 
-					return false;
 				}
 
+				return false;
 			}
 			return true;
 		}
 		if (c.getName().equals("Limit") && c.getOwner().equals(cp.getName()) && dc.getCard() instanceof LimitCard) {
-			if (cp.hasAppropriateSafety(new HazardCard("Stop", 's'))) {
+			if (cp.isImmuneTo(new HazardCard("Stop", 's', 0))) {
 				if (p.getName().equals(player.getName())) {
 					noteBox.setText("Player has Right of Way.");
 				}
@@ -579,9 +626,9 @@ public class GameBoard extends JFrame implements Serializable {
 				}
 				return false;
 			}
-			if (p.canMove()) {
+			if (!p.needsRoll()) {
 				if (p.getName().equals(player.getName())) {
-					noteBox.setText("Need to be stopped first.");
+					noteBox.setText("Do not currently need a roll card.");
 
 				}
 				return false;
@@ -940,7 +987,7 @@ public class GameBoard extends JFrame implements Serializable {
 
 			if (hasntMoved) {
 				CardStack target = mbg.getDiscard();
-				DraggableCard cpuCard = cpu.getHand().remove((int) (Math.random() * 6));
+				DraggableCard cpuCard = cpu.getHand().remove(cpu.getLowestValuedCardIndex());
 
 				int targetX = target.getX() + 15;
 				int targetY = target.getY() + 35;
@@ -1021,6 +1068,7 @@ public class GameBoard extends JFrame implements Serializable {
 	}
 
 	private void updateMoveText(JLabel l, HumanPlayer p) {
+
 		if (p.canMoveNormally()) {
 			l.setText("Movement Status: Rolling");
 
@@ -1079,6 +1127,69 @@ public class GameBoard extends JFrame implements Serializable {
 			}
 			return c;
 		}
+	}
+	public void resetup(GameBoard board2){
+		for(CardStack c: playerPiles){
+			for(DraggableCard dc: c.getVisibleStack()){
+				this.add(dc, c.getX()+15, c.getY()+35, 100, 153);
+				dc.setFlip(false);
+			}
+		}
+		for(CardStack c: cpuPiles){
+			for(DraggableCard dc: c.getVisibleStack()){
+				this.add(dc, c.getX()+15, c.getY()+35, 100, 153);
+				dc.setFlip(false);
+			}
+		}
+		for(DraggableCard dc: mbg.getDiscard().getVisibleStack()){
+			this.add(dc, mbg.getDiscard().getX()+15, mbg.getDiscard().getY()+35, 100, 153);
+			dc.setFlip(false);
+		}
+		
+		for(DraggableCard dc: mbg.getDeck().getVisibleStack()){
+			this.add(dc, mbg.getDeck().getX()+15, mbg.getDeck().getY()+35, 100, 153);
+			dc.setFlip(true);
+		}
+		ArrayList<DraggableCard> c = player.getHand();
+		for(int i = 0; i < c.size(); i++){
+			this.placeCardAgain(c.get(i), (i*120) + 10, 475, 100, 153);
+		}
+		ArrayList<DraggableCard> c2 = cpu.getHand();
+		for(int i = 0; i < c2.size(); i++){
+			this.placeCardAgain(c2.get(i), (i*120) + 10, 10, 100, 153);
+		}
+		
+		this.reorganizeCardGraphics();
+		this.reorganizeCpuCardGraphics();
+		hasDrawnCard = board2.getHasDrawnCard();
+		canCF = board2.getCanCF();
+		playedSafety = board2.getPlayedSafety();
+		currentCardInt = board2.getCurrentCardInt();
+		updateHazards();
+		this.updateLabels(playerScore, p200, pMove, player, cMove, cpu);
+
+	}
+	public void markCards(){
+		ArrayList<CardStack> allCardStacks = new ArrayList<CardStack>();
+		for(CardStack c: playerPiles){
+			allCardStacks.add(c);
+		}
+		for(CardStack c: cpuPiles){
+			allCardStacks.add(c);
+		}
+		for(DraggableCard c: player.getHand()){
+			c.mark(true);
+		}
+		for(DraggableCard c: player.getHand()){
+			for(CardStack s: allCardStacks){
+				if(this.isValidMove(s, c, player, cpu)){
+					c.mark(false);
+					break;
+				}
+			}
+		}
+		noteBox.setText("");
+
 	}
 
 }

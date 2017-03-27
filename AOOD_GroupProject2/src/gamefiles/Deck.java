@@ -7,73 +7,73 @@ import javax.swing.JOptionPane;
 
 public class Deck extends CardStack implements Serializable {
 	public Deck() {
-		super("Deck", "", Color.BLACK);
+		super("Deck", "", Color.BLUE);
 		takesCard = false;
 		myColor = Color.BLUE;
 		ArrayList<Card> allCards = new ArrayList<Card>();
-		allCards.add(new SafetyCard("Driving Ace", 'a'));
-		allCards.add(new SafetyCard("Extra Tank", 'o'));
-		allCards.add(new SafetyCard("Puncture Proof", 'f'));
-		allCards.add(new SafetyCard("Right of Way", 's'));
+		allCards.add(new SafetyCard("Driving Ace", 'a', 99));
+		allCards.add(new SafetyCard("Extra Tank", 'o', 99));
+		allCards.add(new SafetyCard("Puncture Proof", 'f', 99));
+		allCards.add(new SafetyCard("Right of Way", 's', 100));
 
 		for (int i = 0; i < 5; i++) {
-			allCards.add(new HazardCard("Stop",'s'));
+			allCards.add(new HazardCard("Stop",'s', 50));
 		}
 		for (int i = 0; i < 2; i++) {
-			allCards.add(new LimitCard("Speed Limit"));
-			allCards.add(new LimitCard("Speed Limit"));
+			allCards.add(new LimitCard("Speed Limit", 25));
+			allCards.add(new LimitCard("Speed Limit", 25));
 
-			allCards.add(new RollCard("Roll",'s'));
-			allCards.add(new RollCard("Roll",'s'));
-			allCards.add(new RollCard("Roll",'s'));
-			allCards.add(new RollCard("Roll",'s'));
-			allCards.add(new RollCard("Roll",'s'));
-			allCards.add(new RollCard("Roll",'s'));
-			allCards.add(new RollCard("Roll",'s'));
+			allCards.add(new RollCard("Roll",'s', 40));
+			allCards.add(new RollCard("Roll",'s', 40));
+			allCards.add(new RollCard("Roll",'s', 40));
+			allCards.add(new RollCard("Roll",'s', 40));
+			allCards.add(new RollCard("Roll",'s', 40));
+			allCards.add(new RollCard("Roll",'s', 40));
+			allCards.add(new RollCard("Roll",'s', 40));
 
-			allCards.add(new DistanceCard("25 Miles", 25));
-			allCards.add(new DistanceCard("25 Miles", 25));
-			allCards.add(new DistanceCard("25 Miles", 25));
-			allCards.add(new DistanceCard("25 Miles", 25));
-			allCards.add(new DistanceCard("25 Miles", 25));
+			allCards.add(new DistanceCard("25 Miles", 25, 10));
+			allCards.add(new DistanceCard("25 Miles", 25, 10));
+			allCards.add(new DistanceCard("25 Miles", 25, 10));
+			allCards.add(new DistanceCard("25 Miles", 25, 10));
+			allCards.add(new DistanceCard("25 Miles", 25, 10));
 
-			allCards.add(new DistanceCard("50 Miles", 50));
-			allCards.add(new DistanceCard("50 Miles", 50));
-			allCards.add(new DistanceCard("50 Miles", 50));
-			allCards.add(new DistanceCard("50 Miles", 50));
-			allCards.add(new DistanceCard("50 Miles", 50));
+			allCards.add(new DistanceCard("50 Miles", 50, 20));
+			allCards.add(new DistanceCard("50 Miles", 50, 20));
+			allCards.add(new DistanceCard("50 Miles", 50, 20));
+			allCards.add(new DistanceCard("50 Miles", 50, 20));
+			allCards.add(new DistanceCard("50 Miles", 50, 20));
 
-			allCards.add(new DistanceCard("75 Miles", 75));
-			allCards.add(new DistanceCard("75 Miles", 75));
-			allCards.add(new DistanceCard("75 Miles", 75));
-			allCards.add(new DistanceCard("75 Miles", 75));
-			allCards.add(new DistanceCard("75 Miles", 75));
+			allCards.add(new DistanceCard("75 Miles", 75, 30));
+			allCards.add(new DistanceCard("75 Miles", 75, 30));
+			allCards.add(new DistanceCard("75 Miles", 75, 30));
+			allCards.add(new DistanceCard("75 Miles", 75, 30));
+			allCards.add(new DistanceCard("75 Miles", 75, 30));
 
-			allCards.add(new DistanceCard("200 Miles", 200));
-			allCards.add(new DistanceCard("200 Miles", 200));
+			allCards.add(new DistanceCard("200 Miles", 200, 90));
+			allCards.add(new DistanceCard("200 Miles", 200, 90));
 
 		}
 
 		for (int i = 0; i < 3; i++) {
-			allCards.add(new RemedyCard("Road Service",'*'));
+			allCards.add(new RemedyCard("Road Service",'*', 70));
 			
-			allCards.add(new HazardCard("Accident",'a'));
-			allCards.add(new HazardCard("Out of Gas",'o'));
-			allCards.add(new HazardCard("Flat Tire",'f'));
+			allCards.add(new HazardCard("Accident",'a',60));
+			allCards.add(new HazardCard("Out of Gas",'o', 60));
+			allCards.add(new HazardCard("Flat Tire",'f', 60));
 
-			allCards.add(new RemedyCard("Repairs",'a'));
-			allCards.add(new RemedyCard("Repairs",'a'));
-			allCards.add(new RemedyCard("Gasoline",'o'));
-			allCards.add(new RemedyCard("Gasoline",'o'));
-			allCards.add(new RemedyCard("Spare Tire",'f'));
-			allCards.add(new RemedyCard("Spare Tire",'f'));
-			allCards.add(new EoLimitCard("End of Limit"));
-			allCards.add(new EoLimitCard("End of Limit"));
+			allCards.add(new RemedyCard("Repairs",'a', 35));
+			allCards.add(new RemedyCard("Repairs",'a',35));
+			allCards.add(new RemedyCard("Gasoline",'o',35));
+			allCards.add(new RemedyCard("Gasoline",'o',35));
+			allCards.add(new RemedyCard("Spare Tire",'f',35));
+			allCards.add(new RemedyCard("Spare Tire",'f',35));
+			allCards.add(new EoLimitCard("End of Limit", 30));
+			allCards.add(new EoLimitCard("End of Limit", 30));
 
-			allCards.add(new DistanceCard("100 Miles", 100));
-			allCards.add(new DistanceCard("100 Miles", 100));
-			allCards.add(new DistanceCard("100 Miles", 100));
-			allCards.add(new DistanceCard("100 Miles", 100));
+			allCards.add(new DistanceCard("100 Miles", 100, 70));
+			allCards.add(new DistanceCard("100 Miles", 100, 70));
+			allCards.add(new DistanceCard("100 Miles", 100, 70));
+			allCards.add(new DistanceCard("100 Miles", 100, 70));
 
 		}
 		while(allCards.size() > 0){
@@ -83,13 +83,31 @@ public class Deck extends CardStack implements Serializable {
 		createDraggableCards();
 	}
 	
-	public void createDraggableCards(){
-		for(Card c: stack){
-			DraggableCard drc = new DraggableCard(c, "", this.getX() + 15, this.getY() + 35);
-			visibleStack.add(drc);
-			drc.flipCard();
+	public Deck(Deck deck) {
+		super("Deck", "", Color.BLUE);
+		takesCard = false;
+		myColor = Color.BLUE;
+		for(Card c: deck.getStack()){
+			if (c instanceof DistanceCard) {
+				stack.add(new DistanceCard(c));
+			} else if (c instanceof EoLimitCard) {
+				stack.add(new EoLimitCard(c));
+			} else if (c instanceof HazardCard) {
+				stack.add(new HazardCard(c));
+			} else if (c instanceof LimitCard) {
+				stack.add(new LimitCard(c));
+			} else if (c instanceof RemedyCard) {
+				stack.add(new RemedyCard(c));
+			} else if (c instanceof RollCard) {
+				stack.add(new RollCard(c));
+			} else if (c instanceof SafetyCard) {
+				stack.add(new SafetyCard(c));
+			}
 		}
+		createDraggableCards();
 	}
+
+	
 
 	public void reformDeck(CardStack discard){
 		while(discard.getVisibleStack().size() > 0){

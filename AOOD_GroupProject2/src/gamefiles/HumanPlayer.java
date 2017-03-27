@@ -13,7 +13,6 @@ public class HumanPlayer implements Serializable {
 	protected int maxPointsToWin;
 	protected int used200s;
 	protected ArrayList<Integer> validWinningConditions;
-
 	public HumanPlayer(String n) {
 		name = n;
 		battle = new CardStack("Battle", name, Color.GREEN);
@@ -27,6 +26,31 @@ public class HumanPlayer implements Serializable {
 		validWinningConditions = new ArrayList<Integer>();
 		validWinningConditions.add(1000);
 
+	}
+
+	public HumanPlayer(HumanPlayer player) {
+		name = player.getName();
+		battle = new CardStack(player.getBattle());
+		distance = new CardStack(player.getDistance());
+		safety = new CardStack(player.getSafety());
+		limit = new CardStack(player.getLimit());
+		hand = new ArrayList<Card>();
+		ArrayList<DraggableCard> tempList = new ArrayList<DraggableCard>();
+		for(DraggableCard dc: player.getHand()){
+			tempList.add(new DraggableCard(dc));
+		}
+		visibleCards = tempList;
+		for(DraggableCard dc: visibleCards){
+			hand.add(dc.getCard());
+			dc.updateImage();
+		}
+		maxPointsToWin = 1000;
+		used200s = player.getUsed200s();
+		validWinningConditions = player.getValidWins();
+	}
+
+	private ArrayList<Integer> getValidWins() {
+		return validWinningConditions;
 	}
 
 	public void addCardToHand(DraggableCard dc) {
@@ -119,6 +143,9 @@ public class HumanPlayer implements Serializable {
 		if(needsRoll()){
 			return false;
 		}
+		if(this.getCurrentHazards().size() == 1 && this.getCurrentHazards().get(0).equals("Speed Limit")){
+			return true;
+		}
 		if(this.getCurrentHazards().size() == 0){
 			return true;
 		}
@@ -127,9 +154,18 @@ public class HumanPlayer implements Serializable {
 	}
 
 	public boolean needsRoll() {
-		
 		if (battle.getCurrentSize() == 0) {
 			return true;
+		}
+		
+		if(safety.getCurrentSize() != 0){
+			Card c1 = battle.getStack().get(battle.getCurrentSize()-1);
+			Card c2 = safety.getStack().get(safety.getCurrentSize()-1);
+			if(c1 instanceof HazardCard && c2 instanceof SafetyCard){
+				if(((HazardCard) c1).getType() == ((SafetyCard) c2).getType()){
+					return true;
+				}
+			}
 		}
 		if((battle.getStack().get(battle.getCurrentSize()-1) instanceof RollCard)){
 			return false;
@@ -154,10 +190,22 @@ public class HumanPlayer implements Serializable {
 	public void add200() {
 		used200s++;
 	}
-
+	public boolean isImmuneTo(Card c){
+		for (Card c2 : safety.getStack()) {
+			if (((SafetyCard) c2).getType() == ((HazardCard) c).getType()) {
+				return true;
+			}
+		}
+		return false;
+	}
 	public boolean willTakeBattleCard(Card c) {
 		if (battle.getCurrentSize() == 0) {
 			return true;
+		}
+		for (Card c2 : safety.getStack()) {
+			if (((SafetyCard) c2).getType() == ((HazardCard) c).getType()) {
+				return false;
+			}
 		}
 		if((battle.getStack().get(battle.getCurrentSize()-1) instanceof RemedyCard)){
 			return true;
@@ -166,20 +214,16 @@ public class HumanPlayer implements Serializable {
 		
 	}
 
-	public boolean hasAppropriateSafety(Card c) {
-		for (Card s : safety.getStack()) {
-			if (((SafetyCard) s).getType() == ((HazardCard) c).getType()) {
-				return false;
-			}
-		}
-		return false;
-	}
+
 
 	public boolean willTakeRemedyCard(DraggableCard dc) {
 		RemedyCard rc = (RemedyCard) dc.getCard();
 		ArrayList<String> hazards = this.getCurrentHazards();
-		if (needsRoll()) {
+		if (needsRoll() && !(rc instanceof RollCard)) {
 			return false;
+		}
+		if(needsRoll() && (rc instanceof RollCard)){
+			return true;
 		}
 		if(rc.getType() == '*' && hazards.size() > 0){
 			return true;
@@ -393,5 +437,8 @@ public class HumanPlayer implements Serializable {
 		}
 		return numOfRolls;
 	}
+	
+	
+	
 
 }

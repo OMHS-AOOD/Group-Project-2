@@ -1,10 +1,16 @@
 package gamefiles;
 
-public class EoLimitCard extends Card{
+import java.io.Serializable;
 
-	public EoLimitCard(String n) {
-		super(n);
+public class EoLimitCard extends Card implements Serializable{
 
+	public EoLimitCard(String n, int iv) {
+		super(n, iv);
+
+	}
+
+	public EoLimitCard(Card card) {
+		super(card.getName(), card.getInternalVal());
 	}
 
 }
