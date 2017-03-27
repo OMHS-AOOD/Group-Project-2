@@ -779,11 +779,12 @@ public class GameBoard extends JFrame implements Serializable {
 						reorderComponents(cpuCard);
 						cpu.getHand().remove(hInts.remove(i).intValue());
 						hasntMoved = false;
-						canCF = true;
+						
 						updateHazards();
 						borderLastCpuCard(cpuCard);
 						this.updateLabels(playerScore, p200, pMove, player, cMove, cpu);
 						this.reorganizeCpuCardGraphics();
+						canCF = true;
 						break;
 					}
 				}
