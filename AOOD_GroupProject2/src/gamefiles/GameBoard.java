@@ -1201,6 +1201,7 @@ public class GameBoard extends JFrame implements Serializable {
 		updateHazards();
 		this.updateLabels(playerScore, p200, pMove, player, cMove, cpu);
 		markCards();
+
 	}
 
 	public void markCards() {
@@ -1212,7 +1213,7 @@ public class GameBoard extends JFrame implements Serializable {
 		for (CardStack c : cpuPiles) {
 			allCardStacks.add(c);
 		}
-		/*
+		
 		for (DraggableCard c : player.getHand()) {
 			c.mark(true);
 
@@ -1225,7 +1226,7 @@ public class GameBoard extends JFrame implements Serializable {
 				}
 			}
 		}
-		*/
+		
 		if (!(noteBox.getText().equals("Coup-Fourre!"))) {
 			noteBox.setText("");
 		}

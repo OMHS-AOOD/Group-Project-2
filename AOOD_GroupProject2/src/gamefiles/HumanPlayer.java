@@ -42,7 +42,6 @@ public class HumanPlayer implements Serializable {
 		visibleCards = tempList;
 		for(DraggableCard dc: visibleCards){
 			hand.add(dc.getCard());
-			dc.updateImage();
 		}
 		maxPointsToWin = 1000;
 		used200s = player.getUsed200s();
