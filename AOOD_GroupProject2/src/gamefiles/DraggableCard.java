@@ -91,6 +91,7 @@ public class DraggableCard extends JPanel implements Serializable {
 		image.setIcon(currentImage);
 	}
 
+
 	public ImageIcon getImage() {
 		return currentImage;
 	}
@@ -145,5 +146,11 @@ public class DraggableCard extends JPanel implements Serializable {
 		else{
 			overlay.setVisible(false);
 		}
+	}
+
+	public void setImage(ImageIcon imageIcon) {
+		currentImage = imageIcon;
+		image.setIcon(currentImage);
+		
 	}
 }

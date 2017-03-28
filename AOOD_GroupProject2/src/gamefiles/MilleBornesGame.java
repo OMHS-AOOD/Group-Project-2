@@ -153,9 +153,50 @@ public class MilleBornesGame implements Serializable {
 	}
 
 	public void checkIfDeckNeedsReforming() {
-		if (deck.getVisibleStack().size() == 0 && discard.getVisibleStack().size() > 0) {
-			deck.reformDeck(discard);
+		if (deck.getVisibleStack().size() == 0) {
+			if(discard.getCurrentSize() > 0){
+				deck.reformDeck(discard);
+			}
+			DraggableCard topOfP1 = player.getBattle().getLast();
+			DraggableCard topOfP2 = player.getLimit().getLast();
+			DraggableCard topOfCP1 = cpu.getBattle().getLast();
+			DraggableCard topOfCP2 = cpu.getLimit().getLast();
+			
+			CardStack pBattle = player.getBattle();
+			CardStack pLimit = player.getLimit();
+			CardStack cBattle = cpu.getBattle();
+			CardStack cLimit = cpu.getLimit();
+			
+			
+			if(pBattle.getCurrentSize()>0){
+				deck.reformDeck(pBattle);
+				player.getBattle().addCard(topOfP1);
+				topOfP1.setBounds(pBattle.getX()+15, pBattle.getY() + 35, 100, 153);
+			}
+			if(pLimit.getCurrentSize()>0){
+				deck.reformDeck(pLimit);
+				player.getLimit().addCard(topOfP2);
+				topOfP2.setBounds(pLimit.getX()+15, pLimit.getY() + 35, 100, 153);
 
+			}
+			if(cBattle.getCurrentSize()>0){
+				deck.reformDeck(cBattle);
+				cpu.getBattle().addCard(topOfCP1);
+				topOfCP1.setBounds(cBattle.getX()+15, cBattle.getY() + 35, 100, 153);
+
+			}
+			if(cLimit.getCurrentSize()>0){
+				deck.reformDeck(cLimit);
+				cpu.getLimit().addCard(topOfCP2);
+				topOfCP2.setBounds(cLimit.getX()+15, cLimit.getY() + 35, 100, 153);
+
+			}
+			
+
+
+
+
+			
 		}
 	}
 

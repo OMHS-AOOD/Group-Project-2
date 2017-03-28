@@ -48,4 +48,5 @@ public class Card implements Serializable{
 	public int getInternalVal(){
 		return internalVal;
 	}
+
 }

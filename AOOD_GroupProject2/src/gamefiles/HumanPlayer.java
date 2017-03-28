@@ -154,10 +154,16 @@ public class HumanPlayer implements Serializable {
 	}
 
 	public boolean needsRoll() {
+		for(Card s: safety.getStack()){
+			if(((SafetyCard) s).getType() == 's'){
+				return false;
+			}
+		}
 		if (battle.getCurrentSize() == 0) {
 			return true;
 		}
 		
+
 		if(safety.getCurrentSize() != 0){
 			Card c1 = battle.getStack().get(battle.getCurrentSize()-1);
 			Card c2 = safety.getStack().get(safety.getCurrentSize()-1);
@@ -204,7 +210,7 @@ public class HumanPlayer implements Serializable {
 	}
 	public boolean willTakeBattleCard(Card c) {
 		if (battle.getCurrentSize() == 0) {
-			return true;
+			return false;
 		}
 		for (Card c2 : safety.getStack()) {
 			if (((SafetyCard) c2).getType() == ((HazardCard) c).getType()) {
@@ -349,6 +355,13 @@ public class HumanPlayer implements Serializable {
 
 
 		ArrayList<String> output = new ArrayList<String>();
+		
+		char checker = ' ';
+		if(battle.getCurrentSize() > 0 && battle.getStack().get(battle.getCurrentSize()-1) instanceof HazardCard){
+			checker = ((HazardCard) battle.getStack().get(battle.getCurrentSize()-1)).getType();
+		}
+		
+		
 		if (stopsResolved > 0) {
 			output.add("Stop");
 		}
@@ -445,7 +458,7 @@ public class HumanPlayer implements Serializable {
 		return numOfRolls;
 	}
 	
-	
+
 	
 
 }
