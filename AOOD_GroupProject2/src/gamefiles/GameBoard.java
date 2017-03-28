@@ -1184,11 +1184,16 @@ public class GameBoard extends JFrame implements Serializable {
 		}
 		ArrayList<DraggableCard> c = player.getHand();
 		for (int i = 0; i < c.size(); i++) {
+			c.get(i).setOwner(player.getName());
 			this.placeCardAgain(c.get(i), (i * 120) + 10, 475, 100, 153);
+			c.get(i).setFlip(false);
 		}
 		ArrayList<DraggableCard> c2 = cpu.getHand();
 		for (int i = 0; i < c2.size(); i++) {
+			c2.get(i).setOwner(cpu.getName());
 			this.placeCardAgain(c2.get(i), (i * 120) + 10, 10, 100, 153);
+			c2.get(i).setFlip(true);
+
 		}
 
 		this.reorganizeCardGraphics();
