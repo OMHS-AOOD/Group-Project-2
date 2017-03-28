@@ -278,11 +278,10 @@ public class MilleBornesGame implements Serializable {
 
 		discard.setColor(Color.BLUE);
 		gb.add(discard, 1270, 225, 130, 198);
-
 		gb.resetup(mbg2.getBoard());
-		gb.markCards();
 		gb.pack();
 		gb.resetSize();
+
 
 	}
 

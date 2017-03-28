@@ -25,8 +25,7 @@ public class DraggableCard extends JPanel implements Serializable {
 		overlay = new JPanel();
 		this.add(overlay);
 		this.add(image);
-		
-		
+
 		this.setVisible(true);
 		this.setLayout(null);
 		image.setBounds(0, 0, 100, 153);
@@ -52,45 +51,46 @@ public class DraggableCard extends JPanel implements Serializable {
 			thisCard = new HazardCard(dc.getCard());
 		} else if (dc.getCard() instanceof LimitCard) {
 			thisCard = new LimitCard(dc.getCard());
-		} else if (dc.getCard() instanceof RemedyCard) {
-			thisCard = new RemedyCard(dc.getCard());
 		} else if (dc.getCard() instanceof RollCard) {
 			thisCard = new RollCard(dc.getCard());
+		} else if (dc.getCard() instanceof RemedyCard) {
+			thisCard = new RemedyCard(dc.getCard());
 		} else if (dc.getCard() instanceof SafetyCard) {
 			thisCard = new SafetyCard(dc.getCard());
-		}
-		else{
+		} else {
 			System.out.println("Error");
 			thisCard = null;
 		}
-		
+
 		owner = dc.getOwner();
 		image = new JLabel();
 		overlay = new JPanel();
 		this.add(overlay);
 		this.add(image);
-		
+
+
 		this.setVisible(true);
 		this.setLayout(null);
 		image.setBounds(0, 0, 100, 153);
-		currentImage = thisCard.getImage();
-
-		image.setIcon(currentImage);
 		overlay.setBounds(0, 0, 100, 153);
 		overlay.setBackground(grayed);
 		overlay.setVisible(false);
+
+		currentImage = thisCard.getImage();
+
+		image.setIcon(currentImage);
 		wantedX = dc.getWantedX();
 		wantedY = dc.getWantedY();
 
-		this.setBackground(Color.BLACK);
+		this.setBackground(Color.GREEN);
 		this.setOpaque(false);
+
 	}
 
 	public void updateImage() {
 		currentImage = thisCard.getImage();
 		image.setIcon(currentImage);
 	}
-
 
 	public ImageIcon getImage() {
 		return currentImage;
@@ -118,8 +118,6 @@ public class DraggableCard extends JPanel implements Serializable {
 		owner = o;
 	}
 
-	
-
 	public void updateWanted(int x, int y) {
 		wantedX = x;
 		wantedY = y;
@@ -139,18 +137,21 @@ public class DraggableCard extends JPanel implements Serializable {
 		this.updateImage();
 
 	}
-	public void mark(boolean b){
-		if(b){
+
+	public void mark(boolean b) {
+		if (b) {
 			overlay.setVisible(true);
-		}
-		else{
+		} else {
 			overlay.setVisible(false);
 		}
+		System.out.println(thisCard.getName());
+		System.out.println("-----------------");
+
 	}
 
 	public void setImage(ImageIcon imageIcon) {
 		currentImage = imageIcon;
 		image.setIcon(currentImage);
-		
+
 	}
 }

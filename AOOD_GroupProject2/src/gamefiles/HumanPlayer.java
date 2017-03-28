@@ -160,6 +160,7 @@ public class HumanPlayer implements Serializable {
 			}
 		}
 		if (battle.getCurrentSize() == 0) {
+
 			return true;
 		}
 		
@@ -173,17 +174,19 @@ public class HumanPlayer implements Serializable {
 				}
 			}
 		}
-		if((battle.getStack().get(battle.getCurrentSize()-1) instanceof RollCard)){
+		if((battle.getLast().getCard() instanceof RollCard)){
 			return false;
 		}
 		if((battle.getStack().get(battle.getCurrentSize()-1) instanceof HazardCard)){
 			HazardCard tempCard = (HazardCard) battle.getStack().get(battle.getCurrentSize()-1);
 			if(tempCard.getType() == 's'){
+
 				return true;
 			}
 			return false;
 		}
 		if((battle.getStack().get(battle.getCurrentSize()-1) instanceof RemedyCard)){
+
 			return true;
 		}
 		return false;

@@ -37,6 +37,7 @@ public class Card implements Serializable{
 		if (flipped) {
 			return new ImageIcon(getClass().getResource("Back.jpg"));
 		}
+
 		return new ImageIcon(getClass().getResource(name + ".png"));
 	}
 	public void beCF(){
