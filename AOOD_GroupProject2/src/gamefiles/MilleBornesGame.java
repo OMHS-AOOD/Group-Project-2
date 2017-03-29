@@ -217,7 +217,9 @@ public class MilleBornesGame implements Serializable {
 
 	}
 
-	public MilleBornesGame(MilleBornesGame mbg2, MilleBornesContainer m) {
+
+
+	public MilleBornesGame(GameData data, MilleBornesContainer milleBornesContainer) {
 		Font myFont = new Font("OCR A Std", Font.PLAIN, 12);
 		UIManager.put("OptionPane.background", Color.black);
 		UIManager.put("OptionPane.messageForeground", Color.green);
@@ -257,12 +259,12 @@ public class MilleBornesGame implements Serializable {
 		
 		UIManager.put("ToolTip.foreground", Color.GREEN);
 		UIManager.put("ToolTip.background", Color.BLACK);
-		mbc = m;
+		mbc = milleBornesContainer;
 
-		deck = new Deck(mbg2.getDeck());
-		discard = new CardStack(mbg2.getDiscard());
-		player = new HumanPlayer(mbg2.getPlayer());
-		cpu = new ComputerPlayer(mbg2.getCPU());
+		deck = new Deck(data.getDeck());
+		discard = new CardStack(data.getDiscard(), "Discard", "", Color.blue, true);
+		player = new HumanPlayer(data.getpName(), data.getpBattle(), data.getpDistance(), data.getpSafety(), data.getpLimit(), data.getpHand(), d);
+		cpu = new ComputerPlayer();
 		gb = new GameBoard(this, player, cpu, false);
 
 		gb.add(player.getDistance(), 150, 225, 130, 198);
@@ -276,24 +278,22 @@ public class MilleBornesGame implements Serializable {
 		gb.add(cpu.getBattle(), 710, 225, 130, 198);
 		gb.add(deck, 10, 225, 130, 198);
 
-		discard.setColor(Color.BLUE);
+
 		gb.add(discard, 1270, 225, 130, 198);
-		gb.resetup(mbg2.getBoard());
+		gb.resetup();
 		gb.pack();
 		gb.resetSize();
-
-
 	}
 
-	private GameBoard getBoard() {
+	public GameBoard getBoard() {
 		return gb;
 	}
 
-	private ComputerPlayer getCPU() {
+	public ComputerPlayer getCPU() {
 		return cpu;
 	}
 
-	private HumanPlayer getPlayer() {
+	public HumanPlayer getPlayer() {
 		return player;
 	}
 

@@ -179,19 +179,19 @@ public class GameBoard extends JFrame implements Serializable {
 
 	}
 
-	private int getCurrentCardInt() {
+	public int getCurrentCardInt() {
 		return currentCardInt;
 	}
 
-	private boolean getPlayedSafety() {
+	public boolean getPlayedSafety() {
 		return playedSafety;
 	}
 
-	private boolean getCanCF() {
+	public boolean getCanCF() {
 		return canCF;
 	}
 
-	private boolean getHasDrawnCard() {
+	public boolean getHasDrawnCard() {
 		return hasDrawnCard;
 	}
 
@@ -1237,5 +1237,7 @@ public class GameBoard extends JFrame implements Serializable {
 		}
 
 	}
+
+
 
 }

@@ -49,7 +49,7 @@ public class MilleBornesContainer implements Serializable {
 			    	fos = new FileOutputStream(new File(path + ".mbg"));
 				}
 			    ObjectOutputStream oos = new ObjectOutputStream(fos);
-			    oos.writeObject(mbg);
+			    oos.writeObject(new GameData(mbg));
 				oos.close();
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null, "Error when writing to file", "Error" , JOptionPane.INFORMATION_MESSAGE);
@@ -72,9 +72,10 @@ public class MilleBornesContainer implements Serializable {
 		    	FileInputStream fis = new FileInputStream(f);
 			    ObjectInputStream ois = new ObjectInputStream(fis);
 			    mbg.dispose();
-			    mbg = null;			    
-			    MilleBornesGame newMbg = (MilleBornesGame) ois.readObject();
-			    MilleBornesGame mbg2 = new MilleBornesGame(newMbg, this);
+			    mbg = null;		
+			 
+			    GameData data = (GameData) ois.readObject();
+			    MilleBornesGame mbg2 = new MilleBornesGame(data, this);
 
 		        ois.close();
 			    return true;

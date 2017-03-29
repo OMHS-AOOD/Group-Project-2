@@ -28,24 +28,28 @@ public class HumanPlayer implements Serializable {
 
 	}
 
-	public HumanPlayer(HumanPlayer player) {
-		name = player.getName();
-		battle = new CardStack(player.getBattle());
-		distance = new CardStack(player.getDistance());
-		safety = new CardStack(player.getSafety());
-		limit = new CardStack(player.getLimit());
+	public HumanPlayer(String n, ArrayList<Card> b,  ArrayList<Card> d, ArrayList<Card> s, ArrayList<Card> l, ArrayList<Card> hList, int u2, ArrayList<Integer> iList) {
+		name = n;
+		battle = new CardStack(b, n, name, Color.green, true);
+		distance = new CardStack(b, n, name, Color.green, true);
+		safety = new CardStack(b, n, name, Color.green, true);
+		limit = new CardStack(b, n, name, Color.green, true);
 		hand = new ArrayList<Card>();
+		
+		for(Card c: hList){
+			hand.add(c);
+		}
 		ArrayList<DraggableCard> tempList = new ArrayList<DraggableCard>();
-		for(DraggableCard dc: player.getHand()){
-			tempList.add(new DraggableCard(dc));
+		int ind = 0;
+		for(Card c: hand){
+			visibleCards.add(new DraggableCard(c, name, (ind*120)+10, 475));
+			ind++;
 		}
 		visibleCards = tempList;
-		for(DraggableCard dc: visibleCards){
-			hand.add(dc.getCard());
-		}
+
 		maxPointsToWin = 1000;
-		used200s = player.getUsed200s();
-		validWinningConditions = player.getValidWins();
+		used200s = u2;
+		validWinningConditions = iList;
 	}
 
 	private ArrayList<Integer> getValidWins() {
@@ -193,6 +197,9 @@ public class HumanPlayer implements Serializable {
 
 	public ArrayList<DraggableCard> getHand() {
 		return visibleCards;
+	}
+	public ArrayList<Card> getCards() {
+		return this.hand;
 	}
 
 	public int getUsed200s() {
@@ -458,6 +465,10 @@ public class HumanPlayer implements Serializable {
 
 		}
 		return numOfRolls;
+	}
+
+	public ArrayList<Integer> getWinCons() {
+		return this.validWinningConditions;
 	}
 	
 

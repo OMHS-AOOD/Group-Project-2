@@ -29,13 +29,13 @@ public class CardStack extends JPanel implements Serializable {
 
 	}
 
-	public CardStack(CardStack c2) {
-		takesCard = c2.canDropCardOn();
-		name = c2.getName();
-		owner = c2.getOwner();
-		myColor = c2.getColor();
+	public CardStack(ArrayList<Card> c2, String n, String o, Color co, boolean tC) {
+		takesCard = tC;
+		name = n;
+		owner = o;
+		myColor = co;
 		stack = new ArrayList<Card>();
-		for (Card c : c2.getStack()) {
+		for (Card c : c2) {
 			if (c instanceof DistanceCard) {
 				stack.add(new DistanceCard(c));
 			} else if (c instanceof EoLimitCard) {

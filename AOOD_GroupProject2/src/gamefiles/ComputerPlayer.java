@@ -13,15 +13,7 @@ public class ComputerPlayer extends HumanPlayer implements Serializable {
 		limit.setColor(Color.red);
 	}
 
-	public ComputerPlayer(ComputerPlayer cpu) {
-		super(cpu);
-		safety.setDrop(false);
-		distance.setDrop(false);
-		battle.setColor(Color.RED);
-		safety.setColor(Color.RED);
-		distance.setColor(Color.RED);
-		limit.setColor(Color.red);
-	}
+
 	
 	
 	public int getLowestValuedCardIndex(){

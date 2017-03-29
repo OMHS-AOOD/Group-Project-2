@@ -84,11 +84,11 @@ public class Deck extends CardStack implements Serializable {
 		createDraggableCards();
 	}
 
-	public Deck(Deck deck) {
+	public Deck(ArrayList<Card> d) {
 		super("Deck", "", Color.BLUE);
 		takesCard = false;
 		myColor = Color.BLUE;
-		for (Card c : deck.getStack()) {
+		for (Card c : d) {
 			if (c instanceof DistanceCard) {
 				stack.add(new DistanceCard(c));
 			} else if (c instanceof EoLimitCard) {
