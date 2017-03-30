@@ -58,7 +58,6 @@ public class DraggableCard extends JPanel implements Serializable {
 		} else if (dc.getCard() instanceof SafetyCard) {
 			thisCard = new SafetyCard(dc.getCard());
 		} else {
-			System.out.println("Error");
 			thisCard = null;
 		}
 
@@ -144,8 +143,7 @@ public class DraggableCard extends JPanel implements Serializable {
 		} else {
 			overlay.setVisible(false);
 		}
-		System.out.println(thisCard.getName());
-		System.out.println("-----------------");
+
 
 	}
 

@@ -13,6 +13,7 @@ import java.io.Serializable;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 
@@ -29,6 +30,8 @@ public class MilleBornesContainer implements Serializable {
 	}
 
 	public void save(){
+		UIManager.put("OptionPane.messageForeground", Color.green);
+		UIManager.put("Button.foreground", Color.GREEN);
 		JFileChooser jfc = new JFileChooser(desktop);
 		jfc.setDialogTitle("Select a location to save");
 		jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -52,6 +55,7 @@ public class MilleBornesContainer implements Serializable {
 			    oos.writeObject(new GameData(mbg));
 				oos.close();
 			} catch (IOException e) {
+				e.printStackTrace();
 				JOptionPane.showMessageDialog(null, "Error when writing to file", "Error" , JOptionPane.INFORMATION_MESSAGE);
 			}
 			
@@ -81,7 +85,7 @@ public class MilleBornesContainer implements Serializable {
 			    return true;
 			}
 		    catch (IOException | ClassNotFoundException e) {
-		 
+		    	e.printStackTrace();
 				JOptionPane.showMessageDialog(null, "Error when trying to read game file", "Error" , JOptionPane.INFORMATION_MESSAGE);
 				return false;
 		    }

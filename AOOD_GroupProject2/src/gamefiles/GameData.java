@@ -1,8 +1,9 @@
 package gamefiles;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class GameData {
+public class GameData implements Serializable {
 	private ArrayList<Card> deck, pDistance, pSafety, pLimit, pBattle, cBattle, cLimit, cSafety, cDistance, discard, pHand, cHand;
 	private String pName;
 	private boolean hasDrawnCard, canCF, playedSafety;
@@ -34,6 +35,7 @@ public class GameData {
 
 		pHand = mbg.getPlayer().getCards();
 		cHand = mbg.getCPU().getCards();
+
 
 	}
 

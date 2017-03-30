@@ -55,7 +55,7 @@ public class GameBoard extends JFrame implements Serializable {
 	private boolean hasDrawnCard, canCF, playedSafety;
 	private int bWidth, bHeight;
 
-	public GameBoard(MilleBornesGame m, HumanPlayer p, ComputerPlayer c, boolean newBoard) {
+	public GameBoard(MilleBornesGame m, HumanPlayer p, ComputerPlayer c) {
 		super("Mille Bornes");
 		mbg = m;
 		hasDrawnCard = false;
@@ -474,6 +474,7 @@ public class GameBoard extends JFrame implements Serializable {
 
 				target.addCard(currentCardClicked);
 				player.getHand().remove(currentCardInt);
+				player.getCards().remove(currentCardInt);
 				currentCardClicked.removeMouseMotionListener(currentCardClicked.getMouseMotionListeners()[0]);
 				currentCardClicked.removeMouseListener(currentCardClicked.getMouseListeners()[0]);
 				if (hasDrawnCard == false) {
@@ -519,6 +520,7 @@ public class GameBoard extends JFrame implements Serializable {
 	}
 
 	private boolean isValidMove(CardStack c, DraggableCard dc, HumanPlayer p, HumanPlayer cp, boolean grayTime) {
+
 		if (c.getName().equals("Distance") && dc.getCard() instanceof DistanceCard) {
 			if (p.needsRoll() && !grayTime) {
 				if (p.getName().equals(player.getName())) {
@@ -748,7 +750,9 @@ public class GameBoard extends JFrame implements Serializable {
 					cpuCard.flipCard();
 					target.addCard(cpuCard);
 					reorderComponents(cpuCard);
-					cpu.getHand().remove(rollInts.remove(0).intValue());
+					int tempI = rollInts.remove(0).intValue();
+					cpu.getHand().remove(tempI);
+					cpu.getCards().remove(tempI);
 					hasntMoved = false;
 					updateHazards();
 					borderLastCpuCard(cpuCard);
@@ -768,7 +772,11 @@ public class GameBoard extends JFrame implements Serializable {
 					cpuCard.flipCard();
 					target.addCard(cpuCard);
 					reorderComponents(cpuCard);
-					cpu.getHand().remove(sInts.remove(0).intValue());
+					int tempI = sInts.remove(0).intValue();
+
+					cpu.getHand().remove(tempI);
+					cpu.getCards().remove(tempI);
+
 					hasntMoved = false;
 
 					updateHazards();
@@ -792,7 +800,12 @@ public class GameBoard extends JFrame implements Serializable {
 						cpuCard.flipCard();
 						target.addCard(cpuCard);
 						reorderComponents(cpuCard);
-						cpu.getHand().remove(hInts.remove(i).intValue());
+						int tempI = hInts.remove(i).intValue();
+
+
+						cpu.getHand().remove(tempI);
+						cpu.getCards().remove(tempI);
+
 						hasntMoved = false;
 
 						updateHazards();
@@ -817,7 +830,10 @@ public class GameBoard extends JFrame implements Serializable {
 					cpuCard.flipCard();
 					target.addCard(cpuCard);
 					reorderComponents(cpuCard);
-					cpu.getHand().remove(lInts.remove(0).intValue());
+					int tempI = lInts.remove(0).intValue();
+					cpu.getHand().remove(tempI);
+					cpu.getCards().remove(tempI);
+
 					hasntMoved = false;
 					updateHazards();
 					borderLastCpuCard(cpuCard);
@@ -837,7 +853,10 @@ public class GameBoard extends JFrame implements Serializable {
 					cpuCard.flipCard();
 					target.addCard(cpuCard);
 					reorderComponents(cpuCard);
-					cpu.getHand().remove(eInts.remove(0).intValue());
+					int tempI = eInts.remove(0).intValue();
+					cpu.getHand().remove(tempI);
+					cpu.getCards().remove(tempI);
+
 					hasntMoved = false;
 					updateHazards();
 					borderLastCpuCard(cpuCard);
@@ -867,7 +886,10 @@ public class GameBoard extends JFrame implements Serializable {
 						cpuCard.flipCard();
 						target.addCard(cpuCard);
 						reorderComponents(cpuCard);
-						cpu.getHand().remove(dInts.remove(ind).intValue());
+						int tempI =dInts.remove(ind).intValue();
+						cpu.getHand().remove(tempI);
+						cpu.getCards().remove(tempI);
+
 						hasntMoved = false;
 						if (cpuCard.getCard() instanceof DistanceCard && target.getName().equals("Distance")) {
 							if (((DistanceCard) cpuCard.getCard()).getValue() == 200) {
@@ -911,7 +933,10 @@ public class GameBoard extends JFrame implements Serializable {
 						cpuCard.flipCard();
 						target.addCard(cpuCard);
 						reorderComponents(cpuCard);
-						cpu.getHand().remove(dInts.remove(ind).intValue());
+						int tempI = dInts.remove(ind).intValue();
+						cpu.getHand().remove(tempI);
+						cpu.getCards().remove(tempI);
+
 						hasntMoved = false;
 
 						updateHazards();
@@ -991,7 +1016,10 @@ public class GameBoard extends JFrame implements Serializable {
 									cpuCard.flipCard();
 									target.addCard(cpuCard);
 									reorderComponents(cpuCard);
-									cpu.getHand().remove(rInts.remove(i).intValue());
+									int tempI = rInts.remove(i).intValue();
+									cpu.getHand().remove(tempI);
+									cpu.getCards().remove(tempI);
+
 									hasntMoved = false;
 
 									updateHazards();
@@ -1008,8 +1036,9 @@ public class GameBoard extends JFrame implements Serializable {
 
 			if (hasntMoved) {
 				CardStack target = mbg.getDiscard();
-				DraggableCard cpuCard = cpu.getHand().remove(cpu.getLowestValuedCardIndex());
-
+				int tempI = cpu.getLowestValuedCardIndex();
+				DraggableCard cpuCard = cpu.getHand().remove(tempI);
+				cpu.getCards().remove(tempI);
 				int targetX = target.getX() + 15;
 				int targetY = target.getY() + 35;
 				int cwidth = cpuCard.getWidth();
@@ -1150,11 +1179,8 @@ public class GameBoard extends JFrame implements Serializable {
 		}
 	}
 
-	public void resetup(GameBoard board2) {
-		System.out.println("========================");
-		System.out.println("========================");
-		System.out.println("========================");
-		System.out.println("========================");
+	public void resetup(GameData data) {
+
 
 		for (CardStack c : playerPiles) {
 			for (int i = c.getCurrentSize() - 1; i >= 0; i--) {
@@ -1198,10 +1224,10 @@ public class GameBoard extends JFrame implements Serializable {
 
 		this.reorganizeCardGraphics();
 		this.reorganizeCpuCardGraphics();
-		hasDrawnCard = board2.getHasDrawnCard();
-		canCF = board2.getCanCF();
-		playedSafety = board2.getPlayedSafety();
-		currentCardInt = board2.getCurrentCardInt();
+		hasDrawnCard = data.isHasDrawnCard();
+		canCF = data.isCanCF();
+		playedSafety = data.isPlayedSafety();
+		currentCardInt = data.getCurrentCardInt();
 
 		updateHazards();
 		this.updateLabels(playerScore, p200, pMove, player, cMove, cpu);

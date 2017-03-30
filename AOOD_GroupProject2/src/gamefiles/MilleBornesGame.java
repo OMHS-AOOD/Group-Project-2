@@ -73,7 +73,7 @@ public class MilleBornesGame implements Serializable {
 			player = new HumanPlayer("Player");
 		}
 		cpu = new ComputerPlayer();
-		gb = new GameBoard(this, player, cpu, true);
+		gb = new GameBoard(this, player, cpu);
 
 		gb.add(player.getDistance(), 150, 225, 130, 198);
 		gb.add(player.getSafety(), 290, 225, 130, 198);
@@ -263,9 +263,9 @@ public class MilleBornesGame implements Serializable {
 
 		deck = new Deck(data.getDeck());
 		discard = new CardStack(data.getDiscard(), "Discard", "", Color.blue, true);
-		player = new HumanPlayer(data.getpName(), data.getpBattle(), data.getpDistance(), data.getpSafety(), data.getpLimit(), data.getpHand(), d);
-		cpu = new ComputerPlayer();
-		gb = new GameBoard(this, player, cpu, false);
+		player = new HumanPlayer(data.getpName(), data.getpBattle(), data.getpDistance(), data.getpSafety(), data.getpLimit(), data.getpHand(), data.getpUsed200s(), data.getpWinCons());
+		cpu = new ComputerPlayer(data.getcBattle(), data.getcDistance(), data.getcSafety(), data.getcLimit(), data.getcHand(), data.getcUsed200s(), data.getcWinCons());
+		gb = new GameBoard(this, player, cpu);
 
 		gb.add(player.getDistance(), 150, 225, 130, 198);
 		gb.add(player.getSafety(), 290, 225, 130, 198);
@@ -280,7 +280,7 @@ public class MilleBornesGame implements Serializable {
 
 
 		gb.add(discard, 1270, 225, 130, 198);
-		gb.resetup();
+		gb.resetup(data);
 		gb.pack();
 		gb.resetSize();
 	}

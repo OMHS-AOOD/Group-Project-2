@@ -30,22 +30,23 @@ public class HumanPlayer implements Serializable {
 
 	public HumanPlayer(String n, ArrayList<Card> b,  ArrayList<Card> d, ArrayList<Card> s, ArrayList<Card> l, ArrayList<Card> hList, int u2, ArrayList<Integer> iList) {
 		name = n;
-		battle = new CardStack(b, n, name, Color.green, true);
-		distance = new CardStack(b, n, name, Color.green, true);
-		safety = new CardStack(b, n, name, Color.green, true);
-		limit = new CardStack(b, n, name, Color.green, true);
+		battle = new CardStack(b, "Battle", name, Color.green, true);
+		distance = new CardStack(d, "Distance", name, Color.green, true);
+		safety = new CardStack(s, "Safety", name, Color.green, true);
+		limit = new CardStack(l, "Limit", name, Color.green, true);
 		hand = new ArrayList<Card>();
 		
 		for(Card c: hList){
 			hand.add(c);
 		}
-		ArrayList<DraggableCard> tempList = new ArrayList<DraggableCard>();
+		visibleCards = new ArrayList<DraggableCard>();
 		int ind = 0;
 		for(Card c: hand){
 			visibleCards.add(new DraggableCard(c, name, (ind*120)+10, 475));
 			ind++;
 		}
-		visibleCards = tempList;
+
+
 
 		maxPointsToWin = 1000;
 		used200s = u2;
