@@ -1,17 +1,16 @@
 package gamefiles;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 import java.io.Serializable;
-import java.util.ArrayList;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 public class MilleBornesGame implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Deck deck;
 	private CardStack discard;
 	private HumanPlayer player;

@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class GameData implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ArrayList<Card> deck, pDistance, pSafety, pLimit, pBattle, cBattle, cLimit, cSafety, cDistance, discard, pHand, cHand;
 	private String pName;
 	private boolean hasDrawnCard, canCF, playedSafety;

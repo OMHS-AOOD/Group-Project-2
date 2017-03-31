@@ -3,7 +3,6 @@ package gamefiles;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,8 +15,6 @@ import javax.swing.UIManager;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -27,15 +24,16 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
-import javax.swing.plaf.ColorUIResource;
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
 
 public class GameBoard extends JFrame implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel board;
 	private JTextArea noteBox;
 	private JLabel playerScore, cpuScore, p200, c200, pMove, cMove;
@@ -48,7 +46,7 @@ public class GameBoard extends JFrame implements Serializable {
 	private DraggableCard previousCpuCard;
 	private JScrollPane pHaz, cHaz;
 	private DefaultListModel<String> pDLM, cDLM;
-	private JList pList, cList;
+	private JList<String> pList, cList;
 	private JMenuBar jm;
 	private JMenu options;
 	private JMenuItem save, load, newG;
@@ -140,8 +138,8 @@ public class GameBoard extends JFrame implements Serializable {
 
 		pDLM = new DefaultListModel<String>();
 		cDLM = new DefaultListModel<String>();
-		pList = new JList(pDLM);
-		cList = new JList(cDLM);
+		pList = new JList<String>(pDLM);
+		cList = new JList<String>(cDLM);
 		pHaz = new JScrollPane(pList);
 		cHaz = new JScrollPane(cList);
 
@@ -227,7 +225,7 @@ public class GameBoard extends JFrame implements Serializable {
 			cpuPiles.add((CardStack) j);
 		}
 		if (j instanceof Deck) {
-			j.addMouseListener(new DeckClick((Deck) j));
+			j.addMouseListener(new DeckClick());
 		}
 		board.add(j);
 		j.setBounds(x, y, w, h);
@@ -305,11 +303,7 @@ public class GameBoard extends JFrame implements Serializable {
 	}
 
 	private class DeckClick extends MouseAdapter {
-		private Deck myDeck;
 
-		public DeckClick(Deck d) {
-			myDeck = d;
-		}
 
 		@Override
 		public void mousePressed(MouseEvent e) {
@@ -336,7 +330,7 @@ public class GameBoard extends JFrame implements Serializable {
 
 	private class StackClick extends MouseAdapter {
 		private CardStack myStack;
-		int i = 0;
+
 
 		public StackClick(CardStack s) {
 			myStack = s;
@@ -965,7 +959,6 @@ public class GameBoard extends JFrame implements Serializable {
 
 			}
 			if (!cpu.canMove() && hasntMoved && allRemedy.size() > 0) {
-				ArrayList<DraggableCard> enemyHazards = cpu.getBattle().getVisibleStack();
 				ArrayList<Character> remChars = new ArrayList<Character>();
 				ArrayList<Character> hazChars = new ArrayList<Character>();
 				ArrayList<Character> safChars = new ArrayList<Character>();
@@ -1166,8 +1159,13 @@ public class GameBoard extends JFrame implements Serializable {
 	}
 
 	public class MyCellRenderer extends DefaultListCellRenderer {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		@Override
-		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
 				boolean cellHasFocus) {
 			Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 			if (isSelected) {
@@ -1179,8 +1177,13 @@ public class GameBoard extends JFrame implements Serializable {
 	}
 
 	public class CpuCellRenderer extends DefaultListCellRenderer {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		@Override
-		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
 				boolean cellHasFocus) {
 			Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 			if (isSelected) {

@@ -1,14 +1,13 @@
 package gamefiles;
-import java.awt.Image;
-import java.io.File;
 import java.io.Serializable;
-import java.net.URL;
-
 import javax.swing.ImageIcon;
-import javax.swing.JComponent;
 
 public class Card implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected boolean flipped;
 	protected String name;
 	protected boolean wasCF;

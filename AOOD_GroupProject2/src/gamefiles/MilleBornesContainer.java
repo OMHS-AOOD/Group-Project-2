@@ -1,7 +1,6 @@
 package gamefiles;
 
 import java.awt.Color;
-import java.awt.Window;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -18,13 +17,17 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 
 public class MilleBornesContainer implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private MilleBornesGame mbg;
 	private File desktop;
 	public MilleBornesContainer() {
 		mbg = new MilleBornesGame(this);
 		FileSystemView filesys = FileSystemView.getFileSystemView();
 
-		File[] roots = filesys.getRoots();
+
 
 		desktop = filesys.getHomeDirectory();
 	}
@@ -79,7 +82,7 @@ public class MilleBornesContainer implements Serializable {
 			    mbg = null;		
 			 
 			    GameData data = (GameData) ois.readObject();
-			    MilleBornesGame mbg2 = new MilleBornesGame(data, this);
+			    mbg = new MilleBornesGame(data, this);
 
 		        ois.close();
 			    return true;

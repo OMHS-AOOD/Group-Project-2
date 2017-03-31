@@ -1,11 +1,14 @@
 package gamefiles;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class HumanPlayer implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected String name;
 	protected CardStack battle, distance, safety, limit;
 	protected ArrayList<Card> hand;
@@ -51,10 +54,6 @@ public class HumanPlayer implements Serializable {
 		maxPointsToWin = 1000;
 		used200s = u2;
 		validWinningConditions = iList;
-	}
-
-	private ArrayList<Integer> getValidWins() {
-		return validWinningConditions;
 	}
 
 	public void addCardToHand(DraggableCard dc) {

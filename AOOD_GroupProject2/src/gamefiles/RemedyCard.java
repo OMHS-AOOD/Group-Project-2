@@ -3,6 +3,10 @@ package gamefiles;
 import java.io.Serializable;
 
 public class RemedyCard extends Card implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected char type;
 	//'s' = Go
 	//'a' = Repairs

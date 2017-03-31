@@ -6,11 +6,13 @@ import java.awt.Graphics;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
 
 public class CardStack extends JPanel implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected boolean takesCard;
 	protected ArrayList<Card> stack;
 	protected ArrayList<DraggableCard> visibleStack;
@@ -56,10 +58,6 @@ public class CardStack extends JPanel implements Serializable {
 		createDraggableCards();
 
 		this.setLayout(null);
-	}
-
-	private Color getColor() {
-		return myColor;
 	}
 
 	public void addCard(DraggableCard c) {

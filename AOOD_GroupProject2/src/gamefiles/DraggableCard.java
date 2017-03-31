@@ -4,11 +4,14 @@ import java.awt.Color;
 import java.io.Serializable;
 
 import javax.swing.ImageIcon;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class DraggableCard extends JPanel implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Card thisCard;
 	private Color grayed;
 	private ImageIcon currentImage;
