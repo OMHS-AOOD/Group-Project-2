@@ -230,6 +230,9 @@ public class HumanPlayer implements Serializable {
 		if((battle.getStack().get(battle.getCurrentSize()-1) instanceof RemedyCard)){
 			return true;
 		}
+		if((battle.getStack().get(battle.getCurrentSize()-1) instanceof HazardCard)){
+			return true;
+		}
 		return false;
 		
 	}
@@ -267,122 +270,22 @@ public class HumanPlayer implements Serializable {
 	}
 
 	public ArrayList<String> getCurrentHazards() {
-		int numOfRolls = 0;
-		int rollsForStops = 0;
-		int numOfRepairs = 0;
-		int numOfGasoline = 0;
-		int numOfSpares = 0;
-
-
-		int numOfStops = 0;
-		int numOfAccidents = 0;
-		int numOfOuts = 0;
-		int numOfFlats = 0;
-
-		int stopsResolved = 0;
-		int accidentsResolved = 0;
-		int outsResolved = 0;
-		int flatsResolved = 0;
-
-		Card previous = null;
 		
-		for (Card c : battle.getStack()) {
-			if (c instanceof RemedyCard) {
-				if (((RemedyCard) c).getType() == 's') {
-					numOfRolls++;
-					if(previous != null && previous instanceof HazardCard && ((HazardCard) previous).getType() == 's'){
-						rollsForStops++;
-					}
-				}
-				if (((RemedyCard) c).getType() == 'a') {
-					numOfRepairs++;
-				}
-				if (((RemedyCard) c).getType() == 'o') {
-					numOfGasoline++;
-				}
-				if (((RemedyCard) c).getType() == 'f') {
-					numOfSpares++;
-				}
-				if (((RemedyCard) c).getType() == '*') {
-					if(previous != null && previous instanceof HazardCard && ((HazardCard) previous).getType() == 's'){
-						rollsForStops++;
-					}
-					if(previous != null && previous instanceof HazardCard && ((HazardCard) previous).getType() == 'a'){
-						numOfRepairs++;
-					}
-					if(previous != null && previous instanceof HazardCard && ((HazardCard) previous).getType() == 'f'){
-						numOfSpares++;
-					}
-					if(previous != null && previous instanceof HazardCard && ((HazardCard) previous).getType() == 'o'){
-						numOfGasoline++;
-					}
-				}
-
-			} else if (c instanceof HazardCard) {
-				if (((HazardCard) c).getType() == 's') {
-					numOfStops++;
-				}
-				if (((HazardCard) c).getType() == 'a') {
-					numOfAccidents++;
-				}
-				if (((HazardCard) c).getType() == 'o') {
-					numOfOuts++;
-				}
-				if (((HazardCard) c).getType() == 'f') {
-					numOfFlats++;
-				}
-
-			}
-			previous = c;
-		}
-		for (Card c : safety.getStack()) {
-			if (((SafetyCard) c).getType() == 's') {
-				numOfStops = 0;
-			}
-			if (((SafetyCard) c).getType() == 'a') {
-				numOfAccidents = 0;
-			}
-			if (((SafetyCard) c).getType() == 'o') {
-				numOfOuts = 0;
-			}
-			if (((SafetyCard) c).getType() == 'f') {
-				numOfFlats = 0;
-			}
-			
-		}
-
-		int totalHazards = numOfStops + numOfAccidents + numOfOuts + numOfFlats;
-
-		if(battle.getCurrentSize() > 0 && battle.getStack().get(0) instanceof RollCard){
-			numOfRolls--;
-		}
-		stopsResolved = numOfStops - rollsForStops;
-		accidentsResolved = numOfAccidents - numOfRepairs;
-		outsResolved = numOfOuts - numOfGasoline;
-		flatsResolved = numOfFlats - numOfSpares;
-
-		int resolvedHazards = stopsResolved + accidentsResolved + outsResolved + flatsResolved;
-
-
 		ArrayList<String> output = new ArrayList<String>();
-		
-		char checker = ' ';
-		if(battle.getCurrentSize() > 0 && battle.getStack().get(battle.getCurrentSize()-1) instanceof HazardCard){
-			checker = ((HazardCard) battle.getStack().get(battle.getCurrentSize()-1)).getType();
-		}
-		
-		
-		if (stopsResolved > 0) {
-			output.add("Stop");
-		}
-		if (accidentsResolved > 0) {
-			output.add("Accident");
-		}
-		if (outsResolved > 0) {
-			output.add("Out of Gas");
-		}
-		if (flatsResolved > 0) {
-			output.add("Flat Tire");
+		if(battle.getCurrentSize() > 0 && battle.getLast().getCard() instanceof HazardCard){
+			HazardCard temp = (HazardCard) battle.getLast().getCard();
+			if (temp.getType() == 's') {
+				output.add("Stop");
+			}
+			if (temp.getType() == 'a') {
+				output.add("Accident");
+			}
+			if (temp.getType() == 'o') {
+				output.add("Out of Gas");
+			}
+			if (temp.getType() == 'f') {
+				output.add("Flat Tire");
+			}
 		}
 		if (willTakeEoLimitCard()) {
 			output.add("Speed Limit");
@@ -390,7 +293,11 @@ public class HumanPlayer implements Serializable {
 		if(this.needsRoll()){
 			output.add("Needs Roll Card");
 		}
+		
 		return output;
+		
+		
+
 
 		
 	
