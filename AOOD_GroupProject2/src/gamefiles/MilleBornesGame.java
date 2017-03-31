@@ -157,10 +157,10 @@ public class MilleBornesGame implements Serializable {
 			if(discard.getCurrentSize() > 0){
 				deck.reformDeck(discard);
 			}
-			DraggableCard topOfP1 = player.getBattle().getLast();
-			DraggableCard topOfP2 = player.getLimit().getLast();
-			DraggableCard topOfCP1 = cpu.getBattle().getLast();
-			DraggableCard topOfCP2 = cpu.getLimit().getLast();
+			DraggableCard topOfP1 = player.getBattle().removeLast();
+			DraggableCard topOfP2 = player.getLimit().removeLast();
+			DraggableCard topOfCP1 = cpu.getBattle().removeLast();
+			DraggableCard topOfCP2 = cpu.getLimit().removeLast();
 			
 			CardStack pBattle = player.getBattle();
 			CardStack pLimit = player.getLimit();
@@ -213,7 +213,10 @@ public class MilleBornesGame implements Serializable {
 	}
 
 	public void load() {
-		mbc.load();
+		String check = JOptionPane.showInputDialog("Would you like to load(Current game will be lost)(Y/N)?");
+		if(check != null && check.equalsIgnoreCase("Y")){
+			mbc.load();
+		}
 
 	}
 
@@ -300,6 +303,14 @@ public class MilleBornesGame implements Serializable {
 	public void dispose() {
 		gb.dispose();
 
+	}
+
+	public void newGame() {
+		String check = JOptionPane.showInputDialog("Would you like to start a new game(Current game will be lost)(Y/N)?");
+		if(check != null && check.equalsIgnoreCase("Y")){
+			mbc.newGame();
+		}
+		
 	}
 
 }

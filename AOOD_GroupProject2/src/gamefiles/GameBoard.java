@@ -51,7 +51,7 @@ public class GameBoard extends JFrame implements Serializable {
 	private JList pList, cList;
 	private JMenuBar jm;
 	private JMenu options;
-	private JMenuItem save, load;
+	private JMenuItem save, load, newG;
 	private boolean hasDrawnCard, canCF, playedSafety;
 	private int bWidth, bHeight;
 
@@ -88,8 +88,11 @@ public class GameBoard extends JFrame implements Serializable {
 		options = new JMenu("Options");
 		save = new JMenuItem("Save");
 		load = new JMenuItem("Load");
+		newG = new JMenuItem("New");
+
 
 		jm.add(options);
+		options.add(newG);
 		options.add(save);
 		options.add(load);
 
@@ -101,6 +104,8 @@ public class GameBoard extends JFrame implements Serializable {
 		save.setBackground(Color.black);
 		load.setForeground(Color.green);
 		load.setBackground(Color.black);
+		newG.setForeground(Color.green);
+		newG.setBackground(Color.black);
 
 		save.addActionListener(new ActionListener() {
 			@Override
@@ -114,6 +119,13 @@ public class GameBoard extends JFrame implements Serializable {
 				mbg.load();
 			}
 		});
+		newG.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mbg.newGame();
+			}
+		});
+
 
 		player = p;
 		cpu = c;

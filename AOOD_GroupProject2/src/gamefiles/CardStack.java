@@ -149,4 +149,7 @@ public class CardStack extends JPanel implements Serializable {
 	public DraggableCard getLast() {
 		return visibleStack.get(visibleStack.size() - 1);
 	}
+	public DraggableCard removeLast() {
+		return visibleStack.remove(visibleStack.size() - 1);
+	}
 }

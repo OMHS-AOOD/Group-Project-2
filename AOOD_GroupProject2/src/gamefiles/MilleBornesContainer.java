@@ -94,4 +94,11 @@ public class MilleBornesContainer implements Serializable {
 		return false;
 	}
 
+	public void newGame() {
+		mbg.dispose();
+		mbg = null;
+		mbg = new MilleBornesGame(this);
+		
+	}
+
 }
