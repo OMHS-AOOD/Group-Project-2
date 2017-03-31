@@ -20,7 +20,7 @@ public class MilleBornesGame implements Serializable {
 	private MilleBornesContainer mbc;
 
 	public MilleBornesGame(MilleBornesContainer m) {
-		Font myFont = new Font("OCR A Std", Font.PLAIN, 12);
+		Font myFont = new Font("OCR A Extended", Font.PLAIN, 12);
 		UIManager.put("OptionPane.background", Color.black);
 		UIManager.put("OptionPane.messageForeground", Color.green);
 		UIManager.put("OptionPane.messageDialogTitle", Color.black);
@@ -223,7 +223,7 @@ public class MilleBornesGame implements Serializable {
 
 
 	public MilleBornesGame(GameData data, MilleBornesContainer milleBornesContainer) {
-		Font myFont = new Font("OCR A Std", Font.PLAIN, 12);
+		Font myFont = new Font("OCR A Extended", Font.PLAIN, 12);
 		UIManager.put("OptionPane.background", Color.black);
 		UIManager.put("OptionPane.messageForeground", Color.green);
 		UIManager.put("OptionPane.messageDialogTitle", Color.black);
