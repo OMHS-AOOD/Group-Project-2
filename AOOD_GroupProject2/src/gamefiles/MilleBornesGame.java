@@ -134,7 +134,17 @@ public class MilleBornesGame implements Serializable {
 
 		}
 		JOptionPane.showMessageDialog(null, "The winner is " + winner + "!", "Winner", JOptionPane.INFORMATION_MESSAGE);
-		System.exit(0);
+		UIManager.put("OptionPane.messageForeground", Color.green);
+		UIManager.put("Button.foreground", Color.green);
+		UIManager.put("Button.foreground", Color.GREEN);
+		String check = JOptionPane.showInputDialog("Would you like to start a new game(Y/N)?");
+		if(check.equalsIgnoreCase("Y")){
+			mbc.newGame();
+		}
+		else{
+			System.exit(0);
+		}
+
 
 	}
 

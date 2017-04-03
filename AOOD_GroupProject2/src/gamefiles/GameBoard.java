@@ -379,8 +379,7 @@ public class GameBoard extends JFrame implements Serializable {
 		@Override
 		public void mousePressed(MouseEvent e) {
 			currentCardInt = cardInt;
-			JOptionPane.showMessageDialog(null, currentCardInt, "yo",
-					JOptionPane.INFORMATION_MESSAGE);
+
 			if (currentCardInt != -1) {
 				currentCardClicked = player.getCard(currentCardInt);
 				reorderComponents(currentCardClicked);
