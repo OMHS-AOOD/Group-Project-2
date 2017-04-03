@@ -10,7 +10,7 @@ public class EoLimitCard extends Card implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	public EoLimitCard(String n, int iv) {
-		super(n, iv);
+		super(n, iv); 
 
 	}
 
