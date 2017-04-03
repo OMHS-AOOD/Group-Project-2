@@ -793,7 +793,7 @@ public class GameBoard extends JFrame implements Serializable {
 					cpuTurn();
 				}
 			}
-			if (allHazards.size() > 0 && hasntMoved) {
+			if (allHazards.size() > 0 && hasntMoved && player.canMove()) {
 				CardStack target = player.getBattle();
 
 				for (int i = 0; i < allHazards.size(); i++) {
