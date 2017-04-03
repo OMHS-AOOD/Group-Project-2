@@ -75,7 +75,7 @@ public class GameBoard extends JFrame implements Serializable {
 		this.setJMenuBar(jm);
 
 		noteBox = new JTextArea();
-		noteBox.setFont(new Font("OCR A Extended", Font.PLAIN, 14));
+		noteBox.setFont(new Font("OCR A Std", Font.PLAIN, 14));
 		noteBox.setForeground(Color.white);
 		noteBox.setBackground(Color.black);
 		noteBox.setWrapStyleWord(true);
@@ -176,14 +176,14 @@ public class GameBoard extends JFrame implements Serializable {
 		pList.setCellRenderer(new MyCellRenderer());
 		cList.setCellRenderer(new CpuCellRenderer());
 
-		playerScore.setFont(new Font("OCR A Extended", Font.PLAIN, 16));
-		cpuScore.setFont(new Font("OCR A Extended", Font.PLAIN, 16));
-		p200.setFont(new Font("OCR A Extended", Font.PLAIN, 16));
-		c200.setFont(new Font("OCR A Extended", Font.PLAIN, 16));
-		pMove.setFont(new Font("OCR A Extended", Font.PLAIN, 16));
-		cMove.setFont(new Font("OCR A Extended", Font.PLAIN, 16));
-		pList.setFont(new Font("OCR A Extended", Font.PLAIN, 12));
-		cList.setFont(new Font("OCR A Extended", Font.PLAIN, 12));
+		playerScore.setFont(new Font("OCR A Std", Font.PLAIN, 16));
+		cpuScore.setFont(new Font("OCR A Std", Font.PLAIN, 16));
+		p200.setFont(new Font("OCR A Std", Font.PLAIN, 16));
+		c200.setFont(new Font("OCR A Std", Font.PLAIN, 16));
+		pMove.setFont(new Font("OCR A Std", Font.PLAIN, 16));
+		cMove.setFont(new Font("OCR A Std", Font.PLAIN, 16));
+		pList.setFont(new Font("OCR A Std", Font.PLAIN, 12));
+		cList.setFont(new Font("OCR A Std", Font.PLAIN, 12));
 
 		updateHazards();
 

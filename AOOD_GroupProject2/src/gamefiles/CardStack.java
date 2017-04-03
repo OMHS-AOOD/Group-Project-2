@@ -93,7 +93,7 @@ public class CardStack extends JPanel implements Serializable {
 		g.setColor(myColor);
 		g.drawRect(10, 15, this.getWidth() - 20, this.getHeight() - 20);
 		g.fillRect(10, 15, this.getWidth() - 20, 15);
-		g.setFont(new Font("OCR A Extended", Font.PLAIN, 8));
+		g.setFont(new Font("OCR A STD", Font.PLAIN, 8));
 		if (owner != "") {
 			g.drawString(name + ": " + owner, 10, 10);
 
